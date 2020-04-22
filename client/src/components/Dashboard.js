@@ -3,15 +3,15 @@ import '../style/Dashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PageNavbar from './PageNavbar';
 import SearchBar from './SearchBar';
-import DashboardMovieRow from './DashboardMovieRow';
+import SearchResults from './SearchResults';
 
 export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentSearch: null,
-      searchResults: null,
+      currentSearchTerm: null,
+      searchResultsData: null,
       detailedViewData: null, 
       isDetailedView: false,
     }
@@ -26,28 +26,28 @@ export default class Dashboard extends React.Component {
   }
 
   search(term) {
-    // TODO: Fetch data for search term
+    // TODO: Fetch data for search term, onClick/onSubmit for SearchBar
   }
 
   render() {
-    const { detailedViewData, isDetailedView } = this.state;
+    const { searchResultsData, detailedViewData, isDetailedView } = this.state;
 
-    if (isdetailedView) {
+    if (isDetailedView) {
       return (
         <div className="Dashboard">
-          <PageNavbar active="dashboard" />
           <br></br>
+          <SearchBar />
           <DetailedView data={detailedViewData} />
-  
         </div>
       );
     }
+
     return (
       <div className="Dashboard">
-
         <PageNavbar active="dashboard" />
         <br></br>
-
+        <SearchBar />
+        <SearchResults data={searchResultsData} />
       </div>
     );
   }
