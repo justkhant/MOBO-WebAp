@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SearchResultsRow from './SearchResultsRow';
 
 export default class SearchResults extends React.Component {
 	constructor(props) {
