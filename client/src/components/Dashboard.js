@@ -59,7 +59,7 @@ export default class Dashboard extends React.Component {
           <br></br>
           <SearchBar />
           <Button variant="primary" onClick={this.hideDetailedView}>Hide Detailed View</Button>{' '}
-          <DetailedView data={detailedViewData} />
+          <DetailedView data={detailedViewData[0]} />
         </div>
       );
     }
