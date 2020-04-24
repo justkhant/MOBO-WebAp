@@ -22,6 +22,8 @@ export default class Dashboard extends React.Component {
     }
 
     this.search = this.search.bind(this);
+    this.showDetailedView = this.showDetailedView.bind(this);
+    this.hideDetailedView = this.hideDetailedView.bind(this);
   }
 
   // React function that is called when the page load.
@@ -34,15 +36,29 @@ export default class Dashboard extends React.Component {
     // TODO: Fetch data for search term, onClick/onSubmit for SearchBar
   }
 
+  showDetailedView() {
+    this.setState({
+      detailedViewData: testData, 
+      isDetailedView: true,
+    })
+  }
+
+  hideDetailedView() {
+    this.setState({
+      isDetailedView: false,
+    })
+  }
+
   render() {
     const { searchResultsData, detailedViewData, isDetailedView } = this.state;
 
     if (isDetailedView) {
       return (
         <div className="Dashboard">
-          <h1>Is DetailedView</h1>
+          <h1 style={{color:'white'}}>Is DetailedView</h1>
           <br></br>
           <SearchBar />
+          <Button variant="primary" onClick={this.hideDetailedView}>Hide Detailed View</Button>{' '}
           <DetailedView data={detailedViewData} />
         </div>
       );
@@ -50,9 +66,10 @@ export default class Dashboard extends React.Component {
 
     return (
       <div className="Dashboard">
-        <h1>Not DetailedView</h1>
+        <h1 style={{color:'white'}}>Not DetailedView</h1>
         <br></br>
         <SearchBar />
+        <Button variant="primary" onClick={this.showDetailedView}>Show Detailed View</Button>{' '}
         <SearchResults data={searchResultsData} />
       </div>
     );
