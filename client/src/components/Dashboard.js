@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
 import DetailedView from './DetailedView';
+import FactCard from './FactCard';
 
 export default class Dashboard extends React.Component {
   constructor(props) {
