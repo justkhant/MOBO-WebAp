@@ -1,9 +1,9 @@
 import React from 'react';
 import '../style/Dashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import PageNavbar from './PageNavbar';
 import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
+import DetailedView from './DetailedView';
 
 export default class Dashboard extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class Dashboard extends React.Component {
       isDetailedView: false,
     }
 
-    this.searchTerm = this.searchTerm.bind(this);
+    this.search = this.search.bind(this);
   }
 
   // React function that is called when the page load.
@@ -35,6 +35,7 @@ export default class Dashboard extends React.Component {
     if (isDetailedView) {
       return (
         <div className="Dashboard">
+          <h1>Is DetailedView</h1>
           <br></br>
           <SearchBar />
           <DetailedView data={detailedViewData} />
@@ -44,7 +45,7 @@ export default class Dashboard extends React.Component {
 
     return (
       <div className="Dashboard">
-        <PageNavbar active="dashboard" />
+        <h1>Not DetailedView</h1>
         <br></br>
         <SearchBar />
         <SearchResults data={searchResultsData} />
