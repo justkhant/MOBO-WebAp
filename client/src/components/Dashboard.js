@@ -32,8 +32,9 @@ export default class Dashboard extends React.Component {
     
   }
 
-  search(term) {
+  search(searchData) {
     // TODO: Fetch data for search term, onClick/onSubmit for SearchBar
+    console.log("searching", searchData);
   }
 
   showDetailedView() {
@@ -57,7 +58,7 @@ export default class Dashboard extends React.Component {
         <div className="Dashboard">
           <h1 style={{color:'white'}}>Is DetailedView</h1>
           <br></br>
-          <SearchBar />
+          <SearchBar search={this.search}/>
           <Button variant="primary" onClick={this.hideDetailedView}>Hide Detailed View</Button>{' '}
           <DetailedView data={detailedViewData[0]} />
         </div>
@@ -68,7 +69,7 @@ export default class Dashboard extends React.Component {
       <div className="Dashboard">
         <h1 style={{color:'white'}}>Not DetailedView</h1>
         <br></br>
-        <SearchBar />
+        <SearchBar search={this.search}/>
         <Button variant="primary" onClick={this.showDetailedView}>Show Detailed View</Button>{' '}
         <SearchResults data={searchResultsData} />
       </div>
