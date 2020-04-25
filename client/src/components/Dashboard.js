@@ -16,7 +16,7 @@ export default class Dashboard extends React.Component {
 
     this.state = {
       currentSearchTerm: null,
-      searchResultsData: {},
+      searchResultsData: [],
       detailedViewData: null,
       isDetailedView: false,
     };
@@ -46,6 +46,7 @@ export default class Dashboard extends React.Component {
       .then(
         (res) => {
           // Convert the response data to a JSON.
+          // console.log("res", res);
           return res.json();
         },
         (err) => {
@@ -54,11 +55,11 @@ export default class Dashboard extends React.Component {
       )
       .then(
         (searchResult) => {
+          // console.log("searchResult", searchResult.rows);
           if (!searchResult) return;
-          console.log(searchResult);
 
           this.setState({
-            searchResultsData: searchResult,
+            searchResultsData: searchResult.rows,
           });
         },
         (err) => {
@@ -85,6 +86,8 @@ export default class Dashboard extends React.Component {
   render() {
     const { searchResultsData, detailedViewData, isDetailedView } = this.state;
 
+    console.log('searchResultsData', searchResultsData);
+
     if (isDetailedView) {
       return (
         <div className="Dashboard">
@@ -108,7 +111,7 @@ export default class Dashboard extends React.Component {
           Show Detailed View
         </Button>{" "}
         <SearchResults
-          data={testData}
+          data={searchResultsData}
           showDetailedView={this.showDetailedView}
         />
       </div>

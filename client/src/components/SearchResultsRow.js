@@ -17,9 +17,9 @@ export default class SearchResultsRow extends React.Component {
 
     return (
       <tr className="searchResultsRow" onClick={this.handleClick}>
-        <th scope="row">{rowData.title}</th>
-        <td>{rowData.media_type}</td>
-        <td>{rowData.avg_rating}</td>
+        <th scope="row">{rowData[1]}</th>
+        <td>{rowData[5]}</td>
+        <td>{rowData[4]}</td>
       </tr>
     );
   }

@@ -12,6 +12,7 @@
     "file": "^0.2.2",
     "jquery": "^3.5.0",
     "mocha": "^7.0.0",
+    "oracledb": "^4.2.0",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",

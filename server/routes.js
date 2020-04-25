@@ -9,7 +9,7 @@ async function run(query, res) {
   try {
     connection = await oracledb.getConnection(dbConfig);
     result = await connection.execute(query);
-    console.log(result);
+    // console.log(result);
     return result;
   } catch (err) {
     console.error(err);
@@ -72,10 +72,16 @@ function titleSearch(req, res) {
         WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
         ORDER BY similarity DESC
         )
-    WHERE ROWNUM <= 10
+    WHERE ROWNUM <= 100
     
     `;
-      res.json(run(query));
+      run(query).then((response) => {
+        // console.log('response in run query is', response);
+        res.json(response);
+      })
+
+      // console.log(run(query));
+      // res.json(run(query));
     }
   }
   // if (media == 'Books') {
@@ -93,7 +99,7 @@ function titleSearch(req, res) {
   // });
 }
 
-function getAllGenres(req, res) {}
+function getAllGenres(req, res) { }
 
 // TODO: Getting Media's Recommendations
 // Given an ID, output a list of media items - for details page
