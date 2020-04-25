@@ -61,7 +61,7 @@ export default class DetailedView extends React.Component {
     //MOVIE
     if (this.state.mediaType == "M") {
       //TODO: how to get variable url into img src
-      var url = "http://image.tmdb.org/t/p/w185/" + this.props.data.img_url;
+      //var url = "http://image.tmdb.org/t/p/w185/" + this.props.data.img_url;
 
       return (
         <div
@@ -78,9 +78,7 @@ export default class DetailedView extends React.Component {
               style={{ marginRight: "30px" }}
             ></img>
             <div class="container">
-              <h1 class="jumbotron-heading">
-                Movie Title {this.props.data.title}
-              </h1>
+              <h1 class="jumbotron-heading">Movie Title</h1>
               <p class="lead text-muted">Genres: </p>
               <p class="lead text-muted">Avg. Rating: __ (Number of Ratings)</p>
               <p class="lead text-muted">Keywords: </p>
@@ -89,7 +87,7 @@ export default class DetailedView extends React.Component {
           </section>
 
           <h2 style={{ color: "white" }}>Recommendations you might enjoy</h2>
-          <div class="card-deck">{this.props.recMedia}</div>
+          <div class="card-deck">{this.state.recMedia}</div>
         </div>
       );
     }
@@ -110,23 +108,17 @@ export default class DetailedView extends React.Component {
             style={{ marginRight: "30px" }}
           ></img>
           <div class="container">
-            <h1 class="jumbotron-heading">
-              Book Title {this.props.data.title}
-            </h1>
+            <h1 class="jumbotron-heading">Book Title</h1>
             <p class="lead text-muted">Genres: </p>
-            <p class="lead text-muted">
-              Avg. Rating: __ ({this.props.data.rating_count})
-            </p>
-            <p class="lead text-muted">
-              Reivew Count: {this.props.data.review_count}
-            </p>
+            <p class="lead text-muted">Avg. Rating: __ ()</p>
+            <p class="lead text-muted">Reivew Count:</p>
             <p class="lead text-muted">Keywords: </p>
-            <p class="lead text-muted">Page Count: {this.props.data.pages}</p>
+            <p class="lead text-muted">Page Count:</p>
           </div>
         </section>
 
         <h2 style={{ color: "white" }}>Recommendations you might enjoy</h2>
-        <div class="card-deck">{this.props.recMedia}</div>
+        <div class="card-deck">{this.state.recMedia}</div>
       </div>
     );
   }
