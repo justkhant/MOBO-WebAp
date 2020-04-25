@@ -18,6 +18,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // routes.getAllGenres, specified in routes.js.
 app.get("/genres", routes.getAllGenres);
 
+// get search result for a certain search term 
+app.get("/search/:media/:genre/:searchTitle", routes.titleSearch);
 // Get a media's recommendations based on Media ID
 app.get("/recommendations/:id", routes.getRecs);
 

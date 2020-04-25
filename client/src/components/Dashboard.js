@@ -34,7 +34,17 @@ export default class Dashboard extends React.Component {
 
   search(searchData) {
     // TODO: Fetch data for search term, onClick/onSubmit for SearchBar
-    console.log("searching", searchData);
+    var searchPath = [searchData.media, searchData.genre, searchData.searchTerm].join("/")
+    console.log(searchPath)
+
+    fetch("http://localhost:8081/search/" + searchPath, {
+      method:"GET"
+    }).then(res=> {
+      console.log("searchresult" )
+      console.log(res.json())
+    })
+
+
   }
 
   showDetailedView(rowIndex) {

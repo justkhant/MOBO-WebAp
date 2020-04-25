@@ -1,8 +1,35 @@
-var config = require("./db-config.js");
-var mysql = require("mysql");
+'use strict';
 
-config.connectionLimit = 10;
-var connection = mysql.createPool(config);
+const oracledb = require('oracledb');
+const dbConfig = require('./db-config.js');
+
+async function run(query, res) {
+  console.log(query);
+  let connection;
+
+  try {
+    connection = await oracledb.getConnection(dbConfig);
+    let result;
+    result = await connection.execute(query);
+    console.log(result)
+    return result 
+  } catch (err) {
+    console.error(err);
+  } finally {
+    res.json(result);
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+}
+
+
+
+
 
 /* -------------------------------------------------- */
 /* ------------------- Route Handlers --------------- */
@@ -25,6 +52,52 @@ function getMediaInfo(req, res) {
   });
 }
 
+function titleSearch(req, res) {
+  var media = req.params.media;
+  var genre = req.params.genre;
+  var searchTitle = req.params.searchTitle;
+
+  var query = '';
+  if (media == "All") {
+    if (genre=='All') {
+      //search for all media, all genre
+      query = `WITH queries AS (
+        (SELECT DISTINCT trim(regexp_substr(LOWER('`+ searchTitle+ `'), '[^ ]+', 1, levels.column_value)) AS query
+        FROM Media,
+        table(cast(multiset(select level from dual connect by  level <= length (regexp_replace('`+ searchTitle + `', '[^ ]+'))  + 1) as sys.OdciNumberList)) levels
+        WHERE trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL)
+        UNION
+        (SELECT DISTINCT '`+ searchTitle + `' AS query
+        FROM Media))`
+
+      run(query, res);
+    }
+
+
+  
+  
+  }
+  // if (media == 'Books') {
+  //   if (genre == 'All') {
+  //     //search for books, all genres
+
+  //   }
+  // }
+
+
+  // connection.query(query, function (err, rows, fields) {
+  //   if (err) console.log(err);
+  //   else {
+  //     res.json(rows);
+  //   }
+  // });
+
+}
+
+function getAllGenres(req, res) {
+
+}
+
 // TODO: Getting Media's Recommendations
 // Given an ID, output a list of media items - for details page
 function getRecs(req, res) {
@@ -44,9 +117,8 @@ function getRecs(req, res) {
 
 // The exported functions, which can be accessed in index.js.
 module.exports = {
-  getAllGenres: getAllGenres,
-  getTopInGenre: getTopInGenre,
+  titleSearch: titleSearch,
   getRecs: getRecs,
-  getDecades: getDecades,
-  bestGenresPerDecade: bestGenresPerDecade,
+  getMediaInfo: getMediaInfo,
+  getAllGenres: getAllGenres
 };
