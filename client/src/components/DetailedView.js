@@ -69,25 +69,25 @@ export default class DetailedView extends React.Component {
           id={this.props.id}
           onClick={this.props.onClick}
         >
-          <section class="jumbotron">
+          <section className="jumbotron">
             <img
               src="http://image.tmdb.org/t/p/w185//vzmL6fP7aPKNKPRTFnZmiUfciyV.jpg"
-              class="float-left align-middle"
+              className="float-left align-middle"
               alt="Movie Image"
               height="250"
               style={{ marginRight: "30px" }}
             ></img>
-            <div class="container">
-              <h1 class="jumbotron-heading">Movie Title</h1>
-              <p class="lead text-muted">Genres: </p>
-              <p class="lead text-muted">Avg. Rating: __ (Number of Ratings)</p>
-              <p class="lead text-muted">Keywords: </p>
-              <p class="lead text-muted">Runtime:</p>
+            <div className="container">
+              <h1 className="jumbotron-heading">Movie Title</h1>
+              <p className="lead text-muted">Genres: </p>
+              <p className="lead text-muted">Avg. Rating: __ (Number of Ratings)</p>
+              <p className="lead text-muted">Keywords: </p>
+              <p className="lead text-muted">Runtime:</p>
             </div>
           </section>
 
           <h2 style={{ color: "white" }}>Recommendations you might enjoy</h2>
-          <div class="card-deck">{this.state.recMedia}</div>
+          <div className="card-deck">{this.state.recMedia}</div>
         </div>
       );
     }
@@ -99,26 +99,26 @@ export default class DetailedView extends React.Component {
         id={this.props.id}
         onClick={this.props.onClick}
       >
-        <section class="jumbotron">
+        <section className="jumbotron">
           <img
             src="https://images-na.ssl-images-amazon.com/images/I/61VUik8NJ8L.jpg"
-            class="float-left align-middle"
+            className="float-left align-middle"
             alt="Movie Image"
             height="250"
             style={{ marginRight: "30px" }}
           ></img>
-          <div class="container">
-            <h1 class="jumbotron-heading">Book Title</h1>
-            <p class="lead text-muted">Genres: </p>
-            <p class="lead text-muted">Avg. Rating: __ ()</p>
-            <p class="lead text-muted">Reivew Count:</p>
-            <p class="lead text-muted">Keywords: </p>
-            <p class="lead text-muted">Page Count:</p>
+          <div className="container">
+            <h1 className="jumbotron-heading">Book Title</h1>
+            <p className="lead text-muted">Genres: </p>
+            <p className="lead text-muted">Avg. Rating: __ ()</p>
+            <p className="lead text-muted">Reivew Count:</p>
+            <p className="lead text-muted">Keywords: </p>
+            <p className="lead text-muted">Page Count:</p>
           </div>
         </section>
 
         <h2 style={{ color: "white" }}>Recommendations you might enjoy</h2>
-        <div class="card-deck">{this.state.recMedia}</div>
+        <div className="card-deck">{this.state.recMedia}</div>
       </div>
     );
   }
