@@ -34,7 +34,7 @@ export default class DetailedView extends React.Component {
         (recList) => {
           if (!recList) return;
           let recDivs = recList.map((rec, i) => (
-            //TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
+            // TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
             <FactCard
               id={rec.media_id}
               genre={0}
@@ -57,9 +57,12 @@ export default class DetailedView extends React.Component {
   }
 
   render() {
+    // TODO: fill in correct attributes in Media display
     //MOVIE
     if (this.state.mediaType == "M") {
+      //TODO: how to get variable url into img src
       var url = "http://image.tmdb.org/t/p/w185/" + this.props.data.img_url;
+
       return (
         <div
           className="detailedView"
@@ -123,6 +126,7 @@ export default class DetailedView extends React.Component {
         </section>
 
         <h2 style={{ color: "white" }}>Recommendations you might enjoy</h2>
+        <div class="card-deck">{this.props.recMedia}</div>
       </div>
     );
   }
