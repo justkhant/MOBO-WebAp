@@ -4,7 +4,6 @@ const oracledb = require('oracledb');
 const dbConfig = require('./db-config.js');
 
 async function run(query, res) {
-  console.log(query);
   let connection;
 
   try {
@@ -16,7 +15,6 @@ async function run(query, res) {
   } catch (err) {
     console.error(err);
   } finally {
-    res.json(result);
     if (connection) {
       try {
         await connection.close();
@@ -24,11 +22,9 @@ async function run(query, res) {
         console.error(err);
       }
     }
+    return result;
   }
 }
-
-
-
 
 
 /* -------------------------------------------------- */
@@ -44,12 +40,7 @@ function getMediaInfo(req, res) {
     WHERE media_id = ${req.params.id};
   `;
 
-  connection.query(query, function (err, rows, fields) {
-    if (err) console.log(err);
-    else {
-      res.json(rows);
-    }
-  });
+  run(query);
 }
 
 function titleSearch(req, res) {
@@ -62,19 +53,26 @@ function titleSearch(req, res) {
     if (genre=='All') {
       //search for all media, all genre
       query = `WITH queries AS (
-        (SELECT DISTINCT trim(regexp_substr(LOWER('`+ searchTitle+ `'), '[^ ]+', 1, levels.column_value)) AS query
+        (SELECT DISTINCT trim(regexp_substr(LOWER('`+searchTitle+`'), '[^ ]+', 1, levels.column_value)) AS query
         FROM Media,
-        table(cast(multiset(select level from dual connect by  level <= length (regexp_replace('`+ searchTitle + `', '[^ ]+'))  + 1) as sys.OdciNumberList)) levels
+        table(cast(multiset(select level from dual connect by  level <= length (regexp_replace('`+searchTitle+`', '[^ ]+'))  + 1) as sys.OdciNumberList)) levels
         WHERE trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL)
         UNION
-        (SELECT DISTINCT '`+ searchTitle + `' AS query
-        FROM Media))`
-
-      run(query, res);
+        (SELECT DISTINCT '`+searchTitle+`' AS query
+        FROM Media)
+    ) SELECT *
+    FROM (
+        SELECT media_id, title, language, release_date, avg_rating, media_type, UTL_MATCH.edit_distance_similarity(query, title) AS similarity
+        FROM Media, queries
+        WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
+        ORDER BY similarity DESC
+        )
+    WHERE ROWNUM <= 10;
+    
+    `
+   
+    res.json(run(query));
     }
-
-
-  
   
   }
   // if (media == 'Books') {
