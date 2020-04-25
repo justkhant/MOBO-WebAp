@@ -9,7 +9,6 @@ export default class SearchResults extends React.Component {
 
   render() {
     const { data } = this.props;
-    console.log('data is', data);
     return (
       <div className="searchResults">
         <table className="table table-striped table-dark">
@@ -21,7 +20,7 @@ export default class SearchResults extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {data.map((row, i) => <SearchResultsRow key={i} rowData={row} rowIndex={i} showDetailedView={this.props.showDetailedView}/>)}
+            {data.map((row, i) => <SearchResultsRow key={i} rowData={row} rowIndex={i} showDetailedView={this.props.showDetailedView} />)}
           </tbody>
         </table>
       </div>

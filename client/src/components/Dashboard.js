@@ -19,6 +19,7 @@ export default class Dashboard extends React.Component {
       searchResultsData: [],
       detailedViewData: null,
       isDetailedView: false,
+      selectedRow: 0,
     };
 
     this.search = this.search.bind(this);
@@ -32,7 +33,6 @@ export default class Dashboard extends React.Component {
   }
 
   search(searchData) {
-    // TODO: Fetch data for search term, onClick/onSubmit for SearchBar
     var searchPath = [
       searchData.media,
       searchData.genre,
@@ -46,7 +46,6 @@ export default class Dashboard extends React.Component {
       .then(
         (res) => {
           // Convert the response data to a JSON.
-          // console.log("res", res);
           return res.json();
         },
         (err) => {
@@ -55,7 +54,6 @@ export default class Dashboard extends React.Component {
       )
       .then(
         (searchResult) => {
-          // console.log("searchResult", searchResult.rows);
           if (!searchResult) return;
 
           this.setState({
@@ -69,11 +67,10 @@ export default class Dashboard extends React.Component {
   }
 
   showDetailedView(rowIndex) {
-    console.log(rowIndex);
-
     this.setState({
       detailedViewData: testData,
       isDetailedView: true,
+      selectedRow: rowIndex,
     });
   }
 
@@ -84,9 +81,7 @@ export default class Dashboard extends React.Component {
   }
 
   render() {
-    const { searchResultsData, detailedViewData, isDetailedView } = this.state;
-
-    console.log('searchResultsData', searchResultsData);
+    const { searchResultsData, detailedViewData, isDetailedView, selectedRow } = this.state;
 
     if (isDetailedView) {
       return (
@@ -97,7 +92,7 @@ export default class Dashboard extends React.Component {
           <Button variant="primary" onClick={this.hideDetailedView}>
             Hide Detailed View
           </Button>{" "}
-          <DetailedView data={detailedViewData[0]} />
+          <DetailedView data={searchResultsData[selectedRow]} />
         </div>
       );
     }

@@ -57,7 +57,14 @@ export default class DetailedView extends React.Component {
   }
 
   render() {
-    // TODO: fill in correct attributes in Media display
+    console.log(this.props.data);
+
+    /*
+    this.props.data contains the data for the selected row
+    [ 16943, 'Harry And Max', 'en', 2004-01-01T07:00:00.000Z, 5, 'M', 31 ]
+    */
+
+// TODO: fill in correct attributes in Media display
     //MOVIE
     if (this.state.mediaType == "M") {
       //TODO: how to get variable url into img src
