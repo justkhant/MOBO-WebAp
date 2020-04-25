@@ -11,7 +11,6 @@ export default class DetailedView extends React.Component {
       recMedia: [],
     };
 
-    this.getMediaInfo = this.getMediaInfo.bind(this);
     this.submitMedia = this.submitMedia.bind(this);
   }
 

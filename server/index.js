@@ -1,45 +1,29 @@
-const bodyParser = require('body-parser');
-const express = require('express');
+const bodyParser = require("body-parser");
+const express = require("express");
 var routes = require("./routes.js");
-const cors = require('cors');
+const cors = require("cors");
 
 const app = express();
 
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 /* ---------------------------------------------------------------- */
 /* ------------------- Route handler registration ----------------- */
 /* ---------------------------------------------------------------- */
 
-
-
-
 /* ---- (Dashboard) ---- */
 // The route localhost:8081/genres is registered to the function
 // routes.getAllGenres, specified in routes.js.
-app.get('/genres', routes.getAllGenres);
+app.get("/genres", routes.getAllGenres);
 
+// Get a media's recommendations based on Media ID
+app.get("/recommendations/:id", routes.getRecs);
 
-/* ---- Q1b (Dashboard) ---- */
-app.get('/genres/:genre', routes.getTopInGenre); // Hint: Replace () => {} with the appropriate route handler.
-
-
-/* ---- Q2 (Recommendations) ---- */
-app.get('/recommendations/:title', routes.getRecs);
-
-
-/* ---- (Best Genre) ---- */
-app.get('/decades', routes.getDecades);
-
-
-/* ---- Q3b (Best Genre) ---- */
-app.get('/decades/:decade', routes.bestGenresPerDecade);
-
-
-
+// Get a media's information based on Media ID
+app.get("/media/:id", routes.getMediaInfo);
 
 app.listen(8081, () => {
-	console.log(`Server listening on PORT 8081`);
+  console.log(`Server listening on PORT 8081`);
 });
