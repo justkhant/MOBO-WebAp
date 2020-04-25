@@ -71,7 +71,7 @@ export default class Dashboard extends React.Component {
         <br></br>
         <SearchBar search={this.search}/>
         <Button variant="primary" onClick={this.showDetailedView}>Show Detailed View</Button>{' '}
-        <SearchResults data={searchResultsData} />
+        <SearchResults data={testData} />
       </div>
     );
   }

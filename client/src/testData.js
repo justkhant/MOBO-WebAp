@@ -38,3 +38,5 @@ const testData = [
     review_count : 1042253,
   }
 ]
+
+export default testData;

@@ -32,12 +32,12 @@ export default class SearchBar extends React.Component {
 
     return (
       <div>
-        <form class="form-inline active-cyan-3 active-cyan-4" onSubmit={this.handleSearch}>
-          <i class="fas fa-search" aria-hidden="true"></i>
-          <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" onChange={(e) => this.setState({searchTerm: e.target.value})}/>
-          <div class="form-group">
-          <label for="GenreSelect">Genres</label>
-          <select class="form-control" id="GenreSelect" onChange={(e) => this.setState({selectedGenre: e.target.value})}>
+        <form className="form-inline active-cyan-3 active-cyan-4" onSubmit={this.handleSearch}>
+          <i className="fas fa-search" aria-hidden="true"></i>
+          <input className="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search" onChange={(e) => this.setState({searchTerm: e.target.value})}/>
+          <div className="form-group">
+          <label>Genres</label>
+          <select className="form-control" id="GenreSelect" onChange={(e) => this.setState({selectedGenre: e.target.value})}>
             {genreOptions.map((genre) => <option key={genre} value={genre}>{genre}</option>)}
           </select>
         </div>
