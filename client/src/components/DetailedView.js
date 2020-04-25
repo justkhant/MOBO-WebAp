@@ -8,11 +8,6 @@ export default class DetailedView extends React.Component {
     super(props);
 
     this.state = {
-      mediaId: "",
-      mediaType: "M",
-      keywords: [],
-      avg_rating: 0,
-      img_url: "",
       recMedia: [],
     };
 
@@ -20,46 +15,10 @@ export default class DetailedView extends React.Component {
     this.submitMedia = this.submitMedia.bind(this);
   }
 
-  //TODO: set mediaId passed from dashboard
-
-  //TODO: get the selected media's information
-  getMediaInfo() {
-    fetch("http://localhost:8081/media/" + this.state.mediaId, {
-      method: "GET", // The type of HTTP request.
-    })
-      .then(
-        (res) => {
-          // Convert the response data to a JSON.
-          return res.json();
-        },
-        (err) => {
-          // Print the error if there is one.
-          console.log(err);
-        }
-      )
-      .then(
-        (mediaInfo) => {
-          if (!mediaInfo) return;
-
-          //TODO: set states using response json
-          this.setState({
-            mediaType: mediaInfo.media_type,
-            keywords: mediaInfo.keywords,
-            avg_rating: mediaInfo.avg_rating,
-            img_url: mediaInfo.img_url,
-          });
-        },
-        (err) => {
-          // Print the error if there is one.
-          console.log(err);
-        }
-      );
-  }
-
   //TODO: get a list of recommendations + create FactCards
   submitMedia() {
     // Send an HTTP request to the server.
-    fetch("http://localhost:8081/recommendations/" + this.state.mediaId, {
+    fetch("http://localhost:8081/recommendations/" + this.props.data.media_id, {
       method: "GET", // The type of HTTP request.
     })
       .then(
@@ -76,12 +35,12 @@ export default class DetailedView extends React.Component {
         (recList) => {
           if (!recList) return;
           let recDivs = recList.map((rec, i) => (
-            //TODO: Pass attributes here to FactCard
+            //TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
             <FactCard
-              id={0}
+              id={rec.media_id}
               genre={0}
-              title={0}
-              avg_rating={0}
+              title={rec.title}
+              avg_rating={rec.avg_rating}
               rating_count={0}
               desc={0}
             />
@@ -101,6 +60,7 @@ export default class DetailedView extends React.Component {
   render() {
     //MOVIE
     if (this.state.mediaType == "M") {
+      var url = "http://image.tmdb.org/t/p/w185/" + this.props.data.img_url;
       return (
         <div
           className="detailedView"
@@ -116,7 +76,9 @@ export default class DetailedView extends React.Component {
               style={{ marginRight: "30px" }}
             ></img>
             <div class="container">
-              <h1 class="jumbotron-heading">Movie Title</h1>
+              <h1 class="jumbotron-heading">
+                Movie Title {this.props.data.title}
+              </h1>
               <p class="lead text-muted">Genres: </p>
               <p class="lead text-muted">Avg. Rating: __ (Number of Ratings)</p>
               <p class="lead text-muted">Keywords: </p>
@@ -146,11 +108,18 @@ export default class DetailedView extends React.Component {
             style={{ marginRight: "30px" }}
           ></img>
           <div class="container">
-            <h1 class="jumbotron-heading">Movie Title</h1>
+            <h1 class="jumbotron-heading">
+              Book Title {this.props.data.title}
+            </h1>
             <p class="lead text-muted">Genres: </p>
-            <p class="lead text-muted">Avg. Rating: __ (Number of Ratings)</p>
+            <p class="lead text-muted">
+              Avg. Rating: __ ({this.props.data.rating_count})
+            </p>
+            <p class="lead text-muted">
+              Reivew Count: {this.props.data.review_count}
+            </p>
             <p class="lead text-muted">Keywords: </p>
-            <p class="lead text-muted">Runtime:</p>
+            <p class="lead text-muted">Page Count: {this.props.data.pages}</p>
           </div>
         </section>
 
