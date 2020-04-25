@@ -37,7 +37,9 @@ export default class Dashboard extends React.Component {
     console.log("searching", searchData);
   }
 
-  showDetailedView() {
+  showDetailedView(rowIndex) {
+    console.log(rowIndex);
+    
     this.setState({
       detailedViewData: testData, 
       isDetailedView: true,
@@ -71,7 +73,7 @@ export default class Dashboard extends React.Component {
         <br></br>
         <SearchBar search={this.search}/>
         <Button variant="primary" onClick={this.showDetailedView}>Show Detailed View</Button>{' '}
-        <SearchResults data={testData} />
+        <SearchResults data={testData} showDetailedView={this.showDetailedView}/>
       </div>
     );
   }

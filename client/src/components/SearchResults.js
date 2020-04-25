@@ -21,7 +21,7 @@ export default class SearchResults extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {data.map((row, i) => <SearchResultsRow key={i} rowData={row} />)}
+            {data.map((row, i) => <SearchResultsRow key={i} rowData={row} rowIndex={i} showDetailedView={this.props.showDetailedView}/>)}
           </tbody>
         </table>
       </div>
