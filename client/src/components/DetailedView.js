@@ -125,6 +125,7 @@ export default class DetailedView extends React.Component {
           </section>
 
           <h2 style={{ color: "white" }}>Recommendations you might enjoy</h2>
+          <div class="card-deck">{this.props.recMedia}</div>
         </div>
       );
     }
