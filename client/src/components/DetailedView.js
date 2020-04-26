@@ -41,9 +41,8 @@ export default class DetailedView extends React.Component {
       .then(
         (info) => {
           if (!info) return;
-          console.log(info);
           this.setState({
-            mediaInfo: info.rows,
+            mediaInfo: info.rows[0],
           });
         },
         (err) => {
