@@ -26,6 +26,9 @@ app.get("/recommendations/:id", routes.getRecs);
 // Get a media's information based on Media ID
 app.get("/media/:id", routes.getMediaInfo);
 
+process.once('SIGTERM', process.exit);
+process.once('SIGINT', process.exit);
+
 app.listen(8081, () => {
   console.log(`Server listening on PORT 8081`);
 });
