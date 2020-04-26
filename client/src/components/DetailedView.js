@@ -1,6 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import FactCard from "./FactCard";
+import DetailsView from "./DetailsView";
 import testData from "../testData";
 
 export default class DetailedView extends React.Component {
@@ -103,7 +104,7 @@ export default class DetailedView extends React.Component {
         id={this.props.id}
         onClick={this.props.onClick}
       >
-        <DetailedView>{this.state.mediaInfo}</DetailedView>
+        <DetailsView data={this.state.mediaInfo}></DetailsView>
 
         <h2 style={{ color: "white" }}>Recommendations you might enjoy</h2>
         <div class="card-deck">{0}</div>

@@ -36,11 +36,9 @@ function getMediaInfo(req, res) {
     SELECT *
     FROM Media M JOIN Books B ON M.media_id = B.media_id 
     WHERE media_type = 'B' AND M.media_id = ${req.params.id}
-    LIMIT 1
   `;
 
   run(query).then((response) => {
-    console.log("response in media query is", response);
     res.json(response);
   });
 }
