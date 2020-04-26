@@ -34,11 +34,15 @@ async function run(query, res) {
 function getMediaInfo(req, res) {
   let query = `
     SELECT *
-    FROM Media
-    WHERE media_id = ${req.params.id};
+    FROM Media M JOIN Books B ON M.media_id = B.media_id 
+    WHERE media_type = 'B' AND M.media_id = ${req.params.id}
+    LIMIT 1
   `;
 
-  run(query);
+  run(query).then((response) => {
+    console.log("response in media query is", response);
+    res.json(response);
+  });
 }
 
 function titleSearch(req, res) {
@@ -78,7 +82,7 @@ function titleSearch(req, res) {
       run(query).then((response) => {
         // console.log('response in run query is', response);
         res.json(response);
-      })
+      });
 
       // console.log(run(query));
       // res.json(run(query));
@@ -99,7 +103,7 @@ function titleSearch(req, res) {
   // });
 }
 
-function getAllGenres(req, res) { }
+function getAllGenres(req, res) {}
 
 // TODO: Getting Media's Recommendations
 // Given an ID, output a list of media items - for details page
