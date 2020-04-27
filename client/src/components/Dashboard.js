@@ -7,6 +7,7 @@ import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 import DetailedView from "./DetailedView";
 import FactCard from "./FactCard";
+import FunFact from "./FunFact";
 
 import testData from "../testData";
 
@@ -86,7 +87,13 @@ export default class Dashboard extends React.Component {
     if (isDetailedView) {
       return (
         <div className="Dashboard">
-          <h1 style={{ color: "white" }}>Is DetailedView</h1>
+          <div class="container">
+          {/* <h1 style={{ color: "white" }}>Is DetailedView</h1> */}
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="#">MoBo</a>
+          </nav>
+          <br></br>
+          <FunFact/>
           <br></br>
           <SearchBar search={this.search} />
           <Button variant="primary" onClick={this.hideDetailedView}>
@@ -94,12 +101,19 @@ export default class Dashboard extends React.Component {
           </Button>{" "}
           <DetailedView data={searchResultsData[selectedRow]} />
         </div>
+        </div>
       );
     }
 
     return (
       <div className="Dashboard">
-        <h1 style={{ color: "white" }}>Not DetailedView</h1>
+        <div class="container">
+        {/* <h1 style={{ color: "white" }}>Not DetailedView</h1> */}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">MoBo</a>
+        </nav>
+        <br></br>
+        <FunFact/>
         <br></br>
         <SearchBar search={this.search} />
         <Button variant="primary" onClick={this.showDetailedView}>
@@ -109,6 +123,7 @@ export default class Dashboard extends React.Component {
           data={searchResultsData}
           showDetailedView={this.showDetailedView}
         />
+      </div>
       </div>
     );
   }
