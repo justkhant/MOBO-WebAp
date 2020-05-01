@@ -8,6 +8,7 @@ import SearchResults from "./SearchResults";
 import DetailedView from "./DetailedView";
 import FactCard from "./FactCard";
 import FunFact from "./FunFact";
+import LoginModal from "./LoginModal";
 
 import testData from "../testData";
 
@@ -21,6 +22,9 @@ export default class Dashboard extends React.Component {
       detailedViewData: null,
       isDetailedView: false,
       selectedRow: 0,
+      showModal: false,
+      loading: false,
+      error: null,
     };
 
     this.search = this.search.bind(this);
@@ -92,6 +96,7 @@ export default class Dashboard extends React.Component {
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand" href="#">MoBo</a>
           </nav>
+          <LoginModal/>
           <br></br>
           <FunFact/>
           <br></br>
@@ -110,8 +115,9 @@ export default class Dashboard extends React.Component {
         <div class="container">
         {/* <h1 style={{ color: "white" }}>Not DetailedView</h1> */}
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">MoBo</a>
+          <a class="navbar-brand" href="#">MoBo</a>
         </nav>
+        <LoginModal/>
         <br></br>
         <FunFact/>
         <br></br>
