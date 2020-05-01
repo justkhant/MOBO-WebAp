@@ -32,6 +32,23 @@ export default class LoginModal extends React.Component {
 
     const email = document.querySelector('#email').value;
     const password = document.querySelector('#password').value;
+
+    if (!email || !password) {
+      this.setState({
+        error: true
+      })
+    } else if (email === 'mobo' && password === 'dabest') {
+      this.onLoginSuccess('form');
+      this.closeModal();
+
+      const user = {
+        email,
+        password,
+      }
+      this.props.onLoginAttemptSuccess(user);
+    } else {
+      this.onLoginFail('form', 'could not find user');
+    }
   }
 
   onRegister() {

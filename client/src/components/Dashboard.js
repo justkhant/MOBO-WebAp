@@ -25,11 +25,13 @@ export default class Dashboard extends React.Component {
       showModal: false,
       loading: false,
       error: null,
+      loggedInUser: null,
     };
 
     this.search = this.search.bind(this);
     this.showDetailedView = this.showDetailedView.bind(this);
     this.hideDetailedView = this.hideDetailedView.bind(this);
+    this.onLoginAttemptSuccess = this.onLoginAttemptSuccess.bind(this);
   }
 
   // React function that is called when the page load.
@@ -85,8 +87,17 @@ export default class Dashboard extends React.Component {
     });
   }
 
+  onLoginAttemptSuccess(user) {
+    console.log('login success for' + user.email);
+    this.setState({
+      loggedInUser: user,
+    })
+  }
+
   render() {
-    const { searchResultsData, detailedViewData, isDetailedView, selectedRow } = this.state;
+    const { searchResultsData, detailedViewData, isDetailedView, selectedRow ,loggedInUser } = this.state;
+
+    let loginSection = (loggedInUser === null) ? (<div><p>Hello</p> <LoginModal onLoginAttemptSuccess={this.onLoginAttemptSuccess}/></div>) : (<p>Hello {loggedInUser.email}</p>);
 
     if (isDetailedView) {
       return (
@@ -96,7 +107,7 @@ export default class Dashboard extends React.Component {
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand" href="#">MoBo</a>
           </nav>
-          <LoginModal/>
+          {loginSection}
           <br></br>
           <FunFact/>
           <br></br>
@@ -117,7 +128,7 @@ export default class Dashboard extends React.Component {
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand" href="#">MoBo</a>
         </nav>
-        <LoginModal/>
+        {loginSection}
         <br></br>
         <FunFact/>
         <br></br>
