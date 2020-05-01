@@ -2,7 +2,7 @@ import React from "react";
 import ReactModalLogin from "react-modal-login";
 
 const facebookConfig = {
-  appId: "YOUR FB APP ID GOES HERE",
+  appId: "1408167076108",
   cookie: true,
   xfbml: true,
   version: "v3.2",
