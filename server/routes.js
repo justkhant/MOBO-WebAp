@@ -54,36 +54,29 @@ function titleSearch(req, res) {
       //search for all media, all genre
       query =
         `WITH queries AS (
-        (SELECT DISTINCT trim(regexp_substr(LOWER('` +
-        searchTitle +
-        `'), '[^ ]+', 1, levels.column_value)) AS query
-        FROM Media,
-        table(cast(multiset(select level from dual connect by  level <= length (regexp_replace('` +
-        searchTitle +
-        `', '[^ ]+'))  + 1) as sys.OdciNumberList)) levels
-        WHERE trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL)
-        UNION
-        (SELECT DISTINCT '` +
-        searchTitle +
-        `' AS query
-        FROM Media)
-    ) SELECT *
-    FROM (
-        SELECT media_id, title, language, release_date, avg_rating, media_type, UTL_MATCH.edit_distance_similarity(query, title) AS similarity
-        FROM Media, queries
-        WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
-        ORDER BY similarity DESC
+          (SELECT LOWER('`+ searchTitle + `') AS query
+          FROM dual)
+        ), 
+        all_info AS (
+          SELECT M.media_id, M.title, Mo.language, Mo.release_date, M.avg_rating, M.media_type, Mo.overview, Mo.rating_count, Mo.revenue, M.keywords
+          FROM Media M JOIN Movies Mo ON M.media_id = Mo.media_id
         )
-    WHERE ROWNUM <= 100
-    
-    `;
+        SELECT *
+        FROM (
+          SELECT media_id, title, language, release_date, avg_rating, media_type, overview, rating_count, revenue, keywords, UTL_MATCH.edit_distance_similarity(query, title) AS similarity
+          FROM all_info, queries
+          WHERE media_type='M' AND (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
+          ORDER BY similarity DESC
+          )
+        WHERE ROWNUM <= 10 
+        `;
+
       run(query).then((response) => {
         // console.log('response in run query is', response);
         res.json(response);
       });
 
-      // console.log(run(query));
-      // res.json(run(query));
+     
     }
   }
   // if (media == 'Books') {
@@ -106,18 +99,61 @@ function getAllGenres(req, res) {}
 // TODO: Getting Media's Recommendations
 // Given an ID, output a list of media items - for details page
 function getRecs(req, res) {
-  let query = `
-    SELECT *
-    FROM Media
-    WHERE media_id = ${req.params.id};
-  `;
+  var searchTitle = req.params.searchTitle;
 
-  connection.query(query, function (err, rows, fields) {
-    if (err) console.log(err);
-    else {
-      res.json(rows);
-    }
-  });
+  var query =
+        `WITH queries AS (
+          (SELECT '` + searchTitle +`' AS query
+          FROM dual)
+      ), 
+      all_info AS (
+          SELECT M.media_id, M.title, Mo.language, Mo.release_date, M.avg_rating, M.media_type, Mo.overview, Mo.rating_count, Mo.revenue, Mo.runtime, M.keywords
+          FROM Media M JOIN Movies Mo ON M.media_id = Mo.media_id
+      ),
+      title_match AS (
+          SELECT media_id, title, 
+              (UTL_MATCH.edit_distance_similarity(query, LOWER(title))) * 10 AS score
+          FROM all_info, queries
+          WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
+          ORDER BY score
+      ),
+      overview_match AS (
+          SELECT media_id, title, 50 AS score
+          FROM all_info, queries
+          WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(overview)) > 80 OR (LOWER(overview) LIKE CONCAT(CONCAT('%', query), '%'))) 
+          ORDER BY score
+      ),
+      all_keywords AS (
+          SELECT DISTINCT media_id, title, language, release_date, media_type, trim(regexp_substr(all_info.keywords, '[^,]+', 1, levels.column_value)) AS keyword
+          FROM 
+          all_info, 
+          table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(all_info.keywords, '[^,]+'))  + 1) as sys.OdciNumberList)) levels
+          WHERE trim(regexp_substr(all_info.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
+      ), 
+      keyword_match AS (
+          SELECT media_id, title, SUM(score) AS score
+          FROM (
+              SELECT a.media_id, a.title, a.keyword, a.keyword, (100) AS score 
+              From all_keywords a, queries
+              WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(a.keyword)) > 80 OR (LOWER(a.keyword) LIKE CONCAT(CONCAT('%', query), '%'))) 
+              )
+          GROUP BY media_id, title
+      )
+      
+      SELECT *
+      FROM (
+          SELECT media_id, title, SUM(score) AS match_score
+          FROM ((SELECT* FROM title_match) UNION ALL (SELECT * FROM overview_match) UNION ALL (SELECT * FROM keyword_match))
+          GROUP BY media_id, title
+        ORDER BY match_score DESC
+          )
+      WHERE ROWNUM <= 100
+      `;
+
+      run(query).then((response) => {
+        // console.log('response in run query is', response);
+        res.json(response);
+      });
 }
 
 // The exported functions, which can be accessed in index.js.
