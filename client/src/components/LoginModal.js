@@ -1,17 +1,18 @@
 import React from "react";
 import ReactModalLogin from "react-modal-login";
+import "../style/Dashboard.css";
 
 const facebookConfig = {
   appId: "1408167076108",
   cookie: true,
   xfbml: true,
   version: "v3.2",
-  scope: "email"
+  scope: "email",
 };
 
 const googleConfig = {
   client_id: "YOUR_CLIENT_ID.apps.googleusercontent.com",
-  scope: "profile email"
+  scope: "profile email",
 };
 
 export default class LoginModal extends React.Component {
@@ -21,61 +22,61 @@ export default class LoginModal extends React.Component {
     this.state = {
       showModal: false,
       loading: false,
-      error: null
+      error: null,
     };
   }
-  
-  onLogin() {
-    console.log('__onLogin__');
-    console.log('email: ' + document.querySelector('#email').value);
-    console.log('password: ' + document.querySelector('#password').value);
 
-    const email = document.querySelector('#email').value;
-    const password = document.querySelector('#password').value;
+  onLogin() {
+    console.log("__onLogin__");
+    console.log("email: " + document.querySelector("#email").value);
+    console.log("password: " + document.querySelector("#password").value);
+
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
 
     if (!email || !password) {
       this.setState({
-        error: true
-      })
-    } else if (email === 'mobo' && password === 'dabest') {
-      this.onLoginSuccess('form');
+        error: true,
+      });
+    } else if (email === "mobo" && password === "dabest") {
+      this.onLoginSuccess("form");
       this.closeModal();
 
       const user = {
         email,
         password,
-      }
+      };
       this.props.onLoginAttemptSuccess(user);
     } else {
-      this.onLoginFail('form', 'could not find user');
+      this.onLoginFail("form", "could not find user");
     }
   }
 
   onRegister() {
-    console.log('__onRegister__');
-    console.log('login: ' + document.querySelector('#login').value);
-    console.log('email: ' + document.querySelector('#email').value);
-    console.log('password: ' + document.querySelector('#password').value);
+    console.log("__onRegister__");
+    console.log("login: " + document.querySelector("#login").value);
+    console.log("email: " + document.querySelector("#email").value);
+    console.log("password: " + document.querySelector("#password").value);
 
-    const login = document.querySelector('#login').value;
-    const email = document.querySelector('#email').value;
-    const password = document.querySelector('#password').value;
+    const login = document.querySelector("#login").value;
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
   }
 
   onRecoverPassword() {
-    console.log('__onFotgottenPassword__');
+    console.log("__onFotgottenPassword__");
   }
 
   openModal() {
     this.setState({
-      showModal: true
+      showModal: true,
     });
   }
 
   closeModal() {
     this.setState({
       showModal: false,
-      error: null
+      error: null,
     });
   }
 
@@ -93,26 +94,28 @@ export default class LoginModal extends React.Component {
 
   startLoading() {
     this.setState({
-      loading: true
+      loading: true,
     });
   }
 
   finishLoading() {
     this.setState({
-      loading: false
+      loading: false,
     });
   }
 
   afterTabsChange() {
     this.setState({
-      error: null
+      error: null,
     });
   }
 
   render() {
     return (
       <div>
-        <button onClick={() => this.openModal()}>Login / Register</button>
+        <button class="btn-1" onClick={() => this.openModal()}>
+          Login / Register
+        </button>
 
         <ReactModalLogin
           visible={this.state.showModal}
@@ -120,7 +123,7 @@ export default class LoginModal extends React.Component {
           loading={this.state.loading}
           error={this.state.error}
           tabs={{
-            afterChange: this.afterTabsChange.bind(this)
+            afterChange: this.afterTabsChange.bind(this),
           }}
           form={{
             onLogin: this.onLogin.bind(this),
@@ -129,90 +132,90 @@ export default class LoginModal extends React.Component {
 
             recoverPasswordSuccessLabel: this.state.recoverPasswordSuccess
               ? {
-                label: "New password has been sent to your mailbox!"
-              }
+                  label: "New password has been sent to your mailbox!",
+                }
               : null,
             recoverPasswordAnchor: {
-              label: "Forgot your password?"
+              label: "Forgot your password?",
             },
             loginBtn: {
-              label: "Sign in"
+              label: "Sign in",
             },
             registerBtn: {
-              label: "Sign up"
+              label: "Sign up",
             },
             recoverPasswordBtn: {
-              label: "Send new password"
+              label: "Send new password",
             },
             loginInputs: [
               {
-                containerClass: 'RML-form-group',
-                label: 'Email',
-                type: 'email',
-                inputClass: 'RML-form-control',
-                id: 'email',
-                name: 'email',
-                placeholder: 'Email',
+                containerClass: "RML-form-group",
+                label: "Email",
+                type: "email",
+                inputClass: "RML-form-control",
+                id: "email",
+                name: "email",
+                placeholder: "Email",
               },
               {
-                containerClass: 'RML-form-group',
-                label: 'Password',
-                type: 'password',
-                inputClass: 'RML-form-control',
-                id: 'password',
-                name: 'password',
-                placeholder: 'Password',
-              }
+                containerClass: "RML-form-group",
+                label: "Password",
+                type: "password",
+                inputClass: "RML-form-control",
+                id: "password",
+                name: "password",
+                placeholder: "Password",
+              },
             ],
             registerInputs: [
               {
-                containerClass: 'RML-form-group',
-                label: 'Nickname',
-                type: 'text',
-                inputClass: 'RML-form-control',
-                id: 'login',
-                name: 'login',
-                placeholder: 'Nickname',
+                containerClass: "RML-form-group",
+                label: "Nickname",
+                type: "text",
+                inputClass: "RML-form-control",
+                id: "login",
+                name: "login",
+                placeholder: "Nickname",
               },
               {
-                containerClass: 'RML-form-group',
-                label: 'Email',
-                type: 'email',
-                inputClass: 'RML-form-control',
-                id: 'email',
-                name: 'email',
-                placeholder: 'Email',
+                containerClass: "RML-form-group",
+                label: "Email",
+                type: "email",
+                inputClass: "RML-form-control",
+                id: "email",
+                name: "email",
+                placeholder: "Email",
               },
               {
-                containerClass: 'RML-form-group',
-                label: 'Password',
-                type: 'password',
-                inputClass: 'RML-form-control',
-                id: 'password',
-                name: 'password',
-                placeholder: 'Password',
-              }
+                containerClass: "RML-form-group",
+                label: "Password",
+                type: "password",
+                inputClass: "RML-form-control",
+                id: "password",
+                name: "password",
+                placeholder: "Password",
+              },
             ],
             recoverPasswordInputs: [
               {
-                containerClass: 'RML-form-group',
-                label: 'Email',
-                type: 'email',
-                inputClass: 'RML-form-control',
-                id: 'email',
-                name: 'email',
-                placeholder: 'Email',
+                containerClass: "RML-form-group",
+                label: "Email",
+                type: "email",
+                inputClass: "RML-form-control",
+                id: "email",
+                name: "email",
+                placeholder: "Email",
               },
             ],
           }}
           separator={{
-            label: "or"
+            label: "or",
           }}
           loginError={{
-            label: "Couldn't sign in, please try again."
+            label: "Couldn't sign in, please try again.",
           }}
           registerError={{
-            label: "Couldn't sign up, please try again."
+            label: "Couldn't sign up, please try again.",
           }}
           startLoading={this.startLoading.bind(this)}
           finishLoading={this.finishLoading.bind(this)}
@@ -221,14 +224,14 @@ export default class LoginModal extends React.Component {
               config: facebookConfig,
               onLoginSuccess: this.onLoginSuccess.bind(this),
               onLoginFail: this.onLoginFail.bind(this),
-              label: "Continue with Facebook"
+              label: "Continue with Facebook",
             },
             google: {
               config: googleConfig,
               onLoginSuccess: this.onLoginSuccess.bind(this),
               onLoginFail: this.onLoginFail.bind(this),
-              label: "Continue with Google"
-            }
+              label: "Continue with Google",
+            },
           }}
         />
       </div>

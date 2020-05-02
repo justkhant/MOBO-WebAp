@@ -121,8 +121,9 @@ export default class Dashboard extends React.Component {
               <a class="navbar-brand" href="#">
                 <img src="mobo_logo.png" height="70"></img>
               </a>
+              <div class="navbar-collapse collapse justify-content-between"></div>
+              <form className="navbar-nav mr-auto">{loginSection}</form>
             </nav>
-            {loginSection}
             <br></br>
             <SearchBar search={this.search} />
             <DetailedView data={searchResultsData[selectedRow]} />
@@ -138,8 +139,10 @@ export default class Dashboard extends React.Component {
             <a class="navbar-brand" href="#">
               <img src="mobo_logo.png" height="70"></img>
             </a>
+            <div class="navbar-collapse collapse justify-content-between"></div>
+            <form className="navbar-nav mr-auto">{loginSection}</form>
           </nav>
-          {loginSection}
+
           <br></br>
           <SearchBar search={this.search} />
           <SearchResults
