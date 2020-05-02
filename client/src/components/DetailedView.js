@@ -56,7 +56,8 @@ export default class DetailedView extends React.Component {
   //TODO: get a list of recommendations + create FactCards
   getRecommendations() {
     // Send an HTTP request to the server.
-    fetch("http://localhost:8081/recommendations/1", {
+    console.log(this.props.data[1]);
+    fetch("http://localhost:8081/recommendations/" + this.props.data[1], {
       method: "GET", // The type of HTTP request.
     })
       .then(
