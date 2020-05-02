@@ -13,12 +13,13 @@ export default class DetailedView extends React.Component {
       recMedia: [],
     };
 
-    this.submitMedia = this.submitMedia.bind(this);
+    this.getRecommendations = this.getRecommendations.bind(this);
     this.getMediaDetails = this.getMediaDetails.bind(this);
   }
 
   componentDidMount() {
     this.getMediaDetails();
+    this.getRecommendations();
   }
 
   //TODO: get's media's info based on media_id
@@ -53,9 +54,9 @@ export default class DetailedView extends React.Component {
   }
 
   //TODO: get a list of recommendations + create FactCards
-  submitMedia() {
+  getRecommendations() {
     // Send an HTTP request to the server.
-    fetch("http://localhost:8081/recommendations/" + this.props.data.media_id, {
+    fetch("http://localhost:8081/recommendations/1", {
       method: "GET", // The type of HTTP request.
     })
       .then(
@@ -71,14 +72,15 @@ export default class DetailedView extends React.Component {
       .then(
         (recList) => {
           if (!recList) return;
-          let recDivs = recList.map((rec, i) => (
+          console.log(recList);
+          let recDivs = recList.rows.map((rec, i) => (
             // TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
             // might need some queries/routes
             <FactCard
-              id={rec.media_id}
+              id={rec[0]}
               genre={0}
-              title={rec.title}
-              avg_rating={rec.avg_rating}
+              title={rec[1]}
+              avg_rating={0}
               rating_count={0}
               desc={0}
             />
@@ -106,7 +108,7 @@ export default class DetailedView extends React.Component {
         <DetailsView data={this.state.mediaInfo}></DetailsView>
 
         <h2 style={{ color: "white" }}>Recommendations you might enjoy</h2>
-        <div class="card-deck">{0}</div>
+        <div class="card-deck">{this.state.recMedia}</div>
       </div>
     );
   }

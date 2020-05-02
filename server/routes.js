@@ -149,7 +149,7 @@ function getRecs(req, res) {
           GROUP BY media_id, title
         ORDER BY match_score DESC
           )
-      WHERE ROWNUM <= 100
+      WHERE ROWNUM <= 8
       `;
 
   run(query).then((response) => {
