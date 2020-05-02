@@ -34,8 +34,8 @@ async function run(query, res) {
 function getMediaInfo(req, res) {
   let query = `
     SELECT *
-    FROM Media M JOIN Books B ON M.media_id = B.media_id 
-    WHERE media_type = 'B' AND M.media_id = ${req.params.id}
+    FROM Media M JOIN Movies B ON M.media_id = B.media_id 
+    WHERE M.media_id = ${req.params.id}
   `;
 
   run(query).then((response) => {
@@ -54,7 +54,9 @@ function titleSearch(req, res) {
       //search for all media, all genre
       query =
         `WITH queries AS (
-          (SELECT LOWER('`+ searchTitle + `') AS query
+          (SELECT LOWER('` +
+        searchTitle +
+        `') AS query
           FROM dual)
         ), 
         all_info AS (
@@ -75,8 +77,6 @@ function titleSearch(req, res) {
         // console.log('response in run query is', response);
         res.json(response);
       });
-
-     
     }
   }
   // if (media == 'Books') {
@@ -102,8 +102,10 @@ function getRecs(req, res) {
   var searchTitle = req.params.searchTitle;
 
   var query =
-        `WITH queries AS (
-          (SELECT '` + searchTitle +`' AS query
+    `WITH queries AS (
+          (SELECT '` +
+    searchTitle +
+    `' AS query
           FROM dual)
       ), 
       all_info AS (
@@ -150,10 +152,10 @@ function getRecs(req, res) {
       WHERE ROWNUM <= 100
       `;
 
-      run(query).then((response) => {
-        // console.log('response in run query is', response);
-        res.json(response);
-      });
+  run(query).then((response) => {
+    // console.log('response in run query is', response);
+    res.json(response);
+  });
 }
 
 // The exported functions, which can be accessed in index.js.

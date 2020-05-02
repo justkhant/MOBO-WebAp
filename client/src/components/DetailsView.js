@@ -10,25 +10,25 @@ export default class DetailsView extends React.Component {
     const { data } = this.props;
 
     // BOOK
-    if (data[4] === "B") {
+    if (data[2] == "B") {
       return (
         <section className="jumbotron">
           <img
-            src="https://images-na.ssl-images-amazon.com/images/I/61VUik8NJ8L.jpg"
+            src={data[5]}
             className="float-left align-middle"
-            alt="Movie Image"
+            alt="Book Cover Image"
             height="250"
             style={{ marginRight: "30px" }}
           ></img>
           <div className="container">
             <h1 className="jumbotron-heading">{data[1]}</h1>
-            <p className="lead text-muted">Authors: {data[9]}</p>
+            <p className="lead text-muted">Author(s): {data[7]}</p>
             <p className="lead text-muted">
-              Avg. Rating: {data[6]} ({data[11]})
+              Avg. Rating: {data[4]} ({data[9]})
             </p>
-            <p className="lead text-muted">Review Count: {data[13]}</p>
-            <p className="lead text-muted">Keywords: {data[5]}</p>
-            <p className="lead text-muted">Page Count: {data[12]}</p>
+            <p className="lead text-muted">Review Count: {data[11]}</p>
+            <p className="lead text-muted">Description: {data[8]}</p>
+            <p className="lead text-muted">Length: {data[10]} pages</p>
           </div>
         </section>
       );
@@ -37,18 +37,22 @@ export default class DetailsView extends React.Component {
     return (
       <section className="jumbotron">
         <img
-          src="http://image.tmdb.org/t/p/w185//vzmL6fP7aPKNKPRTFnZmiUfciyV.jpg"
+          src={data[5]}
           className="float-left align-middle"
-          alt="Movie Image"
+          alt="Movie Cover Image"
           height="250"
           style={{ marginRight: "30px" }}
         ></img>
         <div className="container">
-          <h1 className="jumbotron-heading">Movie Title</h1>
-          <p className="lead text-muted">Genres: </p>
-          <p className="lead text-muted">Avg. Rating: __ (Number of Ratings)</p>
-          <p className="lead text-muted">Keywords: </p>
-          <p className="lead text-muted">Runtime:</p>
+          <h1 className="jumbotron-heading">{data[1]}</h1>
+          <p className="lead text-muted">Released: {data[8]} </p>
+          <p className="lead text-muted">Runtime: {data[11]} minutes</p>
+          <p className="lead text-muted">
+            Avg. Rating: {data[4]} ({data[9]})
+          </p>
+          <p className="lead text-muted">Keywords: {data[3]}</p>
+          <p className="lead text-muted">Revenue: {data[10]}</p>
+          <p className="lead text-muted">Description: {data[7]}</p>
         </div>
       </section>
     );

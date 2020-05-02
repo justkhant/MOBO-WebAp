@@ -23,9 +23,8 @@ export default class DetailedView extends React.Component {
 
   //TODO: get's media's info based on media_id
   getMediaDetails() {
-    console.log("hello");
     // Send an HTTP request to the server.
-    fetch("http://localhost:8081/media/55511", {
+    fetch("http://localhost:8081/media/" + this.props.data[0], {
       method: "GET", // The type of HTTP request.
     })
       .then(
@@ -41,6 +40,7 @@ export default class DetailedView extends React.Component {
       .then(
         (info) => {
           if (!info) return;
+          console.log(info.rows[0]);
           this.setState({
             mediaInfo: info.rows[0],
           });
