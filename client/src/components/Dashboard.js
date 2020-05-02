@@ -88,35 +88,49 @@ export default class Dashboard extends React.Component {
   }
 
   onLoginAttemptSuccess(user) {
-    console.log('login success for' + user.email);
+    console.log("login success for" + user.email);
     this.setState({
       loggedInUser: user,
-    })
+    });
   }
 
   render() {
-    const { searchResultsData, detailedViewData, isDetailedView, selectedRow ,loggedInUser } = this.state;
+    const {
+      searchResultsData,
+      detailedViewData,
+      isDetailedView,
+      selectedRow,
+      loggedInUser,
+    } = this.state;
 
-    let loginSection = (loggedInUser === null) ? (<div><p>Hello</p> <LoginModal onLoginAttemptSuccess={this.onLoginAttemptSuccess}/></div>) : (<p>Hello {loggedInUser.email}</p>);
+    let loginSection =
+      loggedInUser === null ? (
+        <div>
+          {" "}
+          <LoginModal onLoginAttemptSuccess={this.onLoginAttemptSuccess} />
+        </div>
+      ) : (
+        <p>Hello {loggedInUser.email}</p>
+      );
 
     if (isDetailedView) {
       return (
         <div className="Dashboard">
           <div class="container">
-          {/* <h1 style={{ color: "white" }}>Is DetailedView</h1> */}
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="#">MoBo</a>
-          </nav>
-          {loginSection}
-          <br></br>
-          <FunFact/>
-          <br></br>
-          <SearchBar search={this.search} />
-          <Button variant="primary" onClick={this.hideDetailedView}>
-            Hide Detailed View
-          </Button>{" "}
-          <DetailedView data={searchResultsData[selectedRow]} />
-        </div>
+            {/* <h1 style={{ color: "white" }}>Is DetailedView</h1> */}
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <a class="navbar-brand" href="#">
+                MoBo
+              </a>
+            </nav>
+            {loginSection}
+            <br></br>
+            <SearchBar search={this.search} />
+            <Button variant="primary" onClick={this.hideDetailedView}>
+              Hide Detailed View
+            </Button>{" "}
+            <DetailedView data={searchResultsData[selectedRow]} />
+          </div>
         </div>
       );
     }
@@ -124,23 +138,25 @@ export default class Dashboard extends React.Component {
     return (
       <div className="Dashboard">
         <div class="container">
-        {/* <h1 style={{ color: "white" }}>Not DetailedView</h1> */}
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="#">MoBo</a>
-        </nav>
-        {loginSection}
-        <br></br>
-        <FunFact/>
-        <br></br>
-        <SearchBar search={this.search} />
-        <Button variant="primary" onClick={this.showDetailedView}>
-          Show Detailed View
-        </Button>{" "}
-        <SearchResults
-          data={searchResultsData}
-          showDetailedView={this.showDetailedView}
-        />
-      </div>
+          {/* <h1 style={{ color: "white" }}>Not DetailedView</h1> */}
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+              MoBo
+            </a>
+          </nav>
+          {loginSection}
+          <br></br>
+          <SearchBar search={this.search} />
+          <Button variant="primary" onClick={this.showDetailedView}>
+            Show Detailed View
+          </Button>{" "}
+          <SearchResults
+            data={searchResultsData}
+            showDetailedView={this.showDetailedView}
+          />
+          <br></br>
+          <FunFact />
+        </div>
       </div>
     );
   }
