@@ -117,10 +117,9 @@ export default class Dashboard extends React.Component {
       return (
         <div className="Dashboard">
           <div class="container">
-            {/* <h1 style={{ color: "white" }}>Is DetailedView</h1> */}
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <a class="navbar-brand" href="#">
-                MoBo
+                <img src="mobo_logo.png" height="70"></img>
               </a>
             </nav>
             {loginSection}
@@ -138,10 +137,9 @@ export default class Dashboard extends React.Component {
     return (
       <div className="Dashboard">
         <div class="container">
-          {/* <h1 style={{ color: "white" }}>Not DetailedView</h1> */}
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#">
-              MoBo
+              <img src="mobo_logo.png" height="70"></img>
             </a>
           </nav>
           {loginSection}
