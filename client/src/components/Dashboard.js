@@ -8,6 +8,7 @@ import SearchResults from "./SearchResults";
 import DetailedView from "./DetailedView";
 import FactCard from "./FactCard";
 import FunFact from "./FunFact";
+import LoginModal from "./LoginModal";
 
 import testData from "../testData";
 
@@ -21,11 +22,16 @@ export default class Dashboard extends React.Component {
       detailedViewData: null,
       isDetailedView: false,
       selectedRow: 0,
+      showModal: false,
+      loading: false,
+      error: null,
+      loggedInUser: null,
     };
 
     this.search = this.search.bind(this);
     this.showDetailedView = this.showDetailedView.bind(this);
     this.hideDetailedView = this.hideDetailedView.bind(this);
+    this.onLoginAttemptSuccess = this.onLoginAttemptSuccess.bind(this);
   }
 
   // React function that is called when the page load.
@@ -81,8 +87,17 @@ export default class Dashboard extends React.Component {
     });
   }
 
+  onLoginAttemptSuccess(user) {
+    console.log('login success for' + user.email);
+    this.setState({
+      loggedInUser: user,
+    })
+  }
+
   render() {
-    const { searchResultsData, detailedViewData, isDetailedView, selectedRow } = this.state;
+    const { searchResultsData, detailedViewData, isDetailedView, selectedRow ,loggedInUser } = this.state;
+
+    let loginSection = (loggedInUser === null) ? (<div><p>Hello</p> <LoginModal onLoginAttemptSuccess={this.onLoginAttemptSuccess}/></div>) : (<p>Hello {loggedInUser.email}</p>);
 
     if (isDetailedView) {
       return (
@@ -92,6 +107,7 @@ export default class Dashboard extends React.Component {
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand" href="#">MoBo</a>
           </nav>
+          {loginSection}
           <br></br>
           <FunFact/>
           <br></br>
@@ -110,8 +126,9 @@ export default class Dashboard extends React.Component {
         <div class="container">
         {/* <h1 style={{ color: "white" }}>Not DetailedView</h1> */}
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">MoBo</a>
+          <a class="navbar-brand" href="#">MoBo</a>
         </nav>
+        {loginSection}
         <br></br>
         <FunFact/>
         <br></br>
