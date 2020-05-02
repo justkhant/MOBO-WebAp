@@ -117,7 +117,7 @@ export default class Dashboard extends React.Component {
       return (
         <div className="Dashboard">
           <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar navbar-expand-lg navbar-light">
               <a class="navbar-brand" href="#">
                 <img src="mobo_logo.png" height="70"></img>
               </a>
@@ -125,9 +125,6 @@ export default class Dashboard extends React.Component {
             {loginSection}
             <br></br>
             <SearchBar search={this.search} />
-            <Button variant="primary" onClick={this.hideDetailedView}>
-              Hide Detailed View
-            </Button>{" "}
             <DetailedView data={searchResultsData[selectedRow]} />
           </div>
         </div>
@@ -137,7 +134,7 @@ export default class Dashboard extends React.Component {
     return (
       <div className="Dashboard">
         <div class="container">
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <nav class="navbar navbar-expand-lg navbar-light">
             <a class="navbar-brand" href="#">
               <img src="mobo_logo.png" height="70"></img>
             </a>
@@ -145,9 +142,6 @@ export default class Dashboard extends React.Component {
           {loginSection}
           <br></br>
           <SearchBar search={this.search} />
-          <Button variant="primary" onClick={this.showDetailedView}>
-            Show Detailed View
-          </Button>{" "}
           <SearchResults
             data={searchResultsData}
             showDetailedView={this.showDetailedView}

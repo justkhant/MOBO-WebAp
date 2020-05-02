@@ -1,6 +1,7 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import SearchResultsRow from './SearchResultsRow';
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../style/Dashboard.css";
+import SearchResultsRow from "./SearchResultsRow";
 
 export default class SearchResults extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class SearchResults extends React.Component {
     const { data } = this.props;
     return (
       <div className="searchResults">
-        <table className="table table-striped table-dark">
+        <table className="table table-striped table-hover">
           <thead>
             <tr>
               <th scope="col">Title</th>
@@ -20,7 +21,14 @@ export default class SearchResults extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {data.map((row, i) => <SearchResultsRow key={i} rowData={row} rowIndex={i} showDetailedView={this.props.showDetailedView} />)}
+            {data.map((row, i) => (
+              <SearchResultsRow
+                key={i}
+                rowData={row}
+                rowIndex={i}
+                showDetailedView={this.props.showDetailedView}
+              />
+            ))}
           </tbody>
         </table>
       </div>
