@@ -68,7 +68,7 @@ function titleSearch(req, res) {
         WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
         ORDER BY similarity DESC
         )
-      WHERE ROWNUM <= 30;
+      WHERE ROWNUM <= 30
     
         `;
 
