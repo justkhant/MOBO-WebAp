@@ -28,22 +28,22 @@ export default class LoginModal extends React.Component {
 
   onLogin() {
     console.log("__onLogin__");
-    console.log("email: " + document.querySelector("#email").value);
+    console.log("username: " + document.querySelector("#username").value);
     console.log("password: " + document.querySelector("#password").value);
 
-    const email = document.querySelector("#email").value;
-    const password = document.querySelector("#password").value;
+    const username = document.querySelector("#username").value;
+    const password = document.querySelector("#username").value;
 
-    if (!email || !password) {
+    if (!username || !password) {
       this.setState({
         error: true,
       });
-    } else if (email === "mobo" && password === "dabest") {
+    } else if (username === "mobo" && password === "dabest") {
       this.onLoginSuccess("form");
       this.closeModal();
 
       const user = {
-        email,
+        username,
         password,
       };
       this.props.onLoginAttemptSuccess(user);
@@ -54,13 +54,32 @@ export default class LoginModal extends React.Component {
 
   onRegister() {
     console.log("__onRegister__");
-    console.log("login: " + document.querySelector("#login").value);
-    console.log("email: " + document.querySelector("#email").value);
+    console.log("username: " + document.querySelector("#username").value);
     console.log("password: " + document.querySelector("#password").value);
 
-    const login = document.querySelector("#login").value;
-    const email = document.querySelector("#email").value;
+    const username = document.querySelector("#username").value;
     const password = document.querySelector("#password").value;
+
+    fetch(`http://localhost:8081/register/${username}/${password}` , {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (info) => {
+          console.log(info);
+          if (!info) return;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   onRecoverPassword() {
@@ -150,12 +169,12 @@ export default class LoginModal extends React.Component {
             loginInputs: [
               {
                 containerClass: "RML-form-group",
-                label: "Email",
-                type: "email",
+                label: "Username",
+                type: "text",
                 inputClass: "RML-form-control",
-                id: "email",
-                name: "email",
-                placeholder: "Email",
+                id: "username",
+                name: "username",
+                placeholder: "Username",
               },
               {
                 containerClass: "RML-form-group",
@@ -170,21 +189,12 @@ export default class LoginModal extends React.Component {
             registerInputs: [
               {
                 containerClass: "RML-form-group",
-                label: "Nickname",
+                label: "Username",
                 type: "text",
                 inputClass: "RML-form-control",
-                id: "login",
-                name: "login",
-                placeholder: "Nickname",
-              },
-              {
-                containerClass: "RML-form-group",
-                label: "Email",
-                type: "email",
-                inputClass: "RML-form-control",
-                id: "email",
-                name: "email",
-                placeholder: "Email",
+                id: "username",
+                name: "username",
+                placeholder: "Username",
               },
               {
                 containerClass: "RML-form-group",

@@ -197,6 +197,9 @@ function createNewUser(req, res) {
 
   insert(query).then((response) => {
     res.json(response);
+  },
+  (err) => {
+    console.log(err);
   });
 }
 
