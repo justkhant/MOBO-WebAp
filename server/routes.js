@@ -24,12 +24,13 @@ async function run(query, res) {
   }
 }
 
-async function insert(query, res) {
+async function insert(query, binds, res) {
   let connection;
   let result;
   try {
     connection = await oracledb.getConnection(dbConfig);
-    result = await connection.execute(query, { autoCommit: true });
+    result = await connection.execute(query, binds, { autoCommit: true });
+    console.log("Number of inserted rows:", result.rowsAffected);
     return result;
   } catch (err) {
     console.error(err);
@@ -182,20 +183,16 @@ function getRecs(req, res) {
 function createNewUser(req, res) {
   var username = req.params.username;
   var password = req.params.password;
-  var age = null;
-  var gender = null;
 
   var query = "";
   query =
-    `
-      INSERT INTO Users
-        (username, password, age, gender)
-      VALUES
-        ('`+ username + `', '` + password + `', ` + age + `, '` + gender + `')
+    `INSERT INTO Users VALUES (:1, :2)`;
+  
+  var binds =[ ""+username, ""+password ]
 
-      `;
-
-  insert(query).then((response) => {
+  console.log(binds);
+  
+  insert(query, binds).then((response) => {
     res.json(response);
   },
   (err) => {
