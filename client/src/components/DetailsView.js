@@ -7,6 +7,11 @@ export default class DetailsView extends React.Component {
     super(props);
   }
 
+  onExit(e) {
+    console.log("hello");
+    this.props.onExit();
+  }
+
   render() {
     const { data } = this.props;
 
@@ -48,7 +53,12 @@ export default class DetailsView extends React.Component {
     //MOVIE
     return (
       <section className="jumbotron">
-        <button type="button" class="close" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          onClick={this.onExit.bind(this)}
+        >
           <span aria-hidden="true">&times;</span>
         </button>
         <img

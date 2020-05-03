@@ -98,15 +98,22 @@ export default class DetailedView extends React.Component {
       );
   }
 
+  onExit() {
+    console.log("hello2!");
+    this.props.onExit();
+  }
+
   render() {
-    // TODO: fill in correct attributes in Media display
     return (
       <div
         className="detailedView"
         id={this.props.id}
         onClick={this.props.onClick}
       >
-        <DetailsView data={this.state.mediaInfo}></DetailsView>
+        <DetailsView
+          data={this.state.mediaInfo}
+          onExit={this.onExit.bind(this)}
+        ></DetailsView>
 
         <h3 style={{ color: "#ff843c", marginBottom: "20px" }}>
           Recommendations you might enjoy

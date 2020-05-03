@@ -94,6 +94,15 @@ export default class Dashboard extends React.Component {
     });
   }
 
+  onExit() {
+    console.log("hello3!");
+    this.setState({
+      isDetailedView: false,
+      currentSearchTerm: null,
+      searchResultsData: [],
+    });
+  }
+
   render() {
     const {
       searchResultsData,
@@ -126,7 +135,10 @@ export default class Dashboard extends React.Component {
             </nav>
             <br></br>
             <SearchBar search={this.search} />
-            <DetailedView data={searchResultsData[selectedRow]} />
+            <DetailedView
+              data={searchResultsData[selectedRow]}
+              onExit={this.onExit.bind(this)}
+            />
           </div>
         </div>
       );
