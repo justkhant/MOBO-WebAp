@@ -55,27 +55,21 @@ function titleSearch(req, res) {
       query =
         `
         WITH queries AS (
-          (SELECT LOWER("` +
+          (SELECT LOWER('` +
         searchTitle +
-        `") AS query
+        `') AS query
           FROM dual)
       )
       
       SELECT *
       FROM (
-          SELECT media_id, title, media_type, UTL_MATCH.edit_distance_similarity("` +
-        searchTitle +
-        `", title) AS similarity
-          FROM Media, queries
-          WHERE (UTL_MATCH.edit_distance_similarity("` +
-        searchTitle +
-        `", LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', "` +
-        searchTitle +
-        `"), '%')))
-          ORDER BY similarity DESC
-          )
+        SELECT media_id, title, media_type, UTL_MATCH.edit_distance_similarity(query, title) AS similarity
+        FROM Media, queries
+        WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
+        ORDER BY similarity DESC
+        )
       WHERE ROWNUM <= 30;
-         
+    
         `;
 
       run(query).then((response) => {
