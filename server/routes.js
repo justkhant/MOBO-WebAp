@@ -9,7 +9,6 @@ async function run(query, res) {
   try {
     connection = await oracledb.getConnection(dbConfig);
     result = await connection.execute(query);
-    // console.log(result);
     return result;
   } catch (err) {
     console.error(err);
@@ -51,7 +50,6 @@ async function insert(query, res) {
 /* ------------------- Route Handlers --------------- */
 /* -------------------------------------------------- */
 
-// TODO: Getting Media Info
 // Given an ID, find the media item that matches - for details page
 function getMediaInfo(req, res) {
   let query = `
@@ -95,30 +93,14 @@ function titleSearch(req, res) {
         `;
 
       run(query).then((response) => {
-        // console.log('response in run query is', response);
         res.json(response);
       });
     }
   }
-  // if (media == 'Books') {
-  //   if (genre == 'All') {
-  //     //search for books, all genres
-
-  //   }
-  // }
-
-  // connection.query(query, function (err, rows, fields) {
-  //   if (err) console.log(err);
-  //   else {
-  //     res.json(rows);
-  //   }
-  // });
 }
 
 function getAllGenres(req, res) {}
 
-// TODO: Getting Media's Recommendations
-// Given an ID, output a list of media items - for details page
 function getRecs(req, res) {
   var searchTitle = req.params.searchTitle;
 
@@ -195,7 +177,6 @@ function getRecs(req, res) {
   });
 }
 
-
 //USER LOGIN/SIGNUP
 
 function createNewUser(req, res) {
@@ -206,36 +187,34 @@ function createNewUser(req, res) {
 
   var query = "";
   query =
-      `
+    `
       INSERT INTO Users
         (username, password, age, gender)
       VALUES
-        ('`+ username +`', '`+ password +`', `+ age +`, '`+ gender +`')
+        ('`+ username + `', '` + password + `', ` + age + `, '` + gender + `')
 
       `;
 
-    insert(query).then((response) => {
-      // console.log('response in run query is', response);
-      res.json(response);
-    });
-  }
+  insert(query).then((response) => {
+    res.json(response);
+  });
+}
 
-  function getPassword(req, res) {
-    var username = req.params.username;
-  
-    var query = "";
-    query =
-        `
+function getPassword(req, res) {
+  var username = req.params.username;
+
+  var query = "";
+  query =
+    `
        SELECT password
        FROM Users
-       WHERE username = '`+ username +`' 
+       WHERE username = '`+ username + `' 
         `;
-  
-      run(query).then((response) => {
-        // console.log('response in run query is', response);
-        res.json(response);
-      });
-    }
+
+  run(query).then((response) => {
+    res.json(response);
+  });
+}
 
 
 // The exported functions, which can be accessed in index.js.
@@ -244,4 +223,6 @@ module.exports = {
   getRecs: getRecs,
   getMediaInfo: getMediaInfo,
   getAllGenres: getAllGenres,
+  createNewUser: createNewUser,
+  getPassword: getPassword,
 };
