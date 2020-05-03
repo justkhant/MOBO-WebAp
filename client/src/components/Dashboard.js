@@ -95,7 +95,6 @@ export default class Dashboard extends React.Component {
   }
 
   onExit() {
-    console.log("hello3!");
     this.setState({
       isDetailedView: false,
       currentSearchTerm: null,

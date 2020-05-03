@@ -99,7 +99,6 @@ export default class DetailedView extends React.Component {
   }
 
   onExit() {
-    console.log("hello2!");
     this.props.onExit();
   }
 

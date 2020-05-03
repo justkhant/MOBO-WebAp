@@ -53,24 +53,29 @@ function titleSearch(req, res) {
     if (genre == "All") {
       //search for all media, all genre
       query =
-        `WITH queries AS (
-          (SELECT LOWER('` +
+        `
+        WITH queries AS (
+          (SELECT LOWER("` +
         searchTitle +
-        `') AS query
+        `") AS query
           FROM dual)
-        ), 
-        all_info AS (
-          SELECT M.media_id, M.title, Mo.language, Mo.release_date, M.avg_rating, M.media_type, Mo.overview, Mo.rating_count, Mo.revenue, M.keywords
-          FROM Media M JOIN Movies Mo ON M.media_id = Mo.media_id
-        )
-        SELECT *
-        FROM (
-          SELECT media_id, title, language, release_date, avg_rating, media_type, overview, rating_count, revenue, keywords, UTL_MATCH.edit_distance_similarity(query, title) AS similarity
-          FROM all_info, queries
-          WHERE media_type='M' AND (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
+      )
+      
+      SELECT *
+      FROM (
+          SELECT media_id, title, media_type, UTL_MATCH.edit_distance_similarity("` +
+        searchTitle +
+        `", title) AS similarity
+          FROM Media, queries
+          WHERE (UTL_MATCH.edit_distance_similarity("` +
+        searchTitle +
+        `", LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', "` +
+        searchTitle +
+        `"), '%')))
           ORDER BY similarity DESC
           )
-        WHERE ROWNUM <= 10 
+      WHERE ROWNUM <= 30;
+         
         `;
 
       run(query).then((response) => {

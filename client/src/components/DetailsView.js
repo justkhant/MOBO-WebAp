@@ -8,7 +8,6 @@ export default class DetailsView extends React.Component {
   }
 
   onExit(e) {
-    console.log("hello");
     this.props.onExit();
   }
 
