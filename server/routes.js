@@ -63,7 +63,7 @@ function titleSearch(req, res) {
       
       SELECT *
       FROM (
-        SELECT media_id, title, media_type, UTL_MATCH.edit_distance_similarity(query, title) AS similarity
+        SELECT media_id, title, media_type, avg_rating, UTL_MATCH.edit_distance_similarity(query, title) AS similarity
         FROM Media, queries
         WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
         ORDER BY similarity DESC
