@@ -113,7 +113,7 @@ export default class LoginModal extends React.Component {
   render() {
     return (
       <div>
-        <button class="btn-1" onClick={() => this.openModal()}>
+        <button className="btn-1" onClick={() => this.openModal()}>
           Login / Register
         </button>
 
