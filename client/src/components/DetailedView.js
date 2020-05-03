@@ -108,7 +108,9 @@ export default class DetailedView extends React.Component {
       >
         <DetailsView data={this.state.mediaInfo}></DetailsView>
 
-        <h2 style={{ color: "white" }}>Recommendations you might enjoy</h2>
+        <h3 style={{ color: "#ff843c", marginBottom: "20px" }}>
+          Recommendations you might enjoy
+        </h3>
         <div class="card-deck">{this.state.recMedia}</div>
       </div>
     );
