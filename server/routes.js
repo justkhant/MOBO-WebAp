@@ -25,6 +25,28 @@ async function run(query, res) {
   }
 }
 
+async function insert(query, res) {
+  let connection;
+  let result;
+  try {
+    connection = await oracledb.getConnection(dbConfig);
+    result = await connection.execute(query, { autoCommit: true });
+    return result;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    return result;
+  }
+}
+
+
 /* -------------------------------------------------- */
 /* ------------------- Route Handlers --------------- */
 /* -------------------------------------------------- */
@@ -172,6 +194,49 @@ function getRecs(req, res) {
     res.json(response);
   });
 }
+
+
+//USER LOGIN/SIGNUP
+
+function createNewUser(req, res) {
+  var username = req.params.username;
+  var password = req.params.password;
+  var age = req.params.age;
+  var gender = req.params.gender;
+
+  var query = "";
+  query =
+      `
+      INSERT INTO Users
+        (username, password, age, gender)
+      VALUES
+        ('`+ username +`', '`+ password +`', `+ age +`, '`+ gender +`')
+
+      `;
+
+    insert(query).then((response) => {
+      // console.log('response in run query is', response);
+      res.json(response);
+    });
+  }
+
+  function getPassword(req, res) {
+    var username = req.params.username;
+  
+    var query = "";
+    query =
+        `
+       SELECT password
+       FROM Users
+       WHERE username = '`+ username +`' 
+        `;
+  
+      run(query).then((response) => {
+        // console.log('response in run query is', response);
+        res.json(response);
+      });
+    }
+
 
 // The exported functions, which can be accessed in index.js.
 module.exports = {
