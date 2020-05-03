@@ -2,6 +2,7 @@ import React from "react";
 import "../style/Dashboard.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
+import FactCard from "./FactCard";
 
 export default class FunFact extends React.Component {
   constructor(props) {
@@ -77,10 +78,10 @@ export default class FunFact extends React.Component {
         </div>
         <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">...</div>
-            <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
-            <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
-            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
+            <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list"><FactCard/></div>
+            <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list"><FactCard/></div>
+            <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list"><FactCard/></div>
+            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list"><FactCard/></div>
             </div>
         </div>
         </div>
