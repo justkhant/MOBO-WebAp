@@ -182,8 +182,8 @@ function getRecs(req, res) {
 function createNewUser(req, res) {
   var username = req.params.username;
   var password = req.params.password;
-  var age = req.params.age;
-  var gender = req.params.gender;
+  var age = null;
+  var gender = null;
 
   var query = "";
   query =
