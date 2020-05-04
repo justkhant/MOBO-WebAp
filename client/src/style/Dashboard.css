@@ -92,6 +92,7 @@ thead {
 
 .overflow {
   overflow: auto;
-  white-space: nowrap;
+  height: 150px;
+  line-height: 25px;
   text-overflow: ellipsis;
 }

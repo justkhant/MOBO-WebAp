@@ -84,7 +84,6 @@ export default class DetailedView extends React.Component {
               genre={rec[2]}
               title={rec[1]}
               avg_rating={rec[6]}
-              rating_count={rec[11]}
               desc={rec[5]}
             />
           ));

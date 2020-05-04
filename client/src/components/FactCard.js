@@ -12,7 +12,7 @@ export default class FactCard extends React.Component {
     return (
       <div class="col-md-6 w-25">
         <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-          <div class="card-body d-flex flex-column align-items-start overflow">
+          <div class="card-body d-flex flex-column align-items-start">
             <strong class="d-inline-block mb-2 text-success">
               {this.props.genre}
             </strong>
@@ -21,11 +21,11 @@ export default class FactCard extends React.Component {
                 {this.props.title}
               </a>
             </h3>
-            <div class="mb-1 text-muted">
-              Rating: {this.props.avg_rating} ({this.props.rating_count})
-            </div>
-            <p class="card-text mb-auto">Description: {this.props.desc}</p>
-            <a href="#">Read more</a>
+            <div class="mb-1 text-muted">Rating: {this.props.avg_rating})</div>
+            <p class="card-text mb-auto overflow">
+              Description: {this.props.desc}
+            </p>
+            <a href="#">More Info</a>
           </div>
         </div>
       </div>
