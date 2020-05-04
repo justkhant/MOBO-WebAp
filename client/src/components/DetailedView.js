@@ -113,6 +113,7 @@ export default class DetailedView extends React.Component {
         <DetailsView
           data={this.state.mediaInfo}
           onExit={this.onExit.bind(this)}
+          username={this.props.username}
         ></DetailsView>
 
         <h3 style={{ color: "#ff843c", marginBottom: "20px" }}>

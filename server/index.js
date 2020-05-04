@@ -45,10 +45,10 @@ app.get("/login/:username", routes.getPassword);
 
 /* SAVED PAGE */
 // Create a new entry in Saved_media table
-app.post("/savedPage/:username/:media_id", routes.addToSavedMedia);
+app.post("/savePage/:username/:media_id", routes.addToSavedMedia);
 
 // Get array of media_id for a user's savedPage
-app.get("/savedPage/:username", routes.getMediaFromUser);
+app.get("/getSavedPage/:username", routes.getMediaFromUser);
 
 process.once("SIGTERM", process.exit);
 process.once("SIGINT", process.exit);
