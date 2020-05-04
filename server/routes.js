@@ -92,7 +92,7 @@ function getMultipleMediaInfo(req, res) {
     `;
   }
   media_ids.forEach(function(media_id) {
-      query += ` media_id = `+ media_id +` OR`;
+      query += ` M.media_id = `+ media_id +` OR`;
   } );
 
   query = query.substring(0, query.length - 2);
