@@ -27,7 +27,7 @@ export default class Dashboard extends React.Component {
       showModal: false,
       loading: false,
       error: null,
-      loggedInUser: null,
+      loggedInUser: 'bill',
       showSavePage: false,
     };
 
@@ -131,7 +131,7 @@ export default class Dashboard extends React.Component {
           <LoginModal onLoginAttemptSuccess={this.onLoginAttemptSuccess} />{" "}
         </div>
       ) : (
-        <p>Hello {loggedInUser.email}</p>
+        <p>Hello {loggedInUser}</p>
       );
 
     let savedPageButton =

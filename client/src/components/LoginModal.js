@@ -87,19 +87,13 @@ export default class LoginModal extends React.Component {
     })
       .then(
         (res) => {
-          return res.json();
+          console.log(res.status === 201);
+          // if (res.status)
+          // return res.json();
+          console.log('registration success');
         },
         (err) => {
           console.log('register failed');
-          console.log(err);
-        }
-      )
-      .then(
-        (info) => {
-          console.log(info);
-          if (!info) return;
-        },
-        (err) => {
           console.log(err);
         }
       );

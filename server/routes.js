@@ -293,7 +293,7 @@ function createNewUser(req, res) {
 
   insert(query, binds).then(
     (response) => {
-      res.json(response);
+      res.status(201).send();
     },
     (err) => {
       console.log(err);
@@ -332,8 +332,8 @@ function addToSavedMedia(req, res) {
   console.log(binds);
 
   insert(query, binds).then(
-    (response) => {
-      res.json(response);
+    () => {
+      res.status(201).send();
     },
     (err) => {
       console.log(err);
