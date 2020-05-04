@@ -54,9 +54,17 @@ async function insert(query, binds, res) {
 // Given an ID, find the media item that matches - for details page
 function getMediaInfo(req, res) {
   let query = `
-    SELECT *
-    FROM Media M JOIN Movies B ON M.media_id = B.media_id 
-    WHERE M.media_id = ${req.params.id}
+  SELECT M.media_id, title, media_type, keywords, 
+        (CASE media_type 
+          WHEN 'M' THEN Mo.overview 
+          ELSE B.description END) AS overview,
+        avg_rating, image_url, release_date, 
+        (CASE media_type 
+           WHEN 'M' THEN Mo.rating_count 
+           ELSE B.rating_count END) AS rating_count, 
+        revenue, runtime, language, authors, pages, review_count
+  FROM Media M LEFT OUTER JOIN Movies Mo ON M.media_id =  Mo.media_id LEFT OUTER JOIN Books B ON M.media_id = B.media_id
+  WHERE media_id = ${req.params.id}
   `;
 
   run(query).then((response) => {
