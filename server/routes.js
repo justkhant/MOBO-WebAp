@@ -263,4 +263,5 @@ module.exports = {
   getAllGenres: getAllGenres,
   createNewUser: createNewUser,
   getPassword: getPassword,
+  getMultipleMediaInfo: getMultipleMediaInfo,
 };

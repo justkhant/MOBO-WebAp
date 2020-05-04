@@ -27,11 +27,11 @@ app.get("/recommendations/:id", routes.getRecs);
 // Get a media's information based on Media ID
 app.get("/media/:id", routes.getMediaInfo);
 
-// Get a media's information based on Media ID
 app.get("/register/:username/:password", routes.createNewUser);
 
-// Get a media's information based on Media ID
 app.get("/login/:username", routes.getPassword);
+
+app.get("/mediaMultiple/:media_ids", routes.getMultipleMediaInfo);
 
 process.once("SIGTERM", process.exit);
 process.once("SIGINT", process.exit);
