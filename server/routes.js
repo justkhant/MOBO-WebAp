@@ -278,6 +278,79 @@ function getRecs(req, res) {
   });
 }
 
+//FUN FACTS 
+
+function getLongestMovie(req, res) {
+  let query = `
+  SELECT M.media_id, title, media_type, keywords, avg_rating, image_url, overview, release_date, rating_count, revenue, longest.runtime, language
+  FROM (SELECT *
+        FROM (SELECT runtime
+                FROM Movies Mo
+                WHERE runtime IS NOT NULL
+                ORDER BY runtime DESC)
+        WHERE ROWNUM <= 1) longest INNER JOIN Movies Mo ON longest.runtime = Mo.runtime
+                            INNER JOIN Media M ON Mo.media_id = M.media_id 
+
+  `;
+
+  run(query).then((response) => {
+    res.json(response);
+  });
+}
+
+function getShortestMovie(req, res) {
+  let query = `
+  SELECT M.media_id, title, media_type, keywords, avg_rating, image_url, overview, release_date, rating_count, revenue, shortest.runtime, language
+  FROM (SELECT *
+        FROM (SELECT runtime
+                FROM Movies Mo
+                WHERE runtime IS NOT NULL AND runtime >= 40
+                ORDER BY runtime)
+        WHERE ROWNUM <= 1) shortest INNER JOIN Movies Mo ON shortest.runtime = Mo.runtime
+                            INNER JOIN Media M ON Mo.media_id = M.media_id
+
+  `;
+
+  run(query).then((response) => {
+    res.json(response);
+  });
+}
+
+function getMostExpensiveMovie(req, res) {
+  let query = `
+  
+    SELECT M.media_id, title, media_type, keywords, avg_rating, image_url, overview, release_date, rating_count, R.revenue, runtime, language
+    FROM (SELECT *
+          FROM (SELECT revenue
+                  FROM Movies Mo
+                  WHERE revenue IS NOT NULL
+                 ORDER BY revenue DESC)
+          WHERE ROWNUM <= 1) R INNER JOIN Movies Mo ON R.revenue = Mo.revenue
+                              INNER JOIN Media M ON Mo.media_id = M.media_id
+  `;
+
+  run(query).then((response) => {
+    res.json(response);
+  });
+}
+
+function getAuthorWithMostBooks(req, res) {
+  let query = `
+  SELECT *
+  FROM (SELECT author, COUNT(*) AS num_books
+        FROM (SELECT DISTINCT media_id, trim(regexp_substr(authors, '[^|]+', 1, levels.column_value)) AS author
+            FROM Books, table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(authors, '[^|]+'))  + 1) as sys.OdciNumberList)) levels
+            WHERE trim(regexp_substr(authors, '[^|]+', 1, levels.column_value)) IS NOT NULL)
+        GROUP BY author
+        ORDER BY num_books DESC)
+  WHERE ROWNUM <= 1;  
+  `;
+
+  run(query).then((response) => {
+    res.json(response);
+  });
+}
+
 //USER LOGIN/SIGNUP
 
 function createNewUser(req, res) {
