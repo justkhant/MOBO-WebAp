@@ -16,19 +16,18 @@ export default class DetailsView extends React.Component {
   onSaveMedia() {
     const { data, username } = this.props;
 
-    fetch(`http://localhost:8081/savePage/${username}/${data[0]}` , {
+    fetch(`http://localhost:8081/savePage/${username}/${data[0]}`, {
       method: "POST",
-    })
-      .then(
-        (res) => {
-          console.log(res.status === 201);
-          console.log('add to saved page success');
-        },
-        (err) => {
-          console.log('add to saved page failed');
-          console.log(err);
-        }
-      );
+    }).then(
+      (res) => {
+        console.log(res.status === 201);
+        console.log("add to saved page success");
+      },
+      (err) => {
+        console.log("add to saved page failed");
+        console.log(err);
+      }
+    );
   }
 
   render() {
@@ -55,7 +54,11 @@ export default class DetailsView extends React.Component {
           ></img>
           <div className="container">
             <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
-            <button type="button" class="btn btn-dark btn-sm" onClick={this.onSaveMedia}>
+            <button
+              type="button"
+              class="btn btn-dark btn-sm"
+              onClick={this.onSaveMedia}
+            >
               <span></span> Save!
             </button>
             <p className="text-muted">
@@ -97,7 +100,11 @@ export default class DetailsView extends React.Component {
         ></img>
         <div className="container">
           <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
-          <button type="button" class="btn btn-dark btn-sm" onClick={this.onSaveMedia}>
+          <button
+            type="button"
+            class="btn btn-dark btn-sm"
+            onClick={this.onSaveMedia}
+          >
             <span></span> Save!
           </button>
           <p className="text-muted">
