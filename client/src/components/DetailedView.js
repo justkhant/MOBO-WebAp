@@ -56,9 +56,9 @@ export default class DetailedView extends React.Component {
   //TODO: get a list of recommendations + create FactCards
   getRecommendations() {
     // Send an HTTP request to the server.
-    console.log("hello recs");
-    console.log(this.props.data[0]);
-    fetch("http://localhost:8081/recommendations/" + this.props.data[0], {
+    var searchPath = [this.props.data[2], this.props.data[0]].join("/");
+
+    fetch("http://localhost:8081/recommendations/" + searchPath, {
       method: "GET", // The type of HTTP request.
     })
       .then(
@@ -74,18 +74,18 @@ export default class DetailedView extends React.Component {
       .then(
         (recList) => {
           if (!recList) return;
-
+          console.log("This is recs list");
           console.log(recList);
           let recDivs = recList.rows.map((rec, i) => (
             // TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
             // might need some queries/routes
             <FactCard
-              id={0}
-              genre={0}
-              title={0}
-              avg_rating={0}
-              rating_count={0}
-              desc={0}
+              id={rec[0]}
+              genre={rec[2]}
+              title={rec[1]}
+              avg_rating={rec[6]}
+              rating_count={rec[11]}
+              desc={rec[5]}
             />
           ));
 
