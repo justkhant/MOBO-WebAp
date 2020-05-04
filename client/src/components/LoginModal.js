@@ -83,13 +83,14 @@ export default class LoginModal extends React.Component {
     const password = document.querySelector("#password").value;
 
     fetch(`http://localhost:8081/register/${username}/${password}` , {
-      method: "GET",
+      method: "POST",
     })
       .then(
         (res) => {
           return res.json();
         },
         (err) => {
+          console.log('register failed');
           console.log(err);
         }
       )

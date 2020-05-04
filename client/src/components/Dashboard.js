@@ -26,7 +26,7 @@ export default class Dashboard extends React.Component {
       showModal: false,
       loading: false,
       error: null,
-      loggedInUser: 1,
+      loggedInUser: null,
       showSavePage: false,
     };
 
@@ -143,7 +143,7 @@ export default class Dashboard extends React.Component {
               <form className="navbar-nav mr-auto" onSubmit={(event) => {event.preventDefault()}}><button className="btn-1" onClick={this.toggleSavedPage}>Home Page</button></form>
             </nav>
             <br></br>
-            <SavedPage/>
+            <SavedPage username='a'/>
           </div>
         </div>
       );

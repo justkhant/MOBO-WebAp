@@ -269,6 +269,47 @@ function getPassword(req, res) {
   });
 }
 
+// SAVED PAGE MEDIA
+function addToSavedMedia(req, res) {
+  var username = req.params.username;
+  var media_id = req.params.media_id;
+
+  var query = "";
+  query = `INSERT INTO Saved_media VALUES (:1, :2)`;
+
+  var binds = ["" + username, "" + media_id];
+
+  console.log(binds);
+
+  insert(query, binds).then(
+    (response) => {
+      res.json(response);
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
+}
+
+function getMediaFromUser(req, res) {
+  var username = req.params.username;
+
+  var query = "";
+  query =
+    `
+       SELECT media_id
+       FROM Saved_media
+       WHERE username = '` +
+    username +
+    `' 
+        `;
+
+  run(query).then((response) => {
+    res.json(response);
+  });
+}
+
+
 // The exported functions, which can be accessed in index.js.
 module.exports = {
   titleSearch: titleSearch,
@@ -278,4 +319,6 @@ module.exports = {
   createNewUser: createNewUser,
   getPassword: getPassword,
   getMultipleMediaInfo: getMultipleMediaInfo,
+  getMediaFromUser: getMediaFromUser,
+  addToSavedMedia: addToSavedMedia,
 };
