@@ -34,7 +34,10 @@ export default class DetailsView extends React.Component {
             style={{ marginRight: "40px", marginBottom: "30px" }}
           ></img>
           <div className="container">
-            <h1 className="jumbotron-heading">{data[1]}</h1>
+            <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
+            <button type="button" class="btn btn-dark btn-sm">
+              <span></span> Save!
+            </button>
             <p className="text-muted">
               <strong>Author(s):</strong> {data[12]}
             </p>
@@ -73,9 +76,12 @@ export default class DetailsView extends React.Component {
           style={{ marginRight: "40px", marginBottom: "30px" }}
         ></img>
         <div className="container">
-          <h1 className="jumbotron-heading">{data[1]}</h1>
+          <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
+          <button type="button" class="btn btn-dark btn-sm">
+            <span></span> Save!
+          </button>
           <p className="text-muted">
-            <strong>Released:</strong> {data[8]}
+            <strong>Released:</strong> {data[7]}
           </p>
           <p className="text-muted">
             <strong>Runtime:</strong> {data[10]} minutes

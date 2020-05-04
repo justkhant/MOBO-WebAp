@@ -84,3 +84,15 @@ thead {
   right: 20px;
   size: 40px;
 }
+
+.jumbotron-heading {
+  margin-right: 20px;
+  display: inline-block;
+}
+
+.overflow {
+  overflow: auto;
+  height: 150px;
+  line-height: 25px;
+  text-overflow: ellipsis;
+}
