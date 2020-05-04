@@ -46,7 +46,6 @@ async function insert(query, binds, res) {
   }
 }
 
-
 /* -------------------------------------------------- */
 /* ------------------- Route Handlers --------------- */
 /* -------------------------------------------------- */
@@ -64,7 +63,7 @@ function getMediaInfo(req, res) {
            ELSE B.rating_count END) AS rating_count, 
         revenue, runtime, language, authors, pages, review_count
   FROM Media M LEFT OUTER JOIN Movies Mo ON M.media_id =  Mo.media_id LEFT OUTER JOIN Books B ON M.media_id = B.media_id
-  WHERE media_id = ${req.params.id}
+  WHERE M.media_id = ${req.params.id}
   `;
 
   run(query).then((response) => {
@@ -91,9 +90,15 @@ function getMultipleMediaInfo(req, res) {
       WHERE
     `;
   }
+<<<<<<< HEAD
   media_ids.forEach(function(media_id) {
       query += ` M.media_id = `+ media_id +` OR`;
   } );
+=======
+  media_ids.forEach(function (media_id) {
+    query += ` media_id = ` + media_id + ` OR`;
+  });
+>>>>>>> bccfcecf191fbd9ad529f31478b5590636804f10
 
   query = query.substring(0, query.length - 2);
 
@@ -150,14 +155,18 @@ function getRecs(req, res) {
       FROM 
       Media, 
       table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(Media.keywords, '[^,]+'))  + 1) as sys.OdciNumberList)) levels
-      WHERE title = '`+searchTitle+`' AND trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
+      WHERE title = '` +
+    searchTitle +
+    `' AND trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
      ),
     all_keywords AS (
       SELECT DISTINCT media_id, title, trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) AS keyword
       FROM 
       Media, 
       table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(Media.keywords, '[^,]+'))  + 1) as sys.OdciNumberList)) levels
-      WHERE title <> '`+searchTitle+`' AND trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
+      WHERE title <> '` +
+    searchTitle +
+    `' AND trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
   ), 
   keyword_match AS (
       SELECT media_id, title, SUM(score) AS score
@@ -172,12 +181,16 @@ function getRecs(req, res) {
   input_genre AS (
     SELECT M.media_id, M.title, G.genre_name
     FROM Media M JOIN Genres_to_media G ON M.media_id = G.media_id
-    WHERE M.title = '`+searchTitle+`' 
+    WHERE M.title = '` +
+    searchTitle +
+    `' 
   ),
   genre_match AS (
     SELECT M.media_id, M.title, (COUNT(*) * 5) AS score
     FROM input_genre I JOIN Genres_to_media G ON I.genre_name = G.genre_name JOIN Media M ON M.media_id = G.media_id
-      WHERE M.title <> '`+searchTitle+`'
+      WHERE M.title <> '` +
+    searchTitle +
+    `'
     GROUP BY M.media_id, M.title
   ),
   movie_info AS (
@@ -188,13 +201,17 @@ function getRecs(req, res) {
   input_decade AS (
       SELECT TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999') - MOD((TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999')), 10) AS decade
       FROM movie_info
-      WHERE title = '`+searchTitle+`'
+      WHERE title = '` +
+    searchTitle +
+    `'
   ),
   decade_match AS (
       SELECT media_id, title, 2 AS score
       FROM movie_info, input_decade 
       WHERE decade = TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999') - MOD((TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999')), 10) 
-          AND title <> '`+searchTitle+`'
+          AND title <> '` +
+    searchTitle +
+    `'
   ),
   top_scores AS (
       SELECT *
@@ -224,19 +241,20 @@ function createNewUser(req, res) {
   var password = req.params.password;
 
   var query = "";
-  query =
-    `INSERT INTO Users VALUES (:1, :2)`;
-  
-  var binds =[ ""+username, ""+password ]
+  query = `INSERT INTO Users VALUES (:1, :2)`;
+
+  var binds = ["" + username, "" + password];
 
   console.log(binds);
 
-  insert(query, binds).then((response) => {
-    res.json(response);
-  },
-  (err) => {
-    console.log(err);
-  });
+  insert(query, binds).then(
+    (response) => {
+      res.json(response);
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 }
 
 function getPassword(req, res) {
@@ -247,14 +265,15 @@ function getPassword(req, res) {
     `
        SELECT password
        FROM Users
-       WHERE username = '`+ username + `' 
+       WHERE username = '` +
+    username +
+    `' 
         `;
 
   run(query).then((response) => {
     res.json(response);
   });
 }
-
 
 // The exported functions, which can be accessed in index.js.
 module.exports = {
