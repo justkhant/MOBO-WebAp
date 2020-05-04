@@ -38,18 +38,41 @@ export default class LoginModal extends React.Component {
       this.setState({
         error: true,
       });
-    } else if (username === "mobo" && password === "dabest") {
-      this.onLoginSuccess("form");
-      this.closeModal();
-
-      const user = {
-        username,
-        password,
-      };
-      this.props.onLoginAttemptSuccess(user);
     } else {
-      this.onLoginFail("form", "could not find user");
+      fetch(`http://localhost:8081/login/${username}` , {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (info) => {
+          console.log(info);
+          if (!info) return;
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
+
+
+    //   this.onLoginSuccess("form");
+    //   this.closeModal();
+
+    //   const user = {
+    //     username,
+    //     password,
+    //   };
+    //   this.props.onLoginAttemptSuccess(user);
+    // } else {
+    //   this.onLoginFail("form", "could not find user");
+    // }
   }
 
   onRegister() {
