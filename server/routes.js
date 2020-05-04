@@ -278,7 +278,7 @@ function getRecs(req, res) {
   });
 }
 
-//FUN FACTS 
+//FUN FACTS
 
 function getLongestMovie(req, res) {
   let query = `
@@ -438,6 +438,10 @@ function getMediaFromUser(req, res) {
 module.exports = {
   titleSearch: titleSearch,
   getRecs: getRecs,
+  getLongestMovie: getLongestMovie,
+  getShortestMovie: getShortestMovie,
+  getMostExpensiveMovie: getMostExpensiveMovie,
+  getAuthorWithMostBooks: getAuthorWithMostBooks,
   getMediaInfo: getMediaInfo,
   getAllGenres: getAllGenres,
   createNewUser: createNewUser,

@@ -27,8 +27,9 @@ export default class Dashboard extends React.Component {
       showModal: false,
       loading: false,
       error: null,
-      loggedInUser: 'bill',
+      loggedInUser: "bill",
       showSavePage: false,
+      fact1: [],
     };
 
     this.search = this.search.bind(this);
@@ -36,11 +37,43 @@ export default class Dashboard extends React.Component {
     this.hideDetailedView = this.hideDetailedView.bind(this);
     this.onLoginAttemptSuccess = this.onLoginAttemptSuccess.bind(this);
     this.toggleSavedPage = this.toggleSavedPage.bind(this);
+    this.funFact1 = this.funFact1.bind(this);
   }
 
   // React function that is called when the page load.
   componentDidMount() {
     // TODO: Fetch data for interesting facts section
+    if (this.state.fact1 == null) {
+      this.funFact1();
+    }
+  }
+
+  funFact1() {
+    fetch("http://localhost:8081/funfact1", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact1) => {
+          if (!fact1) return;
+          console.log("Fun fact 1!!!");
+          console.log(fact1);
+          this.setState({
+            funFact1: fact1.rows[0],
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   search(searchData) {
@@ -231,7 +264,7 @@ export default class Dashboard extends React.Component {
             <br></br>
             <SearchBar search={this.search} />
             <br></br>
-            <FactsLanding />
+            <FactsLanding fact1={this.state.fact1} />
           </div>
         </div>
       );
@@ -262,7 +295,6 @@ export default class Dashboard extends React.Component {
             showDetailedView={this.showDetailedView}
           />
           <br></br>
-          <FactsLanding />
         </div>
       </div>
     );
