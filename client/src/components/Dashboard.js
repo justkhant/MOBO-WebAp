@@ -29,7 +29,7 @@ export default class Dashboard extends React.Component {
       error: null,
       loggedInUser: "bill",
       showSavePage: false,
-      fact1: [],
+      fact1: null,
     };
 
     this.search = this.search.bind(this);
@@ -43,9 +43,7 @@ export default class Dashboard extends React.Component {
   // React function that is called when the page load.
   componentDidMount() {
     // TODO: Fetch data for interesting facts section
-    if (this.state.fact1 == null) {
-      this.funFact1();
-    }
+    this.funFact1();
   }
 
   funFact1() {
@@ -67,7 +65,7 @@ export default class Dashboard extends React.Component {
           console.log("Fun fact 1!!!");
           console.log(fact1);
           this.setState({
-            funFact1: fact1.rows[0],
+            fact1: fact1.rows[0],
           });
         },
         (err) => {
@@ -155,6 +153,7 @@ export default class Dashboard extends React.Component {
       selectedRow,
       loggedInUser,
       showSavePage,
+      fact1,
     } = this.state;
 
     let loginSection =
@@ -264,7 +263,7 @@ export default class Dashboard extends React.Component {
             <br></br>
             <SearchBar search={this.search} />
             <br></br>
-            <FactsLanding fact1={this.state.fact1} />
+            <FactsLanding fact1={fact1} />
           </div>
         </div>
       );
