@@ -269,7 +269,7 @@ function getRecs(req, res) {
     searchType +
     `'
       )
-   WHERE ROWNUM <= 6
+   WHERE ROWNUM <= 10
   `;
 
   run(query).then((response) => {
