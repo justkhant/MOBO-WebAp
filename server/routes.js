@@ -46,7 +46,6 @@ async function insert(query, binds, res) {
   }
 }
 
-
 /* -------------------------------------------------- */
 /* ------------------- Route Handlers --------------- */
 /* -------------------------------------------------- */
@@ -73,7 +72,8 @@ function getMediaInfo(req, res) {
 }
 
 function getMultipleMediaInfo(req, res) {
-  var media_ids = req.params.media_ids;
+  console.log(JSON.parse(req.query.media_ids));
+  var media_ids = JSON.parse(req.query.media_ids);
   let query = ``;
   if (media_ids.length > 0) {
     query = `
@@ -91,10 +91,10 @@ function getMultipleMediaInfo(req, res) {
     `;
   }
   media_ids.forEach(function(media_id) {
-      query.concat(` M.media_id = `+ media_id +` OR`);
+      query += ` M.media_id = `+ media_id +` OR`;
   } );
 
-  query.substring(0, query.length - 2);
+  query = query.substring(0, query.length - 2);
 
   console.log(query);
   run(query).then((response) => {
@@ -268,19 +268,20 @@ function createNewUser(req, res) {
   var password = req.params.password;
 
   var query = "";
-  query =
-    `INSERT INTO Users VALUES (:1, :2)`;
-  
-  var binds =[ ""+username, ""+password ]
+  query = `INSERT INTO Users VALUES (:1, :2)`;
+
+  var binds = ["" + username, "" + password];
 
   console.log(binds);
 
-  insert(query, binds).then((response) => {
-    res.json(response);
-  },
-  (err) => {
-    console.log(err);
-  });
+  insert(query, binds).then(
+    (response) => {
+      res.json(response);
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 }
 
 function getPassword(req, res) {
@@ -291,7 +292,49 @@ function getPassword(req, res) {
     `
        SELECT password
        FROM Users
-       WHERE username = '`+ username + `' 
+       WHERE username = '` +
+    username +
+    `' 
+        `;
+
+  run(query).then((response) => {
+    res.json(response);
+  });
+}
+
+// SAVED PAGE MEDIA
+function addToSavedMedia(req, res) {
+  var username = req.params.username;
+  var media_id = req.params.media_id;
+
+  var query = "";
+  query = `INSERT INTO Saved_media VALUES (:1, :2)`;
+
+  var binds = ["" + username, "" + media_id];
+
+  console.log(binds);
+
+  insert(query, binds).then(
+    (response) => {
+      res.json(response);
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
+}
+
+function getMediaFromUser(req, res) {
+  var username = req.params.username;
+
+  var query = "";
+  query =
+    `
+       SELECT media_id
+       FROM Saved_media
+       WHERE username = '` +
+    username +
+    `' 
         `;
 
   run(query).then((response) => {
@@ -308,4 +351,7 @@ module.exports = {
   getAllGenres: getAllGenres,
   createNewUser: createNewUser,
   getPassword: getPassword,
+  getMultipleMediaInfo: getMultipleMediaInfo,
+  getMediaFromUser: getMediaFromUser,
+  addToSavedMedia: addToSavedMedia,
 };

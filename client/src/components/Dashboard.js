@@ -107,7 +107,7 @@ export default class Dashboard extends React.Component {
 
   toggleSavedPage() {
     const newState = !this.state.showSavePage;
-    console.log('showSavedPage is', newState);
+    console.log("showSavedPage is", newState);
     this.setState({
       showSavePage: newState,
     });
@@ -124,11 +124,30 @@ export default class Dashboard extends React.Component {
     } = this.state;
 
     let loginSection =
-      loggedInUser === null ? ( <div> {" "} <LoginModal onLoginAttemptSuccess={this.onLoginAttemptSuccess} /> </div> ) : 
-      ( <p>Hello {loggedInUser.email}</p> );
+      loggedInUser === null ? (
+        <div>
+          {" "}
+          <LoginModal onLoginAttemptSuccess={this.onLoginAttemptSuccess} />{" "}
+        </div>
+      ) : (
+        <p>Hello {loggedInUser.email}</p>
+      );
 
-    let savedPageButton = 
-      loggedInUser === null ? [] : (<form className="navbar-nav mr-auto" onSubmit={(event) => {event.preventDefault()}}><button className="btn-1" onClick={this.toggleSavedPage}>Saved Page</button></form>);
+    let savedPageButton =
+      loggedInUser === null ? (
+        []
+      ) : (
+        <form
+          className="navbar-nav mr-auto"
+          onSubmit={(event) => {
+            event.preventDefault();
+          }}
+        >
+          <button className="btn-1" onClick={this.toggleSavedPage}>
+            Saved Page
+          </button>
+        </form>
+      );
 
     if (showSavePage) {
       return (
@@ -140,10 +159,19 @@ export default class Dashboard extends React.Component {
               </a>
               <div class="navbar-collapse collapse justify-content-between"></div>
               <form className="navbar-nav mr-auto">{loginSection}</form>
-              <form className="navbar-nav mr-auto" onSubmit={(event) => {event.preventDefault()}}><button className="btn-1" onClick={this.toggleSavedPage}>Home Page</button></form>
+              <form
+                className="navbar-nav mr-auto"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                }}
+              >
+                <button className="btn-1" onClick={this.toggleSavedPage}>
+                  Home Page
+                </button>
+              </form>
             </nav>
             <br></br>
-            <SavedPage/>
+            <SavedPage username="a" />
           </div>
         </div>
       );
@@ -158,7 +186,14 @@ export default class Dashboard extends React.Component {
                 <img src="mobo_logo.png" height="70"></img>
               </a>
               <div class="navbar-collapse collapse justify-content-between"></div>
-              <form className="navbar-nav mr-auto" onSubmit={(event) => {event.preventDefault()}}>{loginSection}</form>
+              <form
+                className="navbar-nav mr-auto"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                }}
+              >
+                {loginSection}
+              </form>
               {savedPageButton}
             </nav>
             <br></br>
@@ -172,6 +207,34 @@ export default class Dashboard extends React.Component {
       );
     }
 
+    if (searchResultsData.length == 0) {
+      return (
+        <div className="Dashboard">
+          <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a class="navbar-brand" href="#">
+                <img src="mobo_logo.png" height="70"></img>
+              </a>
+              <div class="navbar-collapse collapse justify-content-between"></div>
+              <form
+                className="navbar-nav mr-auto"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                }}
+              >
+                {loginSection}
+              </form>
+              {savedPageButton}
+            </nav>
+            <br></br>
+            <SearchBar search={this.search} />
+            <br></br>
+            <FunFact />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="Dashboard">
         <div class="container">
@@ -180,7 +243,14 @@ export default class Dashboard extends React.Component {
               <img src="mobo_logo.png" height="70"></img>
             </a>
             <div class="navbar-collapse collapse justify-content-between"></div>
-            <form className="navbar-nav mr-auto" onSubmit={(event) => {event.preventDefault()}}>{loginSection}</form>
+            <form
+              className="navbar-nav mr-auto"
+              onSubmit={(event) => {
+                event.preventDefault();
+              }}
+            >
+              {loginSection}
+            </form>
             {savedPageButton}
           </nav>
           <br></br>

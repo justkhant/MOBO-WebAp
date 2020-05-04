@@ -32,23 +32,45 @@ export default class LoginModal extends React.Component {
     console.log("password: " + document.querySelector("#password").value);
 
     const username = document.querySelector("#username").value;
-    const password = document.querySelector("#username").value;
+    const password = document.querySelector("#password").value;
 
     if (!username || !password) {
       this.setState({
         error: true,
       });
-    } else if (username === "mobo" && password === "dabest") {
-      this.onLoginSuccess("form");
-      this.closeModal();
-
-      const user = {
-        username,
-        password,
-      };
-      this.props.onLoginAttemptSuccess(user);
     } else {
-      this.onLoginFail("form", "could not find user");
+      fetch(`http://localhost:8081/login/${username}` , {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (res) => {
+          console.log('password match', res.rows[0][0] === password);
+
+          if (res.rows[0].length > 0 && res.rows[0][0] === password) {
+            this.onLoginSuccess("form");
+            this.closeModal();
+
+            const user = {
+              username,
+              password,
+            };
+            this.props.onLoginAttemptSuccess(user);
+          } else {
+            this.onLoginFail("form", "could not find user");
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
   }
 
@@ -61,13 +83,14 @@ export default class LoginModal extends React.Component {
     const password = document.querySelector("#password").value;
 
     fetch(`http://localhost:8081/register/${username}/${password}` , {
-      method: "GET",
+      method: "POST",
     })
       .then(
         (res) => {
           return res.json();
         },
         (err) => {
+          console.log('register failed');
           console.log(err);
         }
       )

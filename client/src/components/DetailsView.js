@@ -18,11 +18,16 @@ export default class DetailsView extends React.Component {
     if (data[2] == "B") {
       return (
         <section className="jumbotron">
-          <button type="button" class="close" aria-label="Close">
+          <button
+            type="button"
+            class="close"
+            aria-label="Close"
+            onClick={this.onExit.bind(this)}
+          >
             <span aria-hidden="true">&times;</span>
           </button>
           <img
-            src={data[5]}
+            src={data[6]}
             className="float-left align-middle"
             alt="Book Cover Image"
             height="250"
@@ -31,19 +36,19 @@ export default class DetailsView extends React.Component {
           <div className="container">
             <h1 className="jumbotron-heading">{data[1]}</h1>
             <p className="text-muted">
-              <strong>Author(s):</strong> {data[7]}
+              <strong>Author(s):</strong> {data[12]}
             </p>
             <p className="text-muted">
-              <strong>Avg. Rating:</strong> {data[4]}/10 ({data[9]})
+              <strong>Avg. Rating:</strong> {data[5]}/10 ({data[8]})
             </p>
             <p className="text-muted">
-              <strong>Review Count:</strong> {data[11]}
+              <strong>Review Count:</strong> {data[14]}
             </p>
             <p className="text-muted">
-              <strong>Description:</strong> {data[8]}
+              <strong>Description:</strong> {data[4]}
             </p>
             <p className="text-muted">
-              <strong>Length:</strong> {data[10]} pages
+              <strong>Length:</strong> {data[13]} pages
             </p>
           </div>
         </section>
@@ -61,7 +66,7 @@ export default class DetailsView extends React.Component {
           <span aria-hidden="true">&times;</span>
         </button>
         <img
-          src={data[5]}
+          src={data[6]}
           className="float-left align-middle"
           alt="Movie Cover Image"
           height="250"
@@ -73,19 +78,19 @@ export default class DetailsView extends React.Component {
             <strong>Released:</strong> {data[8]}
           </p>
           <p className="text-muted">
-            <strong>Runtime:</strong> {data[11]} minutes
+            <strong>Runtime:</strong> {data[10]} minutes
           </p>
           <p className="text-muted">
-            <strong>Avg. Rating:</strong> {data[4]}/10 ({data[9]})
+            <strong>Avg. Rating:</strong> {data[5]}/10 ({data[8]})
           </p>
           <p className="text-muted">
             <strong>Keywords:</strong> {data[3]}
           </p>
           <p className="text-muted">
-            <strong>Revenue:</strong> ${data[10]}
+            <strong>Revenue:</strong> ${data[9]}
           </p>
           <p className="text-muted">
-            <strong>Description:</strong> {data[7]}
+            <strong>Description:</strong> {data[4]}
           </p>
         </div>
       </section>

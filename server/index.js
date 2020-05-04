@@ -27,11 +27,25 @@ app.get("/recommendations/:id", routes.getRecs);
 // Get a media's information based on Media ID
 app.get("/media/:id", routes.getMediaInfo);
 
-// Get a media's information based on Media ID
-app.get("/register/:username/:password", routes.createNewUser);
+// Get media's information based on an array of Media IDs
+app.get("/mediaMultiple", routes.getMultipleMediaInfo);
 
-// Get a media's information based on Media ID
+
+/* USER REGISTRATION AND LOGIN */
+// Created a new user in User table
+app.post("/register/:username/:password", routes.createNewUser);
+
+// Check username/password for user
 app.get("/login/:username", routes.getPassword);
+
+
+/* SAVED PAGE */
+// Create a new entry in Saved_media table
+app.post("/savedPage/:username/:media_id", routes.addToSavedMedia);
+
+// Get array of media_id for a user's savedPage
+app.get("/savedPage/:username", routes.getMediaFromUser);
+
 
 process.once("SIGTERM", process.exit);
 process.once("SIGINT", process.exit);

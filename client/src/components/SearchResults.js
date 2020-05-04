@@ -10,6 +10,7 @@ export default class SearchResults extends React.Component {
 
   render() {
     const { data } = this.props;
+    console.log(data);
     return (
       <div className="searchResults">
         <table className="table table-striped table-hover">
