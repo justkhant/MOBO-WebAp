@@ -9,7 +9,6 @@ export default class SavedPage extends React.Component {
     super(props);
 
     this.state = {
-      username: null,
       savedMedia: [],
     };
 

@@ -172,7 +172,7 @@ export default class Dashboard extends React.Component {
               </form>
             </nav>
             <br></br>
-            <SavedPage username="a" />
+            <SavedPage username={loggedInUser} />
           </div>
         </div>
       );
@@ -201,6 +201,7 @@ export default class Dashboard extends React.Component {
             <SearchBar search={this.search} />
             <DetailedView
               data={searchResultsData[selectedRow]}
+              username={loggedInUser}
               onExit={this.onExit.bind(this)}
             />
           </div>

@@ -395,17 +395,18 @@ function getPassword(req, res) {
 // SAVED PAGE MEDIA
 function addToSavedMedia(req, res) {
   var username = req.params.username;
-  var media_id = req.params.media_id;
+  var media_id = parseInt(req.params.media_id);
 
   var query = "";
   query = `INSERT INTO Saved_media VALUES (:1, :2)`;
 
-  var binds = ["" + username, "" + media_id];
+  var binds = ["" + media_id, "" + username];
 
   console.log(binds);
 
   insert(query, binds).then(
-    () => {
+    (data) => {
+      console.log(data);
       res.status(201).send();
     },
     (err) => {
@@ -428,6 +429,7 @@ function getMediaFromUser(req, res) {
         `;
 
   run(query).then((response) => {
+    console.log(response);
     res.json(response);
   });
 }
