@@ -1,6 +1,9 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+const testIds = [10554, 7556, 88050];
+const testIdsString = '10554,7556,88050';
+
 export default class SavedPage extends React.Component {
   constructor(props) {
     super(props);
@@ -12,11 +15,13 @@ export default class SavedPage extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8081/media/" + 10554, {
+    console.log('herere');
+    fetch(`http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(testIds)}`, {
       method: "GET",
     })
       .then(
         (res) => {
+          console.log(res);
           return res.json();
         },
         (err) => {
@@ -24,12 +29,8 @@ export default class SavedPage extends React.Component {
         }
       )
       .then(
-        (info) => {
-          if (!info) return;
-          console.log(info.rows);
-          this.setState({
-            savedMedia: info.rows,
-          });
+        (res) => {
+          console.log(res);
         },
         (err) => {
           console.log(err);

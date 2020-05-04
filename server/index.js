@@ -31,7 +31,7 @@ app.get("/register/:username/:password", routes.createNewUser);
 
 app.get("/login/:username", routes.getPassword);
 
-app.get("/mediaMultiple/:media_ids", routes.getMultipleMediaInfo);
+app.get("/mediaMultiple", routes.getMultipleMediaInfo);
 
 process.once("SIGTERM", process.exit);
 process.once("SIGINT", process.exit);

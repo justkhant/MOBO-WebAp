@@ -26,7 +26,7 @@ export default class Dashboard extends React.Component {
       showModal: false,
       loading: false,
       error: null,
-      loggedInUser: null,
+      loggedInUser: 1,
       showSavePage: false,
     };
 

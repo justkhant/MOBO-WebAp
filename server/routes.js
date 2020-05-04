@@ -73,7 +73,8 @@ function getMediaInfo(req, res) {
 }
 
 function getMultipleMediaInfo(req, res) {
-  var media_ids = req.params.media_ids;
+  console.log(JSON.parse(req.query.media_ids));
+  var media_ids = JSON.parse(req.query.media_ids);
   let query = ``;
   if (media_ids.length > 0) {
     query = `
@@ -91,10 +92,10 @@ function getMultipleMediaInfo(req, res) {
     `;
   }
   media_ids.forEach(function(media_id) {
-      query.concat(` media_id = `+ media_id +` OR`);
+      query += ` media_id = `+ media_id +` OR`;
   } );
 
-  query.substring(0, query.length - 2);
+  query = query.substring(0, query.length - 2);
 
   console.log(query);
   run(query).then((response) => {
