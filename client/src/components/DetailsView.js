@@ -75,7 +75,7 @@ export default class DetailsView extends React.Component {
         <div className="container">
           <h1 className="jumbotron-heading">{data[1]}</h1>
           <p className="text-muted">
-            <strong>Released:</strong> {data[8]}
+            <strong>Released:</strong> {data[7]}
           </p>
           <p className="text-muted">
             <strong>Runtime:</strong> {data[10]} minutes

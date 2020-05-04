@@ -8,6 +8,7 @@ import SearchResults from "./SearchResults";
 import DetailedView from "./DetailedView";
 import FactCard from "./FactCard";
 import FunFact from "./FunFact";
+import FactsLanding from "./FactsLanding";
 import LoginModal from "./LoginModal";
 import SavedPage from "./SavedPage";
 
@@ -229,7 +230,7 @@ export default class Dashboard extends React.Component {
             <br></br>
             <SearchBar search={this.search} />
             <br></br>
-            <FunFact />
+            <FactsLanding />
           </div>
         </div>
       );
@@ -260,7 +261,7 @@ export default class Dashboard extends React.Component {
             showDetailedView={this.showDetailedView}
           />
           <br></br>
-          <FunFact />
+          <FactsLanding />
         </div>
       </div>
     );

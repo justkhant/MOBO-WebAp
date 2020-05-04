@@ -90,9 +90,9 @@ function getMultipleMediaInfo(req, res) {
       WHERE
     `;
   }
-  media_ids.forEach(function(media_id) {
-      query += ` M.media_id = `+ media_id +` OR`;
-  } );
+  media_ids.forEach(function (media_id) {
+    query += ` M.media_id = ` + media_id + ` OR`;
+  });
 
   query = query.substring(0, query.length - 2);
 
@@ -145,20 +145,23 @@ function getRecs(req, res) {
   var searchType = req.params.searchType;
 
   var query =
-
-  `WITH input_keywords AS (
+    `WITH input_keywords AS (
       SELECT DISTINCT media_id, title, trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) AS keyword
       FROM 
       Media, 
       table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(Media.keywords, '[^,]+'))  + 1) as sys.OdciNumberList)) levels
-      WHERE media_id = `+ searchId +` AND trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
+      WHERE media_id = ` +
+    searchId +
+    ` AND trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
   ),
   all_keywords AS (
       SELECT DISTINCT media_id, title, trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) AS keyword
       FROM 
       Media, 
       table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(Media.keywords, '[^,]+'))  + 1) as sys.OdciNumberList)) levels
-      WHERE media_id <> `+ searchId +` AND trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
+      WHERE media_id <> ` +
+    searchId +
+    ` AND trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
   ), 
   keyword_match AS (
       SELECT media_id, title, SUM(score) AS score
@@ -173,7 +176,9 @@ function getRecs(req, res) {
   input_genre_similarity_id AS (
     SELECT DISTINCT M.media_id, M.title, Ge.similarity_id 
     FROM Media M JOIN Genres_to_media G ON M.media_id = G.media_id JOIN Genres Ge ON G.genre_name = Ge.genre_name
-    WHERE M.media_id = `+ searchId +`
+    WHERE M.media_id = ` +
+    searchId +
+    `
   ),
   
   genre_match AS (
@@ -181,7 +186,9 @@ function getRecs(req, res) {
     FROM input_genre_similarity_id I JOIN Genres Ge ON I.similarity_id = Ge.similarity_id 
                                           JOIN Genres_to_media G ON Ge.genre_name = G.genre_name 
                                               JOIN Media M ON M.media_id = G.media_id 
-      WHERE M.media_id <> `+ searchId +`
+      WHERE M.media_id <> ` +
+    searchId +
+    `
     GROUP BY M.media_id, M.title
   ),
   
@@ -193,14 +200,18 @@ function getRecs(req, res) {
   input_decade AS (
       SELECT TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999') - MOD((TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999')), 10) AS decade
       FROM movie_info
-      WHERE media_id = `+ searchId +`
+      WHERE media_id = ` +
+    searchId +
+    `
   ),
   
   decade_match AS (
       SELECT media_id, title, 5 AS score
       FROM movie_info, input_decade 
       WHERE decade = TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999') - MOD((TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999')), 10) 
-          AND media_id <> `+ searchId +`
+          AND media_id <> ` +
+    searchId +
+    `
   ),
   
   book_info AS (
@@ -211,12 +222,16 @@ function getRecs(req, res) {
   input_authors AS (
       SELECT DISTINCT media_id, title, trim(regexp_substr(authors, '[^|]+', 1, levels.column_value)) AS author
       FROM book_info, table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(authors, '[^|]+'))  + 1) as sys.OdciNumberList)) levels
-      WHERE media_id = `+ searchId +` AND trim(regexp_substr(authors, '[^|]+', 1, levels.column_value)) IS NOT NULL
+      WHERE media_id = ` +
+    searchId +
+    ` AND trim(regexp_substr(authors, '[^|]+', 1, levels.column_value)) IS NOT NULL
   ),
   all_authors AS (
       SELECT DISTINCT media_id, title, trim(regexp_substr(authors, '[^|]+', 1, levels.column_value)) AS author
       FROM book_info, table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(authors, '[^|]+'))  + 1) as sys.OdciNumberList)) levels
-      WHERE media_id <> `+ searchId +` AND trim(regexp_substr(authors, '[^|]+', 1, levels.column_value)) IS NOT NULL
+      WHERE media_id <> ` +
+    searchId +
+    ` AND trim(regexp_substr(authors, '[^|]+', 1, levels.column_value)) IS NOT NULL
   ),
   authors_match AS (
       SELECT media_id, title, SUM(score) AS score
@@ -250,13 +265,15 @@ function getRecs(req, res) {
           FROM top_scores t INNER JOIN Media M ON t.media_id = M.media_id 
               LEFT OUTER JOIN Movies Mo ON t.media_id = Mo.media_id 
               LEFT OUTER JOIN Books B ON t.media_id = B.media_id
-          WHERE media_type = '`+ searchType +`'
+          WHERE media_type = '` +
+    searchType +
+    `'
       )
-   WHERE ROWNUM <= 10
+   WHERE ROWNUM <= 6
   `;
 
   run(query).then((response) => {
-    // console.log('response in run query is', response);
+    console.log("response in rec query is", response);
     res.json(response);
   });
 }
@@ -341,7 +358,6 @@ function getMediaFromUser(req, res) {
     res.json(response);
   });
 }
-
 
 // The exported functions, which can be accessed in index.js.
 module.exports = {
