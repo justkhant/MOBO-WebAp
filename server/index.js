@@ -30,6 +30,12 @@ app.get("/media/:id", routes.getMediaInfo);
 // Get media's information based on an array of Media IDs
 app.get("/mediaMultiple", routes.getMultipleMediaInfo);
 
+/* FUN FACTS */
+app.get("/funfact1", routes.getLongestMovie);
+app.get("/funfact2", routes.getShortestMovie);
+app.get("/funfact3", routes.getMostExpensiveMovie);
+app.get("/funfact4", routes.getAuthorWithMostBooks);
+
 /* USER REGISTRATION AND LOGIN */
 // Created a new user in User table
 app.post("/register/:username/:password", routes.createNewUser);
