@@ -74,7 +74,7 @@ export default class SavedPage extends React.Component {
 
   render() {
     const { savedMedia } = this.state;
-    console.log(savedMedia);
+    console.log('saved media contains', savedMedia);
 
     return (
       <div class="Saved Page">
