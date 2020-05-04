@@ -9,19 +9,28 @@ export default class SavedPage extends React.Component {
     super(props);
 
     this.state = {
-      userId: null,
+      username: null,
       savedMedia: [],
     };
+
+    this.getSavedMediaFromUsername = this.getSavedMediaFromUsername.bind(this);
+    this.getMediaDataFromMediaIDs = this.getMediaDataFromMediaIDs.bind(this);
   }
 
   componentDidMount() {
-    console.log('herere');
+    this.getSavedMediaFromUsername(this.props.username);
+  }
+
+  getSavedMediaFromUsername(username) {
+
+  }
+
+  getMediaDataFromMediaIDs(media_ids) {
     fetch(`http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(testIds)}`, {
       method: "GET",
     })
       .then(
         (res) => {
-          console.log(res);
           return res.json();
         },
         (err) => {

@@ -26,7 +26,7 @@ export default class Dashboard extends React.Component {
       showModal: false,
       loading: false,
       error: null,
-      loggedInUser: 1,
+      loggedInUser: null,
       showSavePage: false,
     };
 
@@ -171,7 +171,7 @@ export default class Dashboard extends React.Component {
               </form>
             </nav>
             <br></br>
-            <SavedPage />
+            <SavedPage username="a" />
           </div>
         </div>
       );
