@@ -7,7 +7,6 @@ export default class FactCard extends React.Component {
     super(props);
   }
 
-  //Only contains the things in MEDIA (not book/movie specific)
   render() {
     return (
       <div class="col-md-6 w-25">
@@ -21,7 +20,7 @@ export default class FactCard extends React.Component {
                 {this.props.title}
               </a>
             </h3>
-            <div class="mb-1 text-muted">Rating: {this.props.avg_rating})</div>
+            <div class="mb-1 text-muted">Rating: {this.props.avg_rating}</div>
             <p class="card-text mb-auto overflow">
               Description: {this.props.desc}
             </p>
