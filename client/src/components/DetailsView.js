@@ -32,9 +32,18 @@ export default class DetailsView extends React.Component {
 
   render() {
     const { data, username, savedPageMedia } = this.props;
+    console.log(savedPageMedia);
+
+    let isSavedAlready = false;
+
+    for (let i = 0; i < savedPageMedia.length; i++) {
+      if (savedPageMedia[i][0] === data[0]) isSavedAlready = true;
+    }
+
+    console.log(isSavedAlready);
 
     // BOOK
-    if (data[2] == "B") {
+    if (data[2] === "B") {
       return (
         <section className="jumbotron">
           <button

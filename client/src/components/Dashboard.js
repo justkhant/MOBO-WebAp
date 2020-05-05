@@ -297,7 +297,7 @@ export default class Dashboard extends React.Component {
       );
     }
 
-    if (searchResultsData.length == 0) {
+    if (searchResultsData.length === 0) {
       return (
         <div className="Dashboard">
           <div class="container">
