@@ -51,11 +51,13 @@ export default class DetailsView extends React.Component {
   }
 
   onSaveButtonPress() {
-    const { username } = this.props;
-    const { isSaved, currentMediaID } = this.state;
+    const { data, username, savedPageChanged } = this.props;
+    const { isSaved } = this.state;
+
+    console.log('query', username, data[0]);
 
     if (!isSaved) {
-      fetch(`http://localhost:8081/savePage/${username}/${currentMediaID}`, {
+      fetch(`http://localhost:8081/savePage/${username}/${data[0]}`, {
         method: "POST",
       }).then(
         (res) => {
@@ -63,7 +65,8 @@ export default class DetailsView extends React.Component {
           console.log("add to saved page success");
           this.setState({
             isSaved: true,
-          })
+          });
+          savedPageChanged();
         },
         (err) => {
           console.log("add to saved page failed");
@@ -71,15 +74,16 @@ export default class DetailsView extends React.Component {
         }
       );
     } else {
-      fetch(`/deleteSavedPage/${username}/${currentMediaID}`, {
+      fetch(`http://localhost:8081/deleteSavedPage/${username}/${data[0]}`, {
         method: "PUT",
       }).then(
         (res) => {
-          console.log(res.status === 200);
+          console.log('status', res.status === 200);
           console.log("deleted from saved page");
           this.setState({
             isSaved: false,
-          })
+          });
+          savedPageChanged();
         },
         (err) => {
           console.log("delete from saved page failed");

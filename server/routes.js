@@ -299,7 +299,7 @@ function getRecs(req, res) {
       revenue, runtime, language, authors, pages, review_count
   FROM top_scores t INNER JOIN Media M ON t.media_id = M.media_id 
       LEFT OUTER JOIN Movies Mo ON t.media_id = Mo.media_id 
-      LEFT OUTER JOIN Books B ON t.media_id = B.media_id;
+      LEFT OUTER JOIN Books B ON t.media_id = B.media_id
 
   `;
 

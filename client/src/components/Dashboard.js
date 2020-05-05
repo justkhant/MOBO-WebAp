@@ -232,7 +232,7 @@ export default class Dashboard extends React.Component {
     Cookies.remove('username');
     this.setState({
       loggedInUser: null,
-    })
+    }, this.savedPageChanged)
   }
 
   onExit() {
@@ -252,7 +252,11 @@ export default class Dashboard extends React.Component {
   }
 
   getSavedMediaFromUsername(username) {
-    if (username === null) return;
+    if (username === null) {
+      this.setState({
+        savedPageMedia: [],
+      });
+    }
     fetch(`http://localhost:8081/getSavedPage/${username}`, {
       method: "GET",
     })
@@ -404,6 +408,7 @@ export default class Dashboard extends React.Component {
               savedPageMedia={savedPageMedia}
               onExit={this.onExit}
               goToDetailedView={this.goToDetailedView}
+              savedPageChanged={this.savedPageChanged}
             />
           </div>
         </div>
