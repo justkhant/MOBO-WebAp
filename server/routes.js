@@ -343,7 +343,7 @@ function getAuthorWithMostBooks(req, res) {
             WHERE trim(regexp_substr(authors, '[^|]+', 1, levels.column_value)) IS NOT NULL)
         GROUP BY author
         ORDER BY num_books DESC)
-  WHERE ROWNUM <= 1;  
+  WHERE ROWNUM <= 1 
   `;
 
   run(query).then((response) => {

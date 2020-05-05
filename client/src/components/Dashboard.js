@@ -30,6 +30,9 @@ export default class Dashboard extends React.Component {
       showSavePage: false,
       savedPageMedia: [],
       fact1: null,
+      fact2: null,
+      fact3: null,
+      fact4: null,
     };
 
     this.search = this.search.bind(this);
@@ -38,6 +41,9 @@ export default class Dashboard extends React.Component {
     this.onLoginAttemptSuccess = this.onLoginAttemptSuccess.bind(this);
     this.toggleSavedPage = this.toggleSavedPage.bind(this);
     this.funFact1 = this.funFact1.bind(this);
+    this.funFact2 = this.funFact2.bind(this);
+    this.funFact3 = this.funFact3.bind(this);
+    this.funFact4 = this.funFact4.bind(this);
     this.getSavedMediaFromUsername = this.getSavedMediaFromUsername.bind(this);
     this.getMediaDataFromMediaIDs = this.getMediaDataFromMediaIDs.bind(this);
     this.onExit = this.onExit.bind(this);
@@ -48,6 +54,9 @@ export default class Dashboard extends React.Component {
   componentDidMount() {
     // TODO: Fetch data for interesting facts section
     this.funFact1();
+    this.funFact2();
+    this.funFact3();
+    this.funFact4();
   }
 
   funFact1() {
@@ -66,10 +75,88 @@ export default class Dashboard extends React.Component {
       .then(
         (fact1) => {
           if (!fact1) return;
-          console.log("Fun fact 1!!!");
-          console.log(fact1);
+
           this.setState({
             fact1: fact1.rows[0],
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  funFact2() {
+    fetch("http://localhost:8081/funfact2", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact2) => {
+          if (!fact2) return;
+
+          this.setState({
+            fact2: [fact2.rows],
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  funFact3() {
+    fetch("http://localhost:8081/funfact3", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact3) => {
+          if (!fact3) return;
+          this.setState({
+            fact3: fact3.rows[0],
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  funFact4() {
+    fetch("http://localhost:8081/funfact4", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact4) => {
+          if (!fact4) return;
+          this.setState({
+            fact4: fact4.rows[0],
           });
         },
         (err) => {
@@ -130,7 +217,6 @@ export default class Dashboard extends React.Component {
   onLoginAttemptSuccess(username) {
     console.log("login success for" + username);
     this.getSavedMediaFromUsername(username);
-
   }
 
   onExit() {
@@ -174,7 +260,9 @@ export default class Dashboard extends React.Component {
 
   getMediaDataFromMediaIDs(username, media_ids) {
     fetch(
-      `http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(media_ids)}`,
+      `http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(
+        media_ids
+      )}`,
       {
         method: "GET",
       }
@@ -331,7 +419,12 @@ export default class Dashboard extends React.Component {
             <br></br>
             <SearchBar search={this.search} />
             <br></br>
-            <FactsLanding fact1={fact1} />
+            <FactsLanding
+              fact1={this.state.fact1}
+              fact2={this.state.fact2}
+              fact3={this.state.fact3}
+              fact4={this.state.fact4}
+            />
           </div>
         </div>
       );
