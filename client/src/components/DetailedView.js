@@ -88,6 +88,7 @@ export default class DetailedView extends React.Component {
       .then(
         (recList) => {
           if (!recList) return;
+          console.log(recList);
           let recDivs = recList.rows.map((rec, i) => (
             // TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
             // might need some queries/routes
