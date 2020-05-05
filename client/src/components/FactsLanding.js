@@ -7,7 +7,7 @@ export default class FactsLanding extends React.Component {
   }
 
   render() {
-    const { fact1, fact2 } = this.props;
+    const { fact1, fact2, fact3, fact4 } = this.props;
 
     let answer1 = [];
     let answer2 = [];
@@ -31,6 +31,22 @@ export default class FactsLanding extends React.Component {
       );
     }
 
+    if (fact3 !== null) {
+      answer3 = (
+        <p>
+          {fact3[1]} generated over ${fact3[9]} in revenue!
+        </p>
+      );
+    }
+
+    if (fact4 !== null) {
+      answer4 = (
+        <p>
+          {fact4[0]} wrote {fact4[1]} books!
+        </p>
+      );
+    }
+
     console.log(this.props);
     return (
       <div>
@@ -39,7 +55,9 @@ export default class FactsLanding extends React.Component {
         <h4>What is the shortest feature film ever?</h4>
         {answer2}
         <h4>What is the movie with the highest revenue?</h4>
+        {answer3}
         <h4>Which author has written the most books?</h4>
+        {answer4}
       </div>
     );
   }

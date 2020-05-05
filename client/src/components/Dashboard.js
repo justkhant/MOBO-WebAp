@@ -74,8 +74,7 @@ export default class Dashboard extends React.Component {
       .then(
         (fact1) => {
           if (!fact1) return;
-          console.log("Fun fact 1!!!");
-          console.log(fact1);
+
           this.setState({
             fact1: fact1.rows[0],
           });
@@ -102,11 +101,10 @@ export default class Dashboard extends React.Component {
       .then(
         (fact2) => {
           if (!fact2) return;
-          console.log("Fun fact 2!!!");
+
           this.setState({
             fact2: [fact2.rows],
           });
-          console.log(this.state.fact2);
         },
         (err) => {
           console.log(err);
@@ -130,10 +128,8 @@ export default class Dashboard extends React.Component {
       .then(
         (fact3) => {
           if (!fact3) return;
-          console.log("Fun fact 3!!!");
-          console.log(fact3);
           this.setState({
-            funFact3: fact3.rows[0],
+            fact3: fact3.rows[0],
           });
         },
         (err) => {
@@ -158,8 +154,9 @@ export default class Dashboard extends React.Component {
       .then(
         (fact4) => {
           if (!fact4) return;
-          console.log("Fun fact 4!!!");
-          console.log(fact4);
+          this.setState({
+            fact4: fact4.rows[0],
+          });
         },
         (err) => {
           console.log(err);
@@ -412,7 +409,12 @@ export default class Dashboard extends React.Component {
             <br></br>
             <SearchBar search={this.search} />
             <br></br>
-            <FactsLanding fact1={this.state.fact1} fact2={this.state.fact2} />
+            <FactsLanding
+              fact1={this.state.fact1}
+              fact2={this.state.fact2}
+              fact3={this.state.fact3}
+              fact4={this.state.fact4}
+            />
           </div>
         </div>
       );
