@@ -96,3 +96,9 @@ thead {
   line-height: 25px;
   text-overflow: ellipsis;
 }
+
+.save {
+  background-color: #ff843c;
+  color: white;
+  outline: none;
+}
