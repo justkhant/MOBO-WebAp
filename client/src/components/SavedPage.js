@@ -19,11 +19,10 @@ export default class SavedPage extends React.Component {
   }
 
   componentDidMount() {
-    const username = this.props.username;
+    const { username, savedPageMedia } = this.props;
 
     if (username === null) return;
 
-    this.getSavedMediaFromUsername(username);
   }
 
   getSavedMediaFromUsername(username) {
@@ -91,13 +90,25 @@ export default class SavedPage extends React.Component {
   }
 
   render() {
-    const { savedMedia } = this.state;
-    console.log("saved media contains", savedMedia);
+    const { savedPageMedia } = this.props;
+    console.log("saved media contains", savedPageMedia);
+
+    let recDivs = savedPageMedia.map((rec, i) => (
+      // TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
+      // might need some queries/routes
+      <FactCard
+        id={rec[0]}
+        genre={rec[2]}
+        title={rec[1]}
+        avg_rating={rec[5]}
+        desc={rec[4]}
+      />
+    ));
 
     return (
       <div class="Saved Page">
         <h3>My Saved Media</h3>
-        <div class="card-deck">{this.state.displayMedia}</div>
+        <div class="card-deck">{recDivs}</div>
       </div>
     );
   }

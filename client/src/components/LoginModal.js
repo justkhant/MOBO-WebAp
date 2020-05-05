@@ -58,11 +58,7 @@ export default class LoginModal extends React.Component {
             this.onLoginSuccess("form");
             this.closeModal();
 
-            const user = {
-              username,
-              password,
-            };
-            this.props.onLoginAttemptSuccess(user);
+            this.props.onLoginAttemptSuccess(username);
           } else {
             this.onLoginFail("form", "could not find user");
           }
@@ -91,6 +87,10 @@ export default class LoginModal extends React.Component {
           // if (res.status)
           // return res.json();
           console.log('registration success');
+          this.onLoginSuccess("form");
+          this.closeModal();
+
+          this.props.onLoginAttemptSuccess(username);
         },
         (err) => {
           console.log('register failed');

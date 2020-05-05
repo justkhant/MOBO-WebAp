@@ -27,8 +27,9 @@ export default class Dashboard extends React.Component {
       showModal: false,
       loading: false,
       error: null,
-      loggedInUser: "bill",
+      loggedInUser: null,
       showSavePage: false,
+      savedPageMedia: [],
       fact1: null,
     };
 
@@ -38,6 +39,8 @@ export default class Dashboard extends React.Component {
     this.onLoginAttemptSuccess = this.onLoginAttemptSuccess.bind(this);
     this.toggleSavedPage = this.toggleSavedPage.bind(this);
     this.funFact1 = this.funFact1.bind(this);
+    this.getSavedMediaFromUsername = this.getSavedMediaFromUsername.bind(this);
+    this.getMediaDataFromMediaIDs = this.getMediaDataFromMediaIDs.bind(this);
   }
 
   // React function that is called when the page load.
@@ -122,11 +125,10 @@ export default class Dashboard extends React.Component {
     });
   }
 
-  onLoginAttemptSuccess(user) {
-    console.log("login success for" + user.email);
-    this.setState({
-      loggedInUser: user,
-    });
+  onLoginAttemptSuccess(username) {
+    console.log("login success for" + username);
+    this.getSavedMediaFromUsername(username);
+
   }
 
   onExit() {
@@ -139,11 +141,63 @@ export default class Dashboard extends React.Component {
 
   toggleSavedPage() {
     const newState = !this.state.showSavePage;
-    console.log("showSavedPage is", newState);
+
     this.setState({
       showSavePage: newState,
     });
   }
+
+  getSavedMediaFromUsername(username) {
+    fetch(`http://localhost:8081/getSavedPage/${username}`, {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          console.log(res);
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (res) => {
+          this.getMediaDataFromMediaIDs(username, res.rows);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  getMediaDataFromMediaIDs(username, media_ids) {
+    fetch(
+      `http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(media_ids)}`,
+      {
+        method: "GET",
+      }
+    )
+      .then(
+        (res) => {
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (res) => {
+          this.setState({
+            savedPageMedia: res.rows,
+            loggedInUser: username,
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
 
   render() {
     const {
@@ -153,6 +207,7 @@ export default class Dashboard extends React.Component {
       selectedRow,
       loggedInUser,
       showSavePage,
+      savedPageMedia,
       fact1,
     } = this.state;
 
@@ -204,7 +259,7 @@ export default class Dashboard extends React.Component {
               </form>
             </nav>
             <br></br>
-            <SavedPage username={loggedInUser} />
+            <SavedPage username={loggedInUser} savedPageMedia={savedPageMedia}/>
           </div>
         </div>
       );
@@ -234,6 +289,7 @@ export default class Dashboard extends React.Component {
             <DetailedView
               data={searchResultsData[selectedRow]}
               username={loggedInUser}
+              savedPageMedia={savedPageMedia}
               onExit={this.onExit.bind(this)}
             />
           </div>
