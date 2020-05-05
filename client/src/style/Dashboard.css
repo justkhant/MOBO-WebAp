@@ -145,3 +145,7 @@ thead {
 .btn-2:hover {
   background-color: #ffeee8;
 }
+
+#saveButton {
+  margin-bottom: 20px;
+}
