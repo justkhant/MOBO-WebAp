@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../style/Dashboard.css";
-import equal from 'fast-deep-equal'
+import equal from "fast-deep-equal";
 
 export default class DetailsView extends React.Component {
   constructor(props) {
@@ -21,10 +21,11 @@ export default class DetailsView extends React.Component {
     this.updateSaveValueState();
   }
 
-
   componentDidUpdate(prevProps) {
-    if(!equal(this.props.savedPageMedia, prevProps.savedPageMedia) || !equal(this.props.data, prevProps.data))
-    {
+    if (
+      !equal(this.props.savedPageMedia, prevProps.savedPageMedia) ||
+      !equal(this.props.data, prevProps.data)
+    ) {
       this.updateSaveValueState();
     }
   }
@@ -37,8 +38,8 @@ export default class DetailsView extends React.Component {
     const { data, savedPageMedia } = this.props;
 
     let isSavedAlready = false;
-    console.log('here');
-    console.log('data[0]', data[0]);
+    console.log("here");
+    console.log("data[0]", data[0]);
 
     for (let i = 0; i < savedPageMedia.length; i++) {
       if (savedPageMedia[i][0] === data[0]) isSavedAlready = true;
@@ -46,7 +47,7 @@ export default class DetailsView extends React.Component {
     console.log(isSavedAlready);
 
     this.setState({
-      isSaved: isSavedAlready
+      isSaved: isSavedAlready,
     });
   }
 
@@ -54,7 +55,7 @@ export default class DetailsView extends React.Component {
     const { data, username, savedPageChanged } = this.props;
     const { isSaved } = this.state;
 
-    console.log('query', username, data[0]);
+    console.log("query", username, data[0]);
 
     if (!isSaved) {
       fetch(`http://localhost:8081/savePage/${username}/${data[0]}`, {
@@ -78,7 +79,7 @@ export default class DetailsView extends React.Component {
         method: "PUT",
       }).then(
         (res) => {
-          console.log('status', res.status === 200);
+          console.log("status", res.status === 200);
           console.log("deleted from saved page");
           this.setState({
             isSaved: false,
@@ -91,7 +92,6 @@ export default class DetailsView extends React.Component {
         }
       );
     }
-
   }
 
   render() {
@@ -102,9 +102,29 @@ export default class DetailsView extends React.Component {
 
     if (num !== undefined) num = data[5].toFixed(2);
 
-    let saveButton = (username === null) ? [] : (this.state.isSaved) ? (<button id="saveButton" type="button" class="btn-sm save" onClick={this.onSaveButtonPress}><span></span> Saved! </button>) :
-     (<button id="saveButton" type="button" class="btn btn-dark btn-sm" onClick={this.onSaveButtonPress}> <span></span> Save </button>);
-
+    let saveButton =
+      username === null ? (
+        []
+      ) : this.state.isSaved ? (
+        <button
+          id="saveButton"
+          type="button"
+          class="btn-sm save"
+          onClick={this.onSaveButtonPress}
+        >
+          <span></span> Saved!{" "}
+        </button>
+      ) : (
+        <button
+          id="saveButton"
+          type="button"
+          class="btn btn-dark btn-sm"
+          onClick={this.onSaveButtonPress}
+        >
+          {" "}
+          <span></span> Save{" "}
+        </button>
+      );
 
     if (data[2] === "B") {
       return (
@@ -125,8 +145,8 @@ export default class DetailsView extends React.Component {
             style={{ marginRight: "40px", marginBottom: "30px" }}
           ></img>
           <div className="container">
-            <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
-            {saveButton} {/* SAVE BUTTON HERE */}
+            <h1 className="jumbotron-heading">{data[1]}</h1> {saveButton}{" "}
+            {/* SAVE BUTTON HERE */}
             <p className="text-muted">
               <strong>Author(s):</strong> {data[12]}
             </p>
@@ -168,8 +188,8 @@ export default class DetailsView extends React.Component {
           style={{ marginRight: "40px", marginBottom: "30px" }}
         ></img>
         <div className="container">
-          <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
-          {saveButton} {/* SAVE BUTTON HERE */}
+          <h1 className="jumbotron-heading">{data[1]}</h1> {saveButton}{" "}
+          {/* SAVE BUTTON HERE */}
           <p className="text-muted">
             <strong>Released:</strong> {date}
           </p>
@@ -191,6 +211,5 @@ export default class DetailsView extends React.Component {
         </div>
       </section>
     );
-    
   }
 }
