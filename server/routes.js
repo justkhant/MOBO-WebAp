@@ -278,7 +278,7 @@ function getRecs(req, res) {
   });
 }
 
-//FUN FACTS 
+//FUN FACTS
 
 function getLongestMovie(req, res) {
   let query = `
@@ -343,7 +343,7 @@ function getAuthorWithMostBooks(req, res) {
             WHERE trim(regexp_substr(authors, '[^|]+', 1, levels.column_value)) IS NOT NULL)
         GROUP BY author
         ORDER BY num_books DESC)
-  WHERE ROWNUM <= 1;  
+  WHERE ROWNUM <= 1 
   `;
 
   run(query).then((response) => {
@@ -396,12 +396,12 @@ function getPassword(req, res) {
 
 function addToSavedMedia(req, res) {
   var username = req.params.username;
-  var media_id = req.params.media_id;
+  var media_id = parseInt(req.params.media_id);
 
   var query = "";
   query = `INSERT INTO Saved_media VALUES (:1, :2)`;
 
-  var binds = ["" + username, "" + media_id];
+  var binds = ["" + media_id, "" + username];
 
   console.log(binds);
 
@@ -450,6 +450,7 @@ function getMediaFromUser(req, res) {
         `;
 
   run(query).then((response) => {
+    console.log(response);
     res.json(response);
   });
 }
@@ -458,6 +459,10 @@ function getMediaFromUser(req, res) {
 module.exports = {
   titleSearch: titleSearch,
   getRecs: getRecs,
+  getLongestMovie: getLongestMovie,
+  getShortestMovie: getShortestMovie,
+  getMostExpensiveMovie: getMostExpensiveMovie,
+  getAuthorWithMostBooks: getAuthorWithMostBooks,
   getMediaInfo: getMediaInfo,
   getAllGenres: getAllGenres,
   createNewUser: createNewUser,

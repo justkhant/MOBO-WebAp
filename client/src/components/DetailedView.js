@@ -22,6 +22,17 @@ export default class DetailedView extends React.Component {
     this.getRecommendations();
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.data[0] !== this.props.data[0]) {
+      this.setState({
+        recMedia: [],
+      }, () => {
+        this.getMediaDetails();
+        this.getRecommendations();
+      });
+    }
+  }
+
   //TODO: get's media's info based on media_id
   getMediaDetails() {
     // Send an HTTP request to the server.
@@ -85,6 +96,7 @@ export default class DetailedView extends React.Component {
               title={rec[1]}
               avg_rating={rec[6]}
               desc={rec[5]}
+              goToDetailedView={this.props.goToDetailedView}
             />
           ));
 
@@ -104,6 +116,7 @@ export default class DetailedView extends React.Component {
   }
 
   render() {
+    const { username, savedPageMedia } = this.props;
     return (
       <div
         className="detailedView"
@@ -113,6 +126,8 @@ export default class DetailedView extends React.Component {
         <DetailsView
           data={this.state.mediaInfo}
           onExit={this.onExit.bind(this)}
+          username={username}
+          savedPageMedia={savedPageMedia}
         ></DetailsView>
 
         <h3 style={{ color: "#ff843c", marginBottom: "20px" }}>

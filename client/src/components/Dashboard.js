@@ -21,14 +21,18 @@ export default class Dashboard extends React.Component {
     this.state = {
       currentSearchTerm: null,
       searchResultsData: [],
-      detailedViewData: null,
       isDetailedView: false,
-      selectedRow: 0,
+      selectedData: null,
       showModal: false,
       loading: false,
       error: null,
-      loggedInUser: 'bill',
+      loggedInUser: null,
       showSavePage: false,
+      savedPageMedia: [],
+      fact1: null,
+      fact2: null,
+      fact3: null,
+      fact4: null,
     };
 
     this.search = this.search.bind(this);
@@ -36,11 +40,129 @@ export default class Dashboard extends React.Component {
     this.hideDetailedView = this.hideDetailedView.bind(this);
     this.onLoginAttemptSuccess = this.onLoginAttemptSuccess.bind(this);
     this.toggleSavedPage = this.toggleSavedPage.bind(this);
+    this.funFact1 = this.funFact1.bind(this);
+    this.funFact2 = this.funFact2.bind(this);
+    this.funFact3 = this.funFact3.bind(this);
+    this.funFact4 = this.funFact4.bind(this);
+    this.getSavedMediaFromUsername = this.getSavedMediaFromUsername.bind(this);
+    this.getMediaDataFromMediaIDs = this.getMediaDataFromMediaIDs.bind(this);
+    this.onExit = this.onExit.bind(this);
+    this.goToDetailedView = this.goToDetailedView.bind(this);
   }
 
   // React function that is called when the page load.
   componentDidMount() {
     // TODO: Fetch data for interesting facts section
+    this.funFact1();
+    this.funFact2();
+    this.funFact3();
+    this.funFact4();
+  }
+
+  funFact1() {
+    fetch("http://localhost:8081/funfact1", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact1) => {
+          if (!fact1) return;
+
+          this.setState({
+            fact1: fact1.rows[0],
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  funFact2() {
+    fetch("http://localhost:8081/funfact2", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact2) => {
+          if (!fact2) return;
+
+          this.setState({
+            fact2: [fact2.rows],
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  funFact3() {
+    fetch("http://localhost:8081/funfact3", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact3) => {
+          if (!fact3) return;
+          this.setState({
+            fact3: fact3.rows[0],
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  funFact4() {
+    fetch("http://localhost:8081/funfact4", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact4) => {
+          if (!fact4) return;
+          this.setState({
+            fact4: fact4.rows[0],
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   search(searchData) {
@@ -69,6 +191,7 @@ export default class Dashboard extends React.Component {
 
           this.setState({
             searchResultsData: searchResult.rows,
+            isDetailedView: false,
           });
         },
         (err) => {
@@ -78,10 +201,10 @@ export default class Dashboard extends React.Component {
   }
 
   showDetailedView(rowIndex) {
+    const { searchResultsData } = this.state;
     this.setState({
-      detailedViewData: testData,
       isDetailedView: true,
-      selectedRow: rowIndex,
+      selectedData: searchResultsData[rowIndex],
     });
   }
 
@@ -91,37 +214,100 @@ export default class Dashboard extends React.Component {
     });
   }
 
-  onLoginAttemptSuccess(user) {
-    console.log("login success for" + user.email);
-    this.setState({
-      loggedInUser: user,
-    });
+  onLoginAttemptSuccess(username) {
+    console.log("login success for" + username);
+    this.getSavedMediaFromUsername(username);
   }
 
   onExit() {
     this.setState({
       isDetailedView: false,
-      currentSearchTerm: null,
-      searchResultsData: [],
     });
   }
 
   toggleSavedPage() {
     const newState = !this.state.showSavePage;
-    console.log("showSavedPage is", newState);
+
     this.setState({
       showSavePage: newState,
+      currentSearchTerm: null,
+      searchResultsData: [],
     });
   }
+
+  getSavedMediaFromUsername(username) {
+    fetch(`http://localhost:8081/getSavedPage/${username}`, {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          console.log(res);
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (res) => {
+          this.getMediaDataFromMediaIDs(username, res.rows);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  getMediaDataFromMediaIDs(username, media_ids) {
+    fetch(
+      `http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(
+        media_ids
+      )}`,
+      {
+        method: "GET",
+      }
+    )
+      .then(
+        (res) => {
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (res) => {
+          this.setState({
+            savedPageMedia: res.rows,
+            loggedInUser: username,
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  goToDetailedView(data) {
+    console.log('is in goToDetailedView, id is', data);
+
+    this.setState({
+      showSavePage: false,
+      isDetailedView: true,
+      selectedData: data,
+    });
+  }
+
 
   render() {
     const {
       searchResultsData,
-      detailedViewData,
       isDetailedView,
-      selectedRow,
+      selectedData,
       loggedInUser,
       showSavePage,
+      savedPageMedia,
+      fact1,
     } = this.state;
 
     let loginSection =
@@ -153,12 +339,12 @@ export default class Dashboard extends React.Component {
     if (showSavePage) {
       return (
         <div className="Dashboard">
-          <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light">
-              <a class="navbar-brand" href="#">
+          <div className="container">
+            <nav className="navbar navbar-expand-lg navbar-light">
+              <a className="navbar-brand" href="#">
                 <img src="mobo_logo.png" height="70"></img>
               </a>
-              <div class="navbar-collapse collapse justify-content-between"></div>
+              <div className="navbar-collapse collapse justify-content-between"></div>
               <form className="navbar-nav mr-auto">{loginSection}</form>
               <form
                 className="navbar-nav mr-auto"
@@ -172,7 +358,7 @@ export default class Dashboard extends React.Component {
               </form>
             </nav>
             <br></br>
-            <SavedPage username="a" />
+            <SavedPage username={loggedInUser} savedPageMedia={savedPageMedia} goToDetailedView={this.goToDetailedView}/>
           </div>
         </div>
       );
@@ -181,12 +367,12 @@ export default class Dashboard extends React.Component {
     if (isDetailedView) {
       return (
         <div className="Dashboard">
-          <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light">
-              <a class="navbar-brand" href="#">
+          <div className="container">
+            <nav className="navbar navbar-expand-lg navbar-light">
+              <a className="navbar-brand" href="#">
                 <img src="mobo_logo.png" height="70"></img>
               </a>
-              <div class="navbar-collapse collapse justify-content-between"></div>
+              <div className="navbar-collapse collapse justify-content-between"></div>
               <form
                 className="navbar-nav mr-auto"
                 onSubmit={(event) => {
@@ -200,23 +386,26 @@ export default class Dashboard extends React.Component {
             <br></br>
             <SearchBar search={this.search} />
             <DetailedView
-              data={searchResultsData[selectedRow]}
-              onExit={this.onExit.bind(this)}
+              data={selectedData}
+              username={loggedInUser}
+              savedPageMedia={savedPageMedia}
+              onExit={this.onExit}
+              goToDetailedView={this.goToDetailedView}
             />
           </div>
         </div>
       );
     }
 
-    if (searchResultsData.length == 0) {
+    if (searchResultsData.length === 0) {
       return (
         <div className="Dashboard">
-          <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light">
-              <a class="navbar-brand" href="#">
+          <div className="container">
+            <nav className="navbar navbar-expand-lg navbar-light">
+              <a className="navbar-brand" href="#">
                 <img src="mobo_logo.png" height="70"></img>
               </a>
-              <div class="navbar-collapse collapse justify-content-between"></div>
+              <div className="navbar-collapse collapse justify-content-between"></div>
               <form
                 className="navbar-nav mr-auto"
                 onSubmit={(event) => {
@@ -230,7 +419,12 @@ export default class Dashboard extends React.Component {
             <br></br>
             <SearchBar search={this.search} />
             <br></br>
-            <FactsLanding />
+            <FactsLanding
+              fact1={this.state.fact1}
+              fact2={this.state.fact2}
+              fact3={this.state.fact3}
+              fact4={this.state.fact4}
+            />
           </div>
         </div>
       );
@@ -238,12 +432,12 @@ export default class Dashboard extends React.Component {
 
     return (
       <div className="Dashboard">
-        <div class="container">
-          <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href="#">
+        <div className="container">
+          <nav className="navbar navbar-expand-lg navbar-light">
+            <a className="navbar-brand" href="#">
               <img src="mobo_logo.png" height="70"></img>
             </a>
-            <div class="navbar-collapse collapse justify-content-between"></div>
+            <div className="navbar-collapse collapse justify-content-between"></div>
             <form
               className="navbar-nav mr-auto"
               onSubmit={(event) => {
@@ -261,7 +455,6 @@ export default class Dashboard extends React.Component {
             showDetailedView={this.showDetailedView}
           />
           <br></br>
-          <FactsLanding />
         </div>
       </div>
     );

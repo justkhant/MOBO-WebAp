@@ -52,7 +52,7 @@ export default class SearchBar extends React.Component {
             aria-label="Search"
             onChange={(e) => this.setState({ searchTerm: e.target.value })}
           />
-          <input type="submit" class="btn-1" value="Search" />
+          <input type="submit" className="btn-1" value="Search" />
           <div className="form-group">
             <label className="search-filters">Genres</label>
             <select
