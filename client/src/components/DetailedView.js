@@ -104,6 +104,7 @@ export default class DetailedView extends React.Component {
   }
 
   render() {
+    const { username, savedPageMedia } = this.props;
     return (
       <div
         className="detailedView"
@@ -113,7 +114,8 @@ export default class DetailedView extends React.Component {
         <DetailsView
           data={this.state.mediaInfo}
           onExit={this.onExit.bind(this)}
-          username={this.props.username}
+          username={username}
+          savedPageMedia={savedPageMedia}
         ></DetailsView>
 
         <h3 style={{ color: "#ff843c", marginBottom: "20px" }}>

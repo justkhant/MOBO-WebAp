@@ -1,8 +1,9 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import FactCard from "./FactCard";
 
 const testIds = [10554, 7556, 88050];
-const testIdsString = '10554,7556,88050';
+const testIdsString = "10554,7556,88050";
 
 export default class SavedPage extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ export default class SavedPage extends React.Component {
 
     this.state = {
       savedMedia: [],
+      displayMedia: [],
     };
 
     this.getSavedMediaFromUsername = this.getSavedMediaFromUsername.bind(this);
@@ -17,11 +19,10 @@ export default class SavedPage extends React.Component {
   }
 
   componentDidMount() {
-    const username = this.props.username;
+    const { username, savedPageMedia } = this.props;
 
     if (username === null) return;
 
-    this.getSavedMediaFromUsername(username);
   }
 
   getSavedMediaFromUsername(username) {
@@ -39,7 +40,7 @@ export default class SavedPage extends React.Component {
       )
       .then(
         (res) => {
-          this.getMediaDataFromMediaIDs(res.rows)
+          this.getMediaDataFromMediaIDs(res.rows);
         },
         (err) => {
           console.log(err);
@@ -48,9 +49,14 @@ export default class SavedPage extends React.Component {
   }
 
   getMediaDataFromMediaIDs(media_ids) {
-    fetch(`http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(media_ids)}`, {
-      method: "GET",
-    })
+    fetch(
+      `http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(
+        media_ids
+      )}`,
+      {
+        method: "GET",
+      }
+    )
       .then(
         (res) => {
           return res.json();
@@ -61,10 +67,21 @@ export default class SavedPage extends React.Component {
       )
       .then(
         (res) => {
-          console.log(res.rows);
+          let recDivs = res.rows.map((rec, i) => (
+            // TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
+            // might need some queries/routes
+            <FactCard
+              id={rec[0]}
+              genre={rec[2]}
+              title={rec[1]}
+              avg_rating={rec[5]}
+              desc={rec[4]}
+            />
+          ));
           this.setState({
             savedMedia: [res.rows],
-          })
+            displayMedia: recDivs,
+          });
         },
         (err) => {
           console.log(err);
@@ -73,12 +90,25 @@ export default class SavedPage extends React.Component {
   }
 
   render() {
-    const { savedMedia } = this.state;
-    console.log('saved media contains', savedMedia);
+    const { savedPageMedia } = this.props;
+    console.log("saved media contains", savedPageMedia);
+
+    let recDivs = savedPageMedia.map((rec, i) => (
+      // TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
+      // might need some queries/routes
+      <FactCard
+        id={rec[0]}
+        genre={rec[2]}
+        title={rec[1]}
+        avg_rating={rec[5]}
+        desc={rec[4]}
+      />
+    ));
 
     return (
       <div class="Saved Page">
-        <p>Saved Page</p>
+        <h3>My Saved Media</h3>
+        <div class="card-deck">{recDivs}</div>
       </div>
     );
   }

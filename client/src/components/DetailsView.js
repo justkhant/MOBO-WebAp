@@ -16,26 +16,34 @@ export default class DetailsView extends React.Component {
   onSaveMedia() {
     const { data, username } = this.props;
 
-    fetch(`http://localhost:8081/savePage/${username}/${data[0]}` , {
+    fetch(`http://localhost:8081/savePage/${username}/${data[0]}`, {
       method: "POST",
-    })
-      .then(
-        (res) => {
-          console.log(res.status === 201);
-          console.log('add to saved page success');
-        },
-        (err) => {
-          console.log('add to saved page failed');
-          console.log(err);
-        }
-      );
+    }).then(
+      (res) => {
+        console.log(res.status === 201);
+        console.log("add to saved page success");
+      },
+      (err) => {
+        console.log("add to saved page failed");
+        console.log(err);
+      }
+    );
   }
 
   render() {
-    const { data, username } = this.props;
+    const { data, username, savedPageMedia } = this.props;
+    console.log(savedPageMedia);
+
+    let isSavedAlready = false;
+
+    for (let i = 0; i < savedPageMedia.length; i++) {
+      if (savedPageMedia[i][0] === data[0]) isSavedAlready = true;
+    }
+
+    console.log(isSavedAlready);
 
     // BOOK
-    if (data[2] == "B") {
+    if (data[2] === "B") {
       return (
         <section className="jumbotron">
           <button
@@ -55,7 +63,11 @@ export default class DetailsView extends React.Component {
           ></img>
           <div className="container">
             <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
-            <button type="button" class="btn btn-dark btn-sm" onClick={this.onSaveMedia}>
+            <button
+              type="button"
+              class="btn btn-dark btn-sm"
+              onClick={this.onSaveMedia}
+            >
               <span></span> Save!
             </button>
             <p className="text-muted">
@@ -97,7 +109,11 @@ export default class DetailsView extends React.Component {
         ></img>
         <div className="container">
           <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
-          <button type="button" class="btn btn-dark btn-sm" onClick={this.onSaveMedia}>
+          <button
+            type="button"
+            class="btn btn-dark btn-sm"
+            onClick={this.onSaveMedia}
+          >
             <span></span> Save!
           </button>
           <p className="text-muted">
