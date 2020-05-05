@@ -210,12 +210,12 @@ function advancedSearch(req, res) {
     
     SELECT *
     FROM (
-        SELECT media_id, title, media_type, SUM(score) AS match_score
-        FROM ((SELECT * FROM title_match) UNION ALL (SELECT * FROM overview_match) UNION ALL (SELECT * FROM keyword_match))
-        GROUP BY media_id, title, media_type
+        SELECT S.media_id, S.title, S.media_type, avg_rating, SUM(score) AS match_score
+        FROM ((SELECT * FROM title_match) UNION ALL (SELECT * FROM overview_match) UNION ALL (SELECT * FROM keyword_match)) S INNER JOIN Media M ON S.media_id = M.media_id
+        GROUP BY S.media_id, S.title, S.media_type, avg_rating
       ORDER BY match_score DESC
         )
-    WHERE ROWNUM <= 100
+    WHERE ROWNUM <= 100;
 
     `;
   } else {
@@ -265,13 +265,13 @@ function advancedSearch(req, res) {
       
       SELECT *
       FROM (
-          SELECT media_id, title, media_type, SUM(score) AS match_score
-          FROM ((SELECT * FROM title_match) UNION ALL (SELECT * FROM overview_match) UNION ALL (SELECT * FROM keyword_match))
-          WHERE media_type = '`+ mediaType +`'
-          GROUP BY media_id, title, media_type
+          SELECT S.media_id, S.title, S.media_type, avg_rating, SUM(score) AS match_score
+          FROM ((SELECT * FROM title_match) UNION ALL (SELECT * FROM overview_match) UNION ALL (SELECT * FROM keyword_match)) S INNER JOIN Media M ON S.media_id = M.media_id
+          WHERE S.media_type = '`+mediaType+`'
+          GROUP BY S.media_id, S.title, S.media_type, avg_rating
         ORDER BY match_score DESC
           )
-      WHERE ROWNUM <= 100
+      WHERE ROWNUM <= 100;
 
   `;
 
