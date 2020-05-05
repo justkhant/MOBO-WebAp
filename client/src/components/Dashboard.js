@@ -42,14 +42,11 @@ export default class Dashboard extends React.Component {
     this.onLoginAttemptSuccess = this.onLoginAttemptSuccess.bind(this);
     this.toggleSavedPage = this.toggleSavedPage.bind(this);
     this.funFact1 = this.funFact1.bind(this);
-<<<<<<< HEAD
     this.funFact2 = this.funFact2.bind(this);
     this.funFact3 = this.funFact3.bind(this);
     this.funFact4 = this.funFact4.bind(this);
-=======
     this.getSavedMediaFromUsername = this.getSavedMediaFromUsername.bind(this);
     this.getMediaDataFromMediaIDs = this.getMediaDataFromMediaIDs.bind(this);
->>>>>>> 1c60e016eba246a5dd82a17b4119a2af92a0cdc9
   }
 
   // React function that is called when the page load.
@@ -106,10 +103,10 @@ export default class Dashboard extends React.Component {
         (fact2) => {
           if (!fact2) return;
           console.log("Fun fact 2!!!");
-          console.log(fact2);
           this.setState({
-            funFact2: fact2.rows[0],
+            fact2: [fact2.rows],
           });
+          console.log(this.state.fact2);
         },
         (err) => {
           console.log(err);
@@ -221,7 +218,6 @@ export default class Dashboard extends React.Component {
   onLoginAttemptSuccess(username) {
     console.log("login success for" + username);
     this.getSavedMediaFromUsername(username);
-
   }
 
   onExit() {
@@ -265,7 +261,9 @@ export default class Dashboard extends React.Component {
 
   getMediaDataFromMediaIDs(username, media_ids) {
     fetch(
-      `http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(media_ids)}`,
+      `http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(
+        media_ids
+      )}`,
       {
         method: "GET",
       }
@@ -290,7 +288,6 @@ export default class Dashboard extends React.Component {
         }
       );
   }
-
 
   render() {
     const {
@@ -352,7 +349,10 @@ export default class Dashboard extends React.Component {
               </form>
             </nav>
             <br></br>
-            <SavedPage username={loggedInUser} savedPageMedia={savedPageMedia}/>
+            <SavedPage
+              username={loggedInUser}
+              savedPageMedia={savedPageMedia}
+            />
           </div>
         </div>
       );
@@ -412,7 +412,7 @@ export default class Dashboard extends React.Component {
             <br></br>
             <SearchBar search={this.search} />
             <br></br>
-            <FactsLanding fact1={fact1} />
+            <FactsLanding fact1={this.state.fact1} fact2={this.state.fact2} />
           </div>
         </div>
       );
