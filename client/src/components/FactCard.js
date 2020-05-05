@@ -16,6 +16,7 @@ export default class FactCard extends React.Component {
   }
 
   render() {
+    var num = this.props.avg_rating.toFixed(2);
     return (
       <div className="col-md-6 w-25">
         <div className="card flex-md-row mb-4 shadow-sm h-md-250">
@@ -28,11 +29,13 @@ export default class FactCard extends React.Component {
                 {this.props.title}
               </a>
             </h3>
-            <div className="mb-1 text-muted">Rating: {this.props.avg_rating}</div>
+            <div className="mb-1 text-muted">Rating: {num}</div>
             <p className="card-text mb-auto overflow">
               Description: {this.props.desc}
             </p>
-            <a href="#" onClick={this.handleClick}>More Info</a>
+            <a href="#" onClick={this.handleClick}>
+              More Info
+            </a>
           </div>
         </div>
       </div>

@@ -24,12 +24,15 @@ export default class DetailedView extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.data[0] !== this.props.data[0]) {
-      this.setState({
-        recMedia: [],
-      }, () => {
-        this.getMediaDetails();
-        this.getRecommendations();
-      });
+      this.setState(
+        {
+          recMedia: [],
+        },
+        () => {
+          this.getMediaDetails();
+          this.getRecommendations();
+        }
+      );
     }
   }
 
@@ -52,7 +55,6 @@ export default class DetailedView extends React.Component {
       .then(
         (info) => {
           if (!info) return;
-          console.log(info.rows[0]);
           this.setState({
             mediaInfo: info.rows[0],
           });
@@ -85,8 +87,6 @@ export default class DetailedView extends React.Component {
       .then(
         (recList) => {
           if (!recList) return;
-          console.log("This is recs list");
-          console.log(recList);
           let recDivs = recList.rows.map((rec, i) => (
             // TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
             // might need some queries/routes

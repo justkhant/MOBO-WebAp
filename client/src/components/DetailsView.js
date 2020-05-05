@@ -6,7 +6,23 @@ export default class DetailsView extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      isSaved: false,
+    };
+
     this.onSaveMedia = this.onSaveMedia.bind(this);
+  }
+
+  componentDidMount() {
+    const { data, username, savedPageMedia } = this.props;
+
+    let isSavedAlready = false;
+
+    for (let i = 0; i < savedPageMedia.length; i++) {
+      if (savedPageMedia[i][0] === data[0]) isSavedAlready = true;
+    }
+
+    this.setState({ isSaved: isSavedAlready });
   }
 
   onExit(e) {
@@ -14,6 +30,19 @@ export default class DetailsView extends React.Component {
   }
 
   onSaveMedia() {
+    //button color toggle
+    var b1 = document.getElementById("saveButton");
+    if (!this.state.isSaved) {
+      b1.style.background = "#ff843c";
+      b1.style.color = "white";
+      b1.innerText = "Saved!";
+      this.setState({ isSaved: true });
+    } else {
+      b1.style.background = "#343a41";
+      b1.style.color = "white";
+      this.setState({ isSaved: false });
+    }
+
     const { data, username } = this.props;
 
     fetch(`http://localhost:8081/savePage/${username}/${data[0]}`, {
@@ -31,17 +60,7 @@ export default class DetailsView extends React.Component {
   }
 
   render() {
-    const { data, username, savedPageMedia } = this.props;
-    console.log(savedPageMedia);
-
-    let isSavedAlready = false;
-
-    for (let i = 0; i < savedPageMedia.length; i++) {
-      if (savedPageMedia[i][0] === data[0]) isSavedAlready = true;
-    }
-
-    console.log(isSavedAlready);
-
+    const data = this.props.data;
     // BOOK
     if (data[2] === "B") {
       return (
@@ -64,6 +83,7 @@ export default class DetailsView extends React.Component {
           <div className="container">
             <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
             <button
+              id="saveButton"
               type="button"
               class="btn btn-dark btn-sm"
               onClick={this.onSaveMedia}
@@ -110,6 +130,7 @@ export default class DetailsView extends React.Component {
         <div className="container">
           <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
           <button
+            id="saveButton"
             type="button"
             class="btn btn-dark btn-sm"
             onClick={this.onSaveMedia}
