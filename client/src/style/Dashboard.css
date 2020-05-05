@@ -45,17 +45,39 @@
     #f6d365 100%
   );
   margin-left: 10px;
-  margin-right: 10px;
+  margin-right: 5px;
   padding-left: 12px;
   padding-right: 12px;
   color: white;
-  border-radius: 8px;
+  border-radius: 7px;
   border: none;
   transition: 0.5s;
   background-size: 200% auto;
 }
 
 .btn-1:hover {
+  background-position: right center; /* change the direction of the change here */
+}
+
+.btn-1-2 {
+  background-image: linear-gradient(
+    to right,
+    #fd8657 0%,
+    #f12a0f 51%,
+    #fd8657 100%
+  );
+  margin-left: 5px;
+  margin-right: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
+  color: white;
+  border-radius: 7px;
+  border: none;
+  transition: 0.5s;
+  background-size: 200% auto;
+}
+
+.btn-1-2:hover {
   background-position: right center; /* change the direction of the change here */
 }
 
@@ -101,4 +123,25 @@ thead {
   background-color: #ff843c;
   color: white;
   outline: none;
+}
+
+#Hello {
+  margin: 0;
+  display: inline;
+}
+
+.btn-2 {
+  background-color: white;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
+  color: #fc6c3c;
+  border-radius: 7px;
+  border-color: #fc6c3c;
+  transition: 0.5s;
+}
+
+.btn-2:hover {
+  background-color: #ffeee8;
 }

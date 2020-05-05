@@ -12,7 +12,7 @@ import FactsLanding from "./FactsLanding";
 import LoginModal from "./LoginModal";
 import SavedPage from "./SavedPage";
 
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export default class Dashboard extends React.Component {
   constructor(props) {
@@ -49,6 +49,7 @@ export default class Dashboard extends React.Component {
     this.getMediaDataFromMediaIDs = this.getMediaDataFromMediaIDs.bind(this);
     this.onExit = this.onExit.bind(this);
     this.goToDetailedView = this.goToDetailedView.bind(this);
+    this.savedPageChanged = this.savedPageChanged.bind(this);
   }
 
   // React function that is called when the page load.
@@ -59,11 +60,16 @@ export default class Dashboard extends React.Component {
     this.funFact3();
     this.funFact4();
 
-    let username = Cookies.get('username');
+    let username = Cookies.get("username");
     if (username !== undefined) {
-      this.setState({
-        loggedInUser: username,
-      }, () => {this.getSavedMediaFromUsername(username);})
+      this.setState(
+        {
+          loggedInUser: username,
+        },
+        () => {
+          this.getSavedMediaFromUsername(username);
+        }
+      );
     }
   }
 
@@ -228,10 +234,13 @@ export default class Dashboard extends React.Component {
   }
 
   handleLogout() {
-    Cookies.remove('username');
-    this.setState({
-      loggedInUser: null,
-    })
+    Cookies.remove("username");
+    this.setState(
+      {
+        loggedInUser: null,
+      },
+      this.savedPageChanged
+    );
   }
 
   onExit() {
@@ -251,6 +260,11 @@ export default class Dashboard extends React.Component {
   }
 
   getSavedMediaFromUsername(username) {
+    if (username === null) {
+      this.setState({
+        savedPageMedia: [],
+      });
+    }
     fetch(`http://localhost:8081/getSavedPage/${username}`, {
       method: "GET",
     })
@@ -304,7 +318,7 @@ export default class Dashboard extends React.Component {
   }
 
   goToDetailedView(data) {
-    console.log('is in goToDetailedView, id is', data);
+    console.log("is in goToDetailedView, id is", data);
 
     this.setState({
       showSavePage: false,
@@ -313,6 +327,9 @@ export default class Dashboard extends React.Component {
     });
   }
 
+  savedPageChanged() {
+    this.getSavedMediaFromUsername(this.state.loggedInUser);
+  }
 
   render() {
     const {
@@ -325,7 +342,16 @@ export default class Dashboard extends React.Component {
       fact1,
     } = this.state;
 
-    let loginSection = (<div> {" "}<LoginModal username={loggedInUser} onLoginAttemptSuccess={this.onLoginAttemptSuccess} handleLogout={this.handleLogout} />{" "} </div>);
+    let loginSection = (
+      <div>
+        {" "}
+        <LoginModal
+          username={loggedInUser}
+          onLoginAttemptSuccess={this.onLoginAttemptSuccess}
+          handleLogout={this.handleLogout}
+        />{" "}
+      </div>
+    );
 
     let savedPageButton =
       loggedInUser === null ? (
@@ -352,20 +378,23 @@ export default class Dashboard extends React.Component {
                 <img src="mobo_logo.png" height="70"></img>
               </a>
               <div className="navbar-collapse collapse justify-content-between"></div>
+              <button className="btn-1" onClick={this.toggleSavedPage}>
+                Home Page
+              </button>
               <form className="navbar-nav mr-auto">{loginSection}</form>
               <form
-                className="navbar-nav mr-auto"
+                className="navbar-nav"
                 onSubmit={(event) => {
                   event.preventDefault();
                 }}
-              >
-                <button className="btn-1" onClick={this.toggleSavedPage}>
-                  Home Page
-                </button>
-              </form>
+              ></form>
             </nav>
             <br></br>
-            <SavedPage username={loggedInUser} savedPageMedia={savedPageMedia} goToDetailedView={this.goToDetailedView}/>
+            <SavedPage
+              username={loggedInUser}
+              savedPageMedia={savedPageMedia}
+              goToDetailedView={this.goToDetailedView}
+            />
           </div>
         </div>
       );
@@ -385,10 +414,9 @@ export default class Dashboard extends React.Component {
                 onSubmit={(event) => {
                   event.preventDefault();
                 }}
-              >
-                {loginSection}
-              </form>
+              ></form>
               {savedPageButton}
+              {loginSection}
             </nav>
             <br></br>
             <SearchBar search={this.search} />
@@ -398,6 +426,7 @@ export default class Dashboard extends React.Component {
               savedPageMedia={savedPageMedia}
               onExit={this.onExit}
               goToDetailedView={this.goToDetailedView}
+              savedPageChanged={this.savedPageChanged}
             />
           </div>
         </div>
@@ -418,10 +447,9 @@ export default class Dashboard extends React.Component {
                 onSubmit={(event) => {
                   event.preventDefault();
                 }}
-              >
-                {loginSection}
-              </form>
+              ></form>
               {savedPageButton}
+              {loginSection}
             </nav>
             <br></br>
             <SearchBar search={this.search} />
@@ -450,10 +478,9 @@ export default class Dashboard extends React.Component {
               onSubmit={(event) => {
                 event.preventDefault();
               }}
-            >
-              {loginSection}
-            </form>
+            ></form>
             {savedPageButton}
+            {loginSection}
           </nav>
           <br></br>
           <SearchBar search={this.search} />

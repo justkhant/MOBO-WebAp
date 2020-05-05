@@ -290,7 +290,7 @@ function getRecs(req, res) {
   var searchType = req.params.searchType;
 
   var query =
-  `WITH input AS (
+    `WITH input AS (
       SELECT keywords, TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999') - MOD((TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999')), 10) AS decade, authors
       FROM (SELECT media_id, keywords FROM Media WHERE media_id = ` +
     searchId +
@@ -540,7 +540,7 @@ function deleteFromSavedMedia(req, res) {
 
   bind(query, binds).then(
     () => {
-      res.status(201).send();
+      res.status(200).send();
     },
     (err) => {
       console.log(err);

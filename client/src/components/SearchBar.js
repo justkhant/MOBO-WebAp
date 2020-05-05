@@ -2,14 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../style/Dashboard.css";
 
-const genreOptions = [
-  "All",
-  "History",
-  "Romance",
-  "Comedy",
-  "Documentary",
-  "Sports",
-];
+const genreOptions = ["No", "Yes"];
 const mediaOptions = ["All", "Books", "Movies"];
 
 export default class SearchBar extends React.Component {
@@ -18,6 +11,7 @@ export default class SearchBar extends React.Component {
 
     this.state = {
       searchTerm: "",
+      advancedSearch: "No",
       selectedGenre: "All",
       selectedMedia: "All",
     };
@@ -53,19 +47,8 @@ export default class SearchBar extends React.Component {
             onChange={(e) => this.setState({ searchTerm: e.target.value })}
           />
           <input type="submit" className="btn-1" value="Search" />
+          <input type="submit" className="btn-1-2" value="Advanced Search!" />
           <div className="form-group">
-            <label className="search-filters">Genres</label>
-            <select
-              className="form-control"
-              id="GenreSelect"
-              onChange={(e) => this.setState({ selectedGenre: e.target.value })}
-            >
-              {genreOptions.map((genre) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </select>
             <label className="search-filters">Mo/Bo?</label>
             <select
               className="form-control"
