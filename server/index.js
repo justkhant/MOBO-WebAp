@@ -50,6 +50,7 @@ app.post("/savePage/:username/:media_id", routes.addToSavedMedia);
 // Get array of media_id for a user's savedPage
 app.get("/getSavedPage/:username", routes.getMediaFromUser);
 
+// Delete a savedMedia from Saved_media table
 app.put("/deleteSavedPage/:username/:media_id", routes.deleteFromSavedMedia);
 
 process.once("SIGTERM", process.exit);

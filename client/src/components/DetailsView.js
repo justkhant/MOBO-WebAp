@@ -61,13 +61,18 @@ export default class DetailsView extends React.Component {
 
   render() {
     const data = this.props.data;
+    let num = data[5];
+    let date = data[7];
+
+    if (num !== undefined) num = data[5].toFixed(2);
+    if (date !== undefined && data[2] === "M") date = date.substring(0,10);
     // BOOK
     if (data[2] === "B") {
       return (
         <section className="jumbotron">
           <button
             type="button"
-            class="close"
+            className="close"
             aria-label="Close"
             onClick={this.onExit.bind(this)}
           >
@@ -85,7 +90,7 @@ export default class DetailsView extends React.Component {
             <button
               id="saveButton"
               type="button"
-              class="btn btn-dark btn-sm"
+              className="btn btn-dark btn-sm"
               onClick={this.onSaveMedia}
             >
               <span></span> Save!
@@ -94,7 +99,7 @@ export default class DetailsView extends React.Component {
               <strong>Author(s):</strong> {data[12]}
             </p>
             <p className="text-muted">
-              <strong>Avg. Rating:</strong> {data[5]}/10 ({data[8]})
+              <strong>Avg. Rating:</strong> {num}/10 ({data[8]})
             </p>
             <p className="text-muted">
               <strong>Review Count:</strong> {data[14]}
@@ -114,7 +119,7 @@ export default class DetailsView extends React.Component {
       <section className="jumbotron">
         <button
           type="button"
-          class="close"
+          className="close"
           aria-label="Close"
           onClick={this.onExit.bind(this)}
         >
@@ -132,19 +137,19 @@ export default class DetailsView extends React.Component {
           <button
             id="saveButton"
             type="button"
-            class="btn btn-dark btn-sm"
+            className="btn btn-dark btn-sm"
             onClick={this.onSaveMedia}
           >
             <span></span> Save!
           </button>
           <p className="text-muted">
-            <strong>Released:</strong> {data[7]}
+            <strong>Released:</strong> {date}
           </p>
           <p className="text-muted">
             <strong>Runtime:</strong> {data[10]} minutes
           </p>
           <p className="text-muted">
-            <strong>Avg. Rating:</strong> {data[5]}/10 ({data[8]})
+            <strong>Avg. Rating:</strong> {num}/10 ({data[8]})
           </p>
           <p className="text-muted">
             <strong>Keywords:</strong> {data[3]}
