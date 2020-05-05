@@ -30,6 +30,9 @@ export default class Dashboard extends React.Component {
       loggedInUser: "bill",
       showSavePage: false,
       fact1: null,
+      fact2: null,
+      fact3: null,
+      fact4: null,
     };
 
     this.search = this.search.bind(this);
@@ -38,12 +41,18 @@ export default class Dashboard extends React.Component {
     this.onLoginAttemptSuccess = this.onLoginAttemptSuccess.bind(this);
     this.toggleSavedPage = this.toggleSavedPage.bind(this);
     this.funFact1 = this.funFact1.bind(this);
+    this.funFact2 = this.funFact2.bind(this);
+    this.funFact3 = this.funFact3.bind(this);
+    this.funFact4 = this.funFact4.bind(this);
   }
 
   // React function that is called when the page load.
   componentDidMount() {
     // TODO: Fetch data for interesting facts section
     this.funFact1();
+    this.funFact2();
+    this.funFact3();
+    this.funFact4();
   }
 
   funFact1() {
@@ -67,6 +76,87 @@ export default class Dashboard extends React.Component {
           this.setState({
             fact1: fact1.rows[0],
           });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  funFact2() {
+    fetch("http://localhost:8081/funfact2", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact2) => {
+          if (!fact2) return;
+          console.log("Fun fact 2!!!");
+          console.log(fact2);
+          this.setState({
+            funFact2: fact2.rows[0],
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  funFact3() {
+    fetch("http://localhost:8081/funfact3", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact3) => {
+          if (!fact3) return;
+          console.log("Fun fact 3!!!");
+          console.log(fact3);
+          this.setState({
+            funFact3: fact3.rows[0],
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  funFact4() {
+    fetch("http://localhost:8081/funfact4", {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (fact4) => {
+          if (!fact4) return;
+          console.log("Fun fact 4!!!");
+          console.log(fact4);
         },
         (err) => {
           console.log(err);
