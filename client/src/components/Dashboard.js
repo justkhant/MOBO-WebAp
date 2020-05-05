@@ -36,6 +36,7 @@ export default class Dashboard extends React.Component {
     };
 
     this.search = this.search.bind(this);
+    this.searchAdvanced = this.searchAdvanced.bind(this);
     this.showDetailedView = this.showDetailedView.bind(this);
     this.hideDetailedView = this.hideDetailedView.bind(this);
     this.onLoginAttemptSuccess = this.onLoginAttemptSuccess.bind(this);
@@ -214,6 +215,41 @@ export default class Dashboard extends React.Component {
       );
   }
 
+  searchAdvanced(searchData) {
+    var searchPath = [
+      searchData.media,
+      searchData.genre,
+      searchData.searchTerm,
+    ].join("/");
+    console.log(searchPath);
+
+    fetch("http://localhost:8081/searchAdvanced/" + searchPath, {
+      method: "GET",
+    })
+      .then(
+        (res) => {
+          // Convert the response data to a JSON.
+          return res.json();
+        },
+        (err) => {
+          console.log(err);
+        }
+      )
+      .then(
+        (searchResult) => {
+          if (!searchResult) return;
+
+          this.setState({
+            searchResultsData: searchResult.rows,
+            isDetailedView: false,
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
   showDetailedView(rowIndex) {
     const { searchResultsData } = this.state;
     this.setState({
@@ -339,7 +375,6 @@ export default class Dashboard extends React.Component {
       loggedInUser,
       showSavePage,
       savedPageMedia,
-      fact1,
     } = this.state;
 
     let loginSection = (
@@ -419,7 +454,7 @@ export default class Dashboard extends React.Component {
               {loginSection}
             </nav>
             <br></br>
-            <SearchBar search={this.search} />
+            <SearchBar search={this.search} searchAdvanced={this.searchAdvanced} />
             <DetailedView
               data={selectedData}
               username={loggedInUser}
@@ -452,7 +487,7 @@ export default class Dashboard extends React.Component {
               {loginSection}
             </nav>
             <br></br>
-            <SearchBar search={this.search} />
+            <SearchBar search={this.search} searchAdvanced={this.searchAdvanced}/>
             <br></br>
             <FactsLanding
               fact1={this.state.fact1}
@@ -483,7 +518,7 @@ export default class Dashboard extends React.Component {
             {loginSection}
           </nav>
           <br></br>
-          <SearchBar search={this.search} />
+          <SearchBar search={this.search} searchAdvanced={this.searchAdvanced}/>
           <SearchResults
             data={searchResultsData}
             showDetailedView={this.showDetailedView}

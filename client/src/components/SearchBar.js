@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../style/Dashboard.css";
 
 const genreOptions = ["No", "Yes"];
-const mediaOptions = ["All", "Books", "Movies"];
+const mediaOptions = ["All", "B", "M"];
 
 export default class SearchBar extends React.Component {
   constructor(props) {
@@ -17,6 +17,8 @@ export default class SearchBar extends React.Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleAdvancedSearch = this.handleAdvancedSearch.bind(this);
   }
 
   handleSubmit(event) {
@@ -49,7 +51,7 @@ export default class SearchBar extends React.Component {
       media: this.state.selectedMedia,
     };
 
-    this.props.advancedSearch(searchData);
+    this.props.searchAdvanced(searchData);
   }
 
   render() {
@@ -68,7 +70,7 @@ export default class SearchBar extends React.Component {
             onChange={(e) => this.setState({ searchTerm: e.target.value })}
           />
           <input type="button" className="btn-1" value="Search" onClick={this.handleSearch}/>
-          <input type="button" className="btn-1-2" value="Advanced Search!" />
+          <input type="button" className="btn-1-2" value="Advanced Search!" onClick={this.handleAdvancedSearch}/>
           <div className="form-group">
             <label className="search-filters">Mo/Bo?</label>
             <select

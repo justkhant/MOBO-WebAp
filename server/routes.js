@@ -72,7 +72,6 @@ function getMediaInfo(req, res) {
 }
 
 function getMultipleMediaInfo(req, res) {
-  console.log(JSON.parse(req.query.media_ids));
   var media_ids = JSON.parse(req.query.media_ids);
   let query = ``;
   if (media_ids.length > 0) {
@@ -96,7 +95,6 @@ function getMultipleMediaInfo(req, res) {
 
   query = query.substring(0, query.length - 2);
 
-  console.log(query);
   run(query).then((response) => {
     res.json(response);
   });
@@ -385,7 +383,6 @@ function getRecs(req, res) {
   `;
 
   run(query).then((response) => {
-    console.log("response in rec query is", response);
     res.json(response);
   });
 }
@@ -474,7 +471,6 @@ function createNewUser(req, res) {
 
   var binds = ["" + username, "" + password];
 
-  console.log(binds);
 
   bind(query, binds).then(
     (response) => {
@@ -515,7 +511,6 @@ function addToSavedMedia(req, res) {
 
   var binds = ["" + media_id, "" + username];
 
-  console.log(binds);
 
   bind(query, binds).then(
     () => {
@@ -535,8 +530,6 @@ function deleteFromSavedMedia(req, res) {
   query = `DELETE FROM Saved_media WHERE username = :1 AND media_id = :2`;
 
   var binds = ["" + username, "" + media_id];
-
-  console.log(binds);
 
   bind(query, binds).then(
     () => {
@@ -562,7 +555,6 @@ function getMediaFromUser(req, res) {
         `;
 
   run(query).then((response) => {
-    console.log(response);
     res.json(response);
   });
 }
@@ -570,6 +562,7 @@ function getMediaFromUser(req, res) {
 // The exported functions, which can be accessed in index.js.
 module.exports = {
   titleSearch: titleSearch,
+  advancedSearch: advancedSearch,
   getRecs: getRecs,
   getLongestMovie: getLongestMovie,
   getShortestMovie: getShortestMovie,

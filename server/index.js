@@ -19,7 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get("/genres", routes.getAllGenres);
 
 // get search result for a certain search term
-app.get("/search/:media/:genre/:searchTitle", routes.titleSearch);
+app.get("/search/:mediaType/:genre/:searchTitle", routes.titleSearch);
+
+// get advanced search result for a certain search term
+app.get("/searchAdvanced/:mediaType/:genre/:searchTitle", routes.advancedSearch);
 
 // Get a media's recommendations based on Media ID
 app.get("/recommendations/:searchType/:searchId", routes.getRecs);
