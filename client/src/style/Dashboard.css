@@ -45,7 +45,7 @@
     #f6d365 100%
   );
   margin-left: 10px;
-  margin-right: 10px;
+  margin-right: 5px;
   padding-left: 12px;
   padding-right: 12px;
   color: white;
@@ -56,6 +56,28 @@
 }
 
 .btn-1:hover {
+  background-position: right center; /* change the direction of the change here */
+}
+
+.btn-1-2 {
+  background-image: linear-gradient(
+    to right,
+    #fd8657 0%,
+    #f12a0f 51%,
+    #fd8657 100%
+  );
+  margin-left: 5px;
+  margin-right: 10px;
+  padding-left: 12px;
+  padding-right: 12px;
+  color: white;
+  border-radius: 7px;
+  border: none;
+  transition: 0.5s;
+  background-size: 200% auto;
+}
+
+.btn-1-2:hover {
   background-position: right center; /* change the direction of the change here */
 }
 

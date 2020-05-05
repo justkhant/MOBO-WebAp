@@ -47,21 +47,8 @@ export default class SearchBar extends React.Component {
             onChange={(e) => this.setState({ searchTerm: e.target.value })}
           />
           <input type="submit" className="btn-1" value="Search" />
+          <input type="submit" className="btn-1-2" value="Advanced Search!" />
           <div className="form-group">
-            <label className="search-filters">Advanced?</label>
-            <select
-              className="form-control"
-              id="Advanced Search"
-              onChange={(e) =>
-                this.setState({ advancedSearch: e.target.value })
-              }
-            >
-              {genreOptions.map((genre) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </select>
             <label className="search-filters">Mo/Bo?</label>
             <select
               className="form-control"
