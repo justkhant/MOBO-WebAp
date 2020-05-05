@@ -470,4 +470,5 @@ module.exports = {
   getMultipleMediaInfo: getMultipleMediaInfo,
   getMediaFromUser: getMediaFromUser,
   addToSavedMedia: addToSavedMedia,
+  deleteFromSavedMedia: deleteFromSavedMedia,
 };
