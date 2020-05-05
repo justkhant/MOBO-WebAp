@@ -13,80 +13,6 @@ export default class SavedPage extends React.Component {
       savedMedia: [],
       displayMedia: [],
     };
-
-    this.getSavedMediaFromUsername = this.getSavedMediaFromUsername.bind(this);
-    this.getMediaDataFromMediaIDs = this.getMediaDataFromMediaIDs.bind(this);
-  }
-
-  componentDidMount() {
-    const { username, savedPageMedia } = this.props;
-
-    if (username === null) return;
-
-  }
-
-  getSavedMediaFromUsername(username) {
-    fetch(`http://localhost:8081/getSavedPage/${username}`, {
-      method: "GET",
-    })
-      .then(
-        (res) => {
-          console.log(res);
-          return res.json();
-        },
-        (err) => {
-          console.log(err);
-        }
-      )
-      .then(
-        (res) => {
-          this.getMediaDataFromMediaIDs(res.rows);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-  }
-
-  getMediaDataFromMediaIDs(media_ids) {
-    fetch(
-      `http://localhost:8081/mediaMultiple?media_ids=${JSON.stringify(
-        media_ids
-      )}`,
-      {
-        method: "GET",
-      }
-    )
-      .then(
-        (res) => {
-          return res.json();
-        },
-        (err) => {
-          console.log(err);
-        }
-      )
-      .then(
-        (res) => {
-          let recDivs = res.rows.map((rec, i) => (
-            // TODO: Pass attributes here to FactCard, how to get genre, desc/overview, rating_count?
-            // might need some queries/routes
-            <FactCard
-              id={rec[0]}
-              genre={rec[2]}
-              title={rec[1]}
-              avg_rating={rec[5]}
-              desc={rec[4]}
-            />
-          ));
-          this.setState({
-            savedMedia: [res.rows],
-            displayMedia: recDivs,
-          });
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
   }
 
   render() {
@@ -107,9 +33,9 @@ export default class SavedPage extends React.Component {
     ));
 
     return (
-      <div class="Saved Page">
+      <div className="Saved Page">
         <h3>My Saved Media</h3>
-        <div class="card-deck">{recDivs}</div>
+        <div className="card-deck">{recDivs}</div>
       </div>
     );
   }

@@ -12,7 +12,7 @@ import FactsLanding from "./FactsLanding";
 import LoginModal from "./LoginModal";
 import SavedPage from "./SavedPage";
 
-import testData from "../testData";
+import Cookies from 'js-cookie';
 
 export default class Dashboard extends React.Component {
   constructor(props) {
@@ -57,6 +57,13 @@ export default class Dashboard extends React.Component {
     this.funFact2();
     this.funFact3();
     this.funFact4();
+
+    let username = Cookies.get('username');
+    if (username !== undefined) {
+      this.setState({
+        loggedInUser: username,
+      }, () => {this.getSavedMediaFromUsername(username);})
+    }
   }
 
   funFact1() {
