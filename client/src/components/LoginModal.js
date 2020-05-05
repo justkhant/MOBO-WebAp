@@ -1,6 +1,7 @@
 import React from "react";
 import ReactModalLogin from "react-modal-login";
 import "../style/Dashboard.css";
+import Cookies from 'js-cookie';
 
 const facebookConfig = {
   appId: "1408167076108",
@@ -59,6 +60,7 @@ export default class LoginModal extends React.Component {
             this.closeModal();
 
             this.props.onLoginAttemptSuccess(username);
+            Cookies.set('username', username);
           } else {
             this.onLoginFail("form", "could not find user");
           }
@@ -83,14 +85,19 @@ export default class LoginModal extends React.Component {
     })
       .then(
         (res) => {
-          console.log(res.status === 201);
-          // if (res.status)
-          // return res.json();
-          console.log('registration success');
-          this.onLoginSuccess("form");
-          this.closeModal();
-
-          this.props.onLoginAttemptSuccess(username);
+          if (res.status === 201) {
+            console.log('registration success');
+            this.onLoginSuccess("form");
+            this.closeModal();
+  
+            this.props.onLoginAttemptSuccess(username);
+            Cookies.set('username', username);
+          } else {
+            this.setState({
+              error: 'Registration failed',
+              loading: false,
+            });
+          }
         },
         (err) => {
           console.log('register failed');
