@@ -1,7 +1,7 @@
 
 # mobo :movie_camera: :orange_book:
 ### CIS 550 - Spring 2020
-**Contributers:** Adel Wu, Bill (Kehou) Lou, Jina Lo, Kaung Khant
+**Contributers:** Adel Wu, Bill (Kehao) Lou, Jina Lo, Kaung Khant
 
 **Mentor:** Kevin Wu :heart:
 
@@ -14,6 +14,9 @@ Welcome to Mobo, a web-application designed to help you find your new favorite b
 | Front-End      | React, CSS  |
 | Back-End       | Node, Express      |
 | Database       | Oracle, AWS    |
+
+Our datasets came from Kaggle, [Movies](https://www.kaggle.com/rounakbanik/the-movies-dataset#movies_metadata.csv) and [Books](https://www.kaggle.com/meetnaren/goodreads-best-books). 
+Together, they amount to over 90,000+ media pieces.
 
 ### Web Deployment Instructions
 To install Oracle with Node, we followed (we all have MacOS): https://oracle.github.io/node-oracledb/INSTALL.html#instosx 
