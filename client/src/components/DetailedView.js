@@ -77,6 +77,7 @@ export default class DetailedView extends React.Component {
       .then(
         (res) => {
           // Convert the response data to a JSON.
+          console.log(res);
           return res.json();
         },
         (err) => {

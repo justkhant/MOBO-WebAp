@@ -387,7 +387,7 @@ function deleteFromSavedMedia(req, res) {
 
   bind(query, binds).then(
     () => {
-      res.status(201).send();
+      res.status(200).send();
     },
     (err) => {
       console.log(err);

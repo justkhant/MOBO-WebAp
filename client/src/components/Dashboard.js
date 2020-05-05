@@ -49,6 +49,7 @@ export default class Dashboard extends React.Component {
     this.getMediaDataFromMediaIDs = this.getMediaDataFromMediaIDs.bind(this);
     this.onExit = this.onExit.bind(this);
     this.goToDetailedView = this.goToDetailedView.bind(this);
+    this.savedPageChanged = this.savedPageChanged.bind(this);
   }
 
   // React function that is called when the page load.
@@ -251,6 +252,7 @@ export default class Dashboard extends React.Component {
   }
 
   getSavedMediaFromUsername(username) {
+    if (username === null) return;
     fetch(`http://localhost:8081/getSavedPage/${username}`, {
       method: "GET",
     })
@@ -311,6 +313,10 @@ export default class Dashboard extends React.Component {
       isDetailedView: true,
       selectedData: data,
     });
+  }
+
+  savedPageChanged() {
+    this.getSavedMediaFromUsername(this.state.loggedInUser);
   }
 
 
