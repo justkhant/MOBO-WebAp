@@ -215,7 +215,7 @@ function advancedSearch(req, res) {
         GROUP BY S.media_id, S.title, S.media_type, avg_rating
       ORDER BY match_score DESC
         )
-    WHERE ROWNUM <= 100;
+    WHERE ROWNUM <= 100
 
     `;
   } else {
@@ -271,7 +271,7 @@ function advancedSearch(req, res) {
           GROUP BY S.media_id, S.title, S.media_type, avg_rating
         ORDER BY match_score DESC
           )
-      WHERE ROWNUM <= 100;
+      WHERE ROWNUM <= 100
 
   `;
 
