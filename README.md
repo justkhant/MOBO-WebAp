@@ -1,6 +1,6 @@
 # cis550-bm
 
-### mobo
+### mobo :movie_camera: :orange_book:
 **Contributers:** Adel Wu, Bill (Kehou) Lou, Jina Lo, Kaung Khant
 
 **Mentor:** Kevin Wu :heart:
@@ -8,7 +8,7 @@
 ### Description
 Welcome to Mobo, a web-application designed to help you find your new favorite book or movie! You can search our vast database, do advanced searches, filter by movie or book, browse the media's details, see recommendations, and also save specific media you like to your own account.
 
-### Technology Stack
+### Technology Stack :computer:
 | Technology     | Stack              |
 |----------------|--------------------|
 | Front-End      | React, CSS  |
@@ -22,7 +22,7 @@ Install node-oracledb using the npm package manager, which is included in Node.j
 ```javascript
 npm install oracledb
 ```
-Download the free Oracle Instant Client ‘Basic’ ZIP file, unzip it, move it into your ~/ folder, then:
+Download the free Oracle Instant Client ‘Basic’ ZIP file (depends on computer), unzip it, move it into your ~/ folder, then:
 ```javascript
 mkdir ~lib
 ln -s ~/instantclient_19_3/libclntsh.dylib ~/lib/
