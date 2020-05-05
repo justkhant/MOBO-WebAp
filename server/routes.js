@@ -24,7 +24,7 @@ async function run(query, res) {
   }
 }
 
-async function insert(query, binds, res) {
+async function bind(query, binds, res) {
   let connection;
   let result;
   try {
@@ -364,7 +364,7 @@ function createNewUser(req, res) {
 
   console.log(binds);
 
-  insert(query, binds).then(
+  bind(query, binds).then(
     (response) => {
       res.status(201).send();
     },
@@ -393,6 +393,7 @@ function getPassword(req, res) {
 }
 
 // SAVED PAGE MEDIA
+
 function addToSavedMedia(req, res) {
   var username = req.params.username;
   var media_id = parseInt(req.params.media_id);
@@ -404,9 +405,29 @@ function addToSavedMedia(req, res) {
 
   console.log(binds);
 
-  insert(query, binds).then(
-    (data) => {
-      console.log(data);
+  bind(query, binds).then(
+    () => {
+      res.status(201).send();
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
+}
+
+function deleteFromSavedMedia(req, res) {
+  var username = req.params.username;
+  var media_id = req.params.media_id;
+
+  var query = "";
+  query = `DELETE FROM Saved_media WHERE username = :1 AND media_id = :2`;
+
+  var binds = ["" + username, "" + media_id];
+
+  console.log(binds);
+
+  bind(query, binds).then(
+    () => {
       res.status(201).send();
     },
     (err) => {
