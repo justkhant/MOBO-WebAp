@@ -144,7 +144,9 @@ function advancedSearch(req, res) {
   let query =
     `
     WITH queries AS (
-      (SELECT '`+ searchTitle +`' AS query
+      (SELECT '` +
+    searchTitle +
+    `' AS query
       FROM dual)
   )
   , overviews AS (
@@ -209,7 +211,7 @@ function getRecs(req, res) {
   var searchType = req.params.searchType;
 
   var query =
-  `WITH input AS (
+    `WITH input AS (
       SELECT keywords, TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999') - MOD((TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999')), 10) AS decade, authors
       FROM (SELECT media_id, keywords FROM Media WHERE media_id = ` +
     searchId +
@@ -299,7 +301,7 @@ function getRecs(req, res) {
       revenue, runtime, language, authors, pages, review_count
   FROM top_scores t INNER JOIN Media M ON t.media_id = M.media_id 
       LEFT OUTER JOIN Movies Mo ON t.media_id = Mo.media_id 
-      LEFT OUTER JOIN Books B ON t.media_id = B.media_id;
+      LEFT OUTER JOIN Books B ON t.media_id = B.media_id
 
   `;
 

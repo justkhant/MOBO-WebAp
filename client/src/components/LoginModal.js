@@ -1,7 +1,7 @@
 import React from "react";
 import ReactModalLogin from "react-modal-login";
 import "../style/Dashboard.css";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 const facebookConfig = {
   appId: "1408167076108",
@@ -40,35 +40,35 @@ export default class LoginModal extends React.Component {
         error: true,
       });
     } else {
-      fetch(`http://localhost:8081/login/${username}` , {
-      method: "GET",
-    })
-      .then(
-        (res) => {
-          return res.json();
-        },
-        (err) => {
-          console.log(err);
-        }
-      )
-      .then(
-        (res) => {
-          console.log('password match', res.rows[0][0] === password);
-
-          if (res.rows[0].length > 0 && res.rows[0][0] === password) {
-            this.onLoginSuccess("form");
-            this.closeModal();
-
-            this.props.onLoginAttemptSuccess(username);
-            Cookies.set('username', username);
-          } else {
-            this.onLoginFail("form", "could not find user");
+      fetch(`http://localhost:8081/login/${username}`, {
+        method: "GET",
+      })
+        .then(
+          (res) => {
+            return res.json();
+          },
+          (err) => {
+            console.log(err);
           }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+        )
+        .then(
+          (res) => {
+            console.log("password match", res.rows[0][0] === password);
+
+            if (res.rows[0].length > 0 && res.rows[0][0] === password) {
+              this.onLoginSuccess("form");
+              this.closeModal();
+
+              this.props.onLoginAttemptSuccess(username);
+              Cookies.set("username", username);
+            } else {
+              this.onLoginFail("form", "could not find user");
+            }
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
     }
   }
 
@@ -80,30 +80,29 @@ export default class LoginModal extends React.Component {
     const username = document.querySelector("#username").value;
     const password = document.querySelector("#password").value;
 
-    fetch(`http://localhost:8081/register/${username}/${password}` , {
+    fetch(`http://localhost:8081/register/${username}/${password}`, {
       method: "POST",
-    })
-      .then(
-        (res) => {
-          if (res.status === 201) {
-            console.log('registration success');
-            this.onLoginSuccess("form");
-            this.closeModal();
-  
-            this.props.onLoginAttemptSuccess(username);
-            Cookies.set('username', username);
-          } else {
-            this.setState({
-              error: 'Registration failed',
-              loading: false,
-            });
-          }
-        },
-        (err) => {
-          console.log('register failed');
-          console.log(err);
+    }).then(
+      (res) => {
+        if (res.status === 201) {
+          console.log("registration success");
+          this.onLoginSuccess("form");
+          this.closeModal();
+
+          this.props.onLoginAttemptSuccess(username);
+          Cookies.set("username", username);
+        } else {
+          this.setState({
+            error: "Registration failed",
+            loading: false,
+          });
         }
-      );
+      },
+      (err) => {
+        console.log("register failed");
+        console.log(err);
+      }
+    );
   }
 
   onRecoverPassword() {
@@ -155,7 +154,14 @@ export default class LoginModal extends React.Component {
 
   render() {
     if (this.props.username !== null) {
-      return (<div><p>Hello {this.props.username}</p> <button className="btn-1" onClick={this.props.handleLogout}> Logout </button></div>)
+      return (
+        <div>
+          <h5 id="Hello">Hello {this.props.username}!</h5>
+          <button className="btn-2" onClick={this.props.handleLogout}>
+            Logout
+          </button>
+        </div>
+      );
     }
     return (
       <div>
