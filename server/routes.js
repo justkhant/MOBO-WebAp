@@ -138,6 +138,70 @@ function titleSearch(req, res) {
   }
 }
 
+function advancedSearch(req, res) {
+  var searchTitle = req.params.searchTitle;
+
+  let query =
+    `
+    WITH queries AS (
+      (SELECT '`+ searchTitle +`' AS query
+      FROM dual)
+  )
+  , overviews AS (
+      SELECT M.media_id, M.title, M.media_type, (CASE M.media_type 
+            WHEN 'M' THEN Mo.overview 
+            ELSE B.description END) AS overview
+      FROM Media M LEFT OUTER JOIN Movies Mo ON M.media_id =  Mo.media_id LEFT OUTER JOIN Books B ON M.media_id = B.media_id 
+  )
+  ,
+  title_match AS (
+      SELECT media_id, title, media_type,
+          (UTL_MATCH.edit_distance_similarity(query, LOWER(title))) * 10 AS score
+      FROM Media, queries
+      WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
+      ORDER BY score
+  ),
+  overview_match AS (
+      SELECT media_id, title, media_type, 50 AS score
+      FROM overviews, queries
+      WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(overview)) > 80 OR (LOWER(overview) LIKE CONCAT(CONCAT('%', query), '%'))) 
+      ORDER BY score
+  ),
+  
+  all_keywords AS (
+      SELECT DISTINCT media_id, title, media_type, trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) AS keyword
+      FROM 
+      Media,
+      table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(Media.keywords, '[^,]+'))  + 1) as sys.OdciNumberList)) levels
+      WHERE trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
+  ),
+  
+  keyword_match AS (
+      SELECT media_id, title, media_type, SUM(score) AS score
+      FROM (
+          SELECT a.media_id, a.title,  a.media_type, a.keyword, a.keyword, (100) AS score 
+          From all_keywords a, queries
+          WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(a.keyword)) > 80 OR (LOWER(a.keyword) LIKE CONCAT(CONCAT('%', query), '%'))) 
+          )
+      GROUP BY media_id, title, media_type
+  )
+  
+  SELECT *
+  FROM (
+      SELECT media_id, title, media_type, SUM(score) AS match_score
+      FROM ((SELECT * FROM title_match) UNION ALL (SELECT * FROM overview_match) UNION ALL (SELECT * FROM keyword_match))
+      GROUP BY media_id, title, media_type
+    ORDER BY match_score DESC
+      )
+  WHERE ROWNUM <= 100
+
+    `;
+
+  run(query).then((response) => {
+    res.json(response);
+  });
+}
+
 function getAllGenres(req, res) {}
 
 function getRecs(req, res) {
@@ -145,7 +209,7 @@ function getRecs(req, res) {
   var searchType = req.params.searchType;
 
   var query =
-    `WITH input AS (
+  `WITH input AS (
       SELECT keywords, TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999') - MOD((TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999')), 10) AS decade, authors
       FROM (SELECT media_id, keywords FROM Media WHERE media_id = ` + searchId + `) M 
               LEFT OUTER JOIN Movies Mo ON M.media_id = Mo.media_id 
@@ -216,19 +280,19 @@ function getRecs(req, res) {
       WHERE ROWNUM <= 10
   )
   
-          SELECT M.media_id, M.title, M.media_type, t.match_score, keywords, 
-              (CASE M.media_type 
-                  WHEN 'M' THEN Mo.overview 
-                  ELSE B.description END) AS overview,
-               avg_rating, image_url, release_date, 
-              (CASE M.media_type 
-                   WHEN 'M' THEN Mo.rating_count 
-                  ELSE B.rating_count END) AS rating_count, 
-              revenue, runtime, language, authors, pages, review_count
-          FROM top_scores t INNER JOIN Media M ON t.media_id = M.media_id 
-              LEFT OUTER JOIN Movies Mo ON t.media_id = Mo.media_id 
-              LEFT OUTER JOIN Books B ON t.media_id = B.media_id;
-  
+  SELECT M.media_id, M.title, M.media_type, t.match_score, keywords, 
+      (CASE M.media_type 
+          WHEN 'M' THEN Mo.overview 
+          ELSE B.description END) AS overview,
+        avg_rating, image_url, release_date, 
+      (CASE M.media_type 
+            WHEN 'M' THEN Mo.rating_count 
+          ELSE B.rating_count END) AS rating_count, 
+      revenue, runtime, language, authors, pages, review_count
+  FROM top_scores t INNER JOIN Media M ON t.media_id = M.media_id 
+      LEFT OUTER JOIN Movies Mo ON t.media_id = Mo.media_id 
+      LEFT OUTER JOIN Books B ON t.media_id = B.media_id;
+
   `;
 
   run(query).then((response) => {
