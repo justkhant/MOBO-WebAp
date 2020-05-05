@@ -16,13 +16,13 @@ Welcome to Mobo, a web-application designed to help you find your new favorite b
 | Database       | Oracle, AWS    |
 
 ### Web Deployment Instructions
-To install Oracle with Node, we followed: https://oracle.github.io/node-oracledb/INSTALL.html#instosx 
+To install Oracle with Node, we followed (we all have MacOS): https://oracle.github.io/node-oracledb/INSTALL.html#instosx 
 
 Install node-oracledb using the npm package manager, which is included in Node.js:
 ```javascript
 npm install oracledb
 ```
-Download the free Oracle Instant Client ‘Basic’ ZIP file, unzip it, move it into your User root folder, then:
+Download the free Oracle Instant Client ‘Basic’ ZIP file, unzip it, move it into your ~/ folder, then:
 ```javascript
 mkdir ~lib
 ln -s ~/instantclient_19_3/libclntsh.dylib ~/lib/
