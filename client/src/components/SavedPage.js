@@ -13,9 +13,6 @@ export default class SavedPage extends React.Component {
       savedMedia: [],
       displayMedia: [],
     };
-
-    this.getSavedMediaFromUsername = this.getSavedMediaFromUsername.bind(this);
-    this.getMediaDataFromMediaIDs = this.getMediaDataFromMediaIDs.bind(this);
   }
 
   render() {
@@ -36,9 +33,9 @@ export default class SavedPage extends React.Component {
     ));
 
     return (
-      <div class="Saved Page">
+      <div className="Saved Page">
         <h3>My Saved Media</h3>
-        <div class="card-deck">{recDivs}</div>
+        <div className="card-deck">{recDivs}</div>
       </div>
     );
   }

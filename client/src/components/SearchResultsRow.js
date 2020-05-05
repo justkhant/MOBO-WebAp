@@ -14,12 +14,12 @@ export default class SearchResultsRow extends React.Component {
 
   render() {
     const { rowData } = this.props;
-
+    var num = rowData[3].toFixed(2);
     return (
       <tr className="searchResultsRow" onClick={this.handleClick}>
         <th scope="row">{rowData[1]}</th>
         <td>{rowData[2]}</td>
-        <td>{rowData[3]}</td>
+        <td>{num}</td>
       </tr>
     );
   }
