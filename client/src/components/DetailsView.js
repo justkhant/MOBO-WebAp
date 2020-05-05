@@ -95,16 +95,14 @@ export default class DetailsView extends React.Component {
   }
 
   render() {
-    const data = this.props.data;
-    console.log('data is', data);
+    const { username, data } = this.props;
 
-    console.log(this.state.isSaved);
     //MOVIE
     let num = data[5];
 
     if (num !== undefined) num = data[5].toFixed(2);
 
-    let saveButton = (this.state.isSaved) ? (<button id="saveButton" type="button" class="btn-sm save" onClick={this.onSaveButtonPress}><span></span> Saved! </button>) :
+    let saveButton = (username === null) ? [] : (this.state.isSaved) ? (<button id="saveButton" type="button" class="btn-sm save" onClick={this.onSaveButtonPress}><span></span> Saved! </button>) :
      (<button id="saveButton" type="button" class="btn btn-dark btn-sm" onClick={this.onSaveButtonPress}> <span></span> Save </button>);
 
 
