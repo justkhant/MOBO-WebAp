@@ -1,6 +1,6 @@
-# cis550-bm
 
-### mobo :movie_camera: :orange_book:
+# mobo :movie_camera: :orange_book:
+### CIS 550 - Spring 2020
 **Contributers:** Adel Wu, Bill (Kehou) Lou, Jina Lo, Kaung Khant
 
 **Mentor:** Kevin Wu :heart:
