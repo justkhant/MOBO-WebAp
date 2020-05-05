@@ -16,11 +16,12 @@ export default class SearchBar extends React.Component {
       selectedMedia: "All",
     };
 
-    this.handleSearch = this.handleSearch.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSearch(event) {
+  handleSubmit(event) {
     event.preventDefault();
+    console.log('event', event);
 
     const searchData = {
       searchTerm: this.state.searchTerm,
@@ -31,12 +32,32 @@ export default class SearchBar extends React.Component {
     this.props.search(searchData);
   }
 
+  handleSearch() {
+    const searchData = {
+      searchTerm: this.state.searchTerm,
+      genre: this.state.selectedGenre,
+      media: this.state.selectedMedia,
+    };
+
+    this.props.search(searchData);
+  }
+
+  handleAdvancedSearch() {
+    const searchData = {
+      searchTerm: this.state.searchTerm,
+      genre: this.state.selectedGenre,
+      media: this.state.selectedMedia,
+    };
+
+    this.props.advancedSearch(searchData);
+  }
+
   render() {
     return (
       <div>
         <form
           className="form-inline active-cyan-3 active-cyan-4"
-          onSubmit={this.handleSearch}
+          onSubmit={this.handleSubmit}
         >
           <i className="fas fa-search" aria-hidden="true"></i>
           <input
@@ -46,8 +67,8 @@ export default class SearchBar extends React.Component {
             aria-label="Search"
             onChange={(e) => this.setState({ searchTerm: e.target.value })}
           />
-          <input type="submit" className="btn-1" value="Search" />
-          <input type="submit" className="btn-1-2" value="Advanced Search!" />
+          <input type="button" className="btn-1" value="Search" onClick={this.handleSearch}/>
+          <input type="button" className="btn-1-2" value="Advanced Search!" />
           <div className="form-group">
             <label className="search-filters">Mo/Bo?</label>
             <select
