@@ -166,7 +166,7 @@ function advancedSearch(req, res) {
   if (mediaType == "All") {
     query = 
     `WITH queries AS (
-      (SELECT '`+ searchTitle +`' AS query
+      (SELECT LOWER('`+ searchTitle +`') AS query
           FROM dual)
       )
   ,
@@ -197,14 +197,14 @@ function advancedSearch(req, res) {
   )
   SELECT *
   FROM
-  (SELECT m.media_id title, avg_rating, media_type, match_score
+  (SELECT m.media_id, title, media_type, avg_rating, match_score
   FROM combined_score c JOIN Media m ON c.media_id = m.media_id
   ORDER BY match_score DESC)
   WHERE ROWNUM <= 100
   `;
   } else if (mediaType == "B") {
     query = `WITH queries AS (
-      (SELECT '`+ searchTitle +`' AS query
+      (SELECT LOWER('`+ searchTitle +`') AS query
       FROM dual)
       ),overview_match AS (
           SELECT media_id,  50 AS score
@@ -229,7 +229,7 @@ function advancedSearch(req, res) {
       )
       SELECT *
       FROM
-      (SELECT m.media_id, title, avg_rating, media_type, match_score
+      (SELECT m.media_id, title, media_type, avg_rating, match_score
       FROM combined_score c JOIN Media m ON c.media_id = m.media_id
       WHERE media_type='B'
       ORDER BY match_score DESC)
@@ -240,7 +240,7 @@ function advancedSearch(req, res) {
   } else {
     query = 
     `WITH queries AS (
-      (SELECT '`+ searchTitle +`' AS query
+      (SELECT LOWER('`+ searchTitle +`') AS query
       FROM dual)
       ), overview_match AS (
       SELECT media_id,  50 AS score
@@ -265,7 +265,7 @@ function advancedSearch(req, res) {
     )
     SELECT *
     FROM
-    (SELECT m.media_id, title, avg_rating, media_type, match_score
+    (SELECT m.media_id, title, media_type, avg_rating, match_score
     FROM combined_score c JOIN Media m ON c.media_id = m.media_id
     WHERE media_type='M'
     ORDER BY match_score DESC)
@@ -286,9 +286,7 @@ function getRecs(req, res) {
   var query =
     `WITH input AS (
       SELECT keywords, TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999') - MOD((TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999')), 10) AS decade, authors
-      FROM (SELECT media_id, keywords FROM Media WHERE media_id = ` +
-    searchId +
-    `) M 
+      FROM (SELECT media_id, keywords FROM Media WHERE media_id = ` + searchId + `) M 
               LEFT OUTER JOIN Movies Mo ON M.media_id = Mo.media_id 
               LEFT OUTER JOIN Books B ON M.media_id = B.media_id                            
   ),
