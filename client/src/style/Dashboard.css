@@ -147,5 +147,5 @@ thead {
 }
 
 #saveButton {
-  margin-bottom: 20px;
+  vertical-align: text-bottom;
 }
