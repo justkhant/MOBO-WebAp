@@ -165,116 +165,112 @@ function advancedSearch(req, res) {
 
   if (mediaType == "All") {
     query = 
-      `WITH queries AS (
-        (SELECT '`+ searchTitle +`' AS query
-        FROM dual)
-    )
-    , overviews AS (
-        SELECT M.media_id, M.title, M.media_type, (CASE M.media_type 
-              WHEN 'M' THEN Mo.overview 
-              ELSE B.description END) AS overview
-        FROM Media M LEFT OUTER JOIN Movies Mo ON M.media_id =  Mo.media_id LEFT OUTER JOIN Books B ON M.media_id = B.media_id 
-    )
-    ,
-    title_match AS (
-        SELECT media_id, title, media_type,
-            (UTL_MATCH.edit_distance_similarity(query, LOWER(title))) * 10 AS score
-        FROM Media, queries
-        WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
-        ORDER BY score
-    ),
-    overview_match AS (
-        SELECT media_id, title, media_type, 50 AS score
-        FROM overviews, queries
-        WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(overview)) > 80 OR (LOWER(overview) LIKE CONCAT(CONCAT('%', query), '%'))) 
-        ORDER BY score
-    ),
-    
-    all_keywords AS (
-        SELECT DISTINCT media_id, title, media_type, trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) AS keyword
-        FROM 
-        Media,
-        table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(Media.keywords, '[^,]+'))  + 1) as sys.OdciNumberList)) levels
-        WHERE trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
-    ),
-    
-    keyword_match AS (
-        SELECT media_id, title, media_type, SUM(score) AS score
-        FROM (
-            SELECT a.media_id, a.title,  a.media_type, a.keyword, a.keyword, (100) AS score 
-            From all_keywords a, queries
-            WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(a.keyword)) > 80 OR (LOWER(a.keyword) LIKE CONCAT(CONCAT('%', query), '%'))) 
-            )
-        GROUP BY media_id, title, media_type
-    )
-    
-    SELECT *
-    FROM (
-        SELECT S.media_id, S.title, S.media_type, avg_rating, SUM(score) AS match_score
-        FROM ((SELECT * FROM title_match) UNION ALL (SELECT * FROM overview_match) UNION ALL (SELECT * FROM keyword_match)) S INNER JOIN Media M ON S.media_id = M.media_id
-        GROUP BY S.media_id, S.title, S.media_type, avg_rating
-      ORDER BY match_score DESC
-        )
-    WHERE ROWNUM <= 100
+    `WITH queries AS (
+      (SELECT '`+ searchTitle +`' AS query
+          FROM dual)
+      )
+  ,
+  keyword_match AS (
+      SELECT DISTINCT media_id, 100 AS score
+      FROM Media_keyword, queries 
+      WHERE (CONTAINS(keyword, query, 1) > 0) 
+  ),
+  overview_match AS (
+      (SELECT media_id,  50 AS score
+      FROM Movies, queries
+      WHERE (CONTAINS(overview, query, 1) > 0 )  ) 
+      UNION 
+      (SELECT media_id,  50 AS score
+      FROM Books b, queries
+      WHERE (CONTAINS(b.description, query, 1) > 0 ))
+  ),title_match AS (
+      SELECT media_id,
+          (UTL_MATCH.edit_distance_similarity(query, LOWER(title))) * 10 AS score
+      FROM Media, queries
+      WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
+  ),
+  
+  combined_score AS (
+      SELECT media_id, SUM(score) AS match_score
+      FROM ((SELECT * FROM title_match) UNION (SELECT * FROM overview_match) UNION (SELECT * FROM keyword_match))
+      GROUP BY media_id
+  )
+  SELECT *
+  FROM
+  (SELECT m.media_id title, avg_rating, media_type, match_score
+  FROM combined_score c JOIN Media m ON c.media_id = m.media_id
+  ORDER BY match_score DESC)
+  WHERE ROWNUM <= 100
+  `;
+  } else if (mediaType == "B") {
+    query = `WITH queries AS (
+      (SELECT '`+ searchTitle +`' AS query
+      FROM dual)
+      ),overview_match AS (
+          SELECT media_id,  50 AS score
+          FROM Books b, queries
+          WHERE (CONTAINS(b.description, query, 1) > 0 )
+      ),title_match AS (
+          SELECT media_id,
+              (UTL_MATCH.edit_distance_similarity(query, LOWER(title))) * 10 AS score
+          FROM Media, queries
+          WHERE media_type='B' AND (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
+      ),
+      keyword_match AS (
+          SELECT DISTINCT media_id, 100 AS score
+          FROM Media_keyword, queries 
+          WHERE (CONTAINS(keyword, query, 1) > 0) 
+      ),
+      
+      combined_score AS (
+          SELECT media_id, SUM(score) AS match_score
+          FROM ((SELECT * FROM title_match) UNION (SELECT * FROM overview_match) UNION (SELECT * FROM keyword_match))
+          GROUP BY media_id
+      )
+      SELECT *
+      FROM
+      (SELECT m.media_id, title, avg_rating, media_type, match_score
+      FROM combined_score c JOIN Media m ON c.media_id = m.media_id
+      WHERE media_type='B'
+      ORDER BY match_score DESC)
+      WHERE ROWNUM <= 100
+      `
+  
 
-    `;
   } else {
     query = 
     `WITH queries AS (
       (SELECT '`+ searchTitle +`' AS query
       FROM dual)
-      )
-      , overviews AS (
-          SELECT M.media_id, M.title, M.media_type, (CASE M.media_type 
-                WHEN 'M' THEN Mo.overview 
-                ELSE B.description END) AS overview
-          FROM Media M LEFT OUTER JOIN Movies Mo ON M.media_id =  Mo.media_id LEFT OUTER JOIN Books B ON M.media_id = B.media_id 
-      )
-      ,
-      title_match AS (
-          SELECT media_id, title, media_type,
-              (UTL_MATCH.edit_distance_similarity(query, LOWER(title))) * 10 AS score
-          FROM Media, queries
-          WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
-          ORDER BY score
-      ),
-      overview_match AS (
-          SELECT media_id, title, media_type, 50 AS score
-          FROM overviews, queries
-          WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(overview)) > 80 OR (LOWER(overview) LIKE CONCAT(CONCAT('%', query), '%'))) 
-          ORDER BY score
-      ),
-      
-      all_keywords AS (
-          SELECT DISTINCT media_id, title, media_type, trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) AS keyword
-          FROM 
-          Media,
-          table(cast(multiset(select level from dual connect by  level <= length (regexp_replace(Media.keywords, '[^,]+'))  + 1) as sys.OdciNumberList)) levels
-          WHERE trim(regexp_substr(Media.keywords, '[^,]+', 1, levels.column_value)) IS NOT NULL
-      ),
-      
-      keyword_match AS (
-          SELECT media_id, title, media_type, SUM(score) AS score
-          FROM (
-              SELECT a.media_id, a.title,  a.media_type, a.keyword, a.keyword, (100) AS score 
-              From all_keywords a, queries
-              WHERE (UTL_MATCH.edit_distance_similarity(query, LOWER(a.keyword)) > 80 OR (LOWER(a.keyword) LIKE CONCAT(CONCAT('%', query), '%'))) 
-              )
-          GROUP BY media_id, title, media_type
-      )
-      
-      SELECT *
-      FROM (
-          SELECT S.media_id, S.title, S.media_type, avg_rating, SUM(score) AS match_score
-          FROM ((SELECT * FROM title_match) UNION ALL (SELECT * FROM overview_match) UNION ALL (SELECT * FROM keyword_match)) S INNER JOIN Media M ON S.media_id = M.media_id
-          WHERE S.media_type = '`+mediaType+`'
-          GROUP BY S.media_id, S.title, S.media_type, avg_rating
-        ORDER BY match_score DESC
-          )
-      WHERE ROWNUM <= 100
+      ), overview_match AS (
+      SELECT media_id,  50 AS score
+      FROM Movies, queries
+      WHERE (CONTAINS(overview, query, 1) > 0 )
+    ),title_match AS (
+      SELECT media_id,
+          (UTL_MATCH.edit_distance_similarity(query, LOWER(title))) * 10 AS score
+      FROM Media, queries
+      WHERE media_type='M' AND (UTL_MATCH.edit_distance_similarity(query, LOWER(title)) > 80 OR (LOWER(title) LIKE CONCAT(CONCAT('%', query), '%')))
+    ),
+    keyword_match AS (
+      SELECT DISTINCT media_id, 100 AS score
+      FROM Media_keyword, queries 
+      WHERE (CONTAINS(keyword, query, 1) > 0) 
+    ),
 
-  `;
-
+    combined_score AS (
+      SELECT media_id, SUM(score) AS match_score
+      FROM ((SELECT * FROM title_match) UNION (SELECT * FROM overview_match) UNION (SELECT * FROM keyword_match))
+      GROUP BY media_id
+    )
+    SELECT *
+    FROM
+    (SELECT m.media_id, title, avg_rating, media_type, match_score
+    FROM combined_score c JOIN Media m ON c.media_id = m.media_id
+    WHERE media_type='M'
+    ORDER BY match_score DESC)
+    WHERE ROWNUM <= 100
+    `;
   }
   run(query).then((response) => {
     res.json(response);
