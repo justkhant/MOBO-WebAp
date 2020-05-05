@@ -31,7 +31,7 @@ export default class DetailsView extends React.Component {
   }
 
   render() {
-    const { data, username } = this.props;
+    const { data, username, savedPageMedia } = this.props;
 
     // BOOK
     if (data[2] == "B") {
