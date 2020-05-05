@@ -39,6 +39,7 @@ export default class Dashboard extends React.Component {
     this.showDetailedView = this.showDetailedView.bind(this);
     this.hideDetailedView = this.hideDetailedView.bind(this);
     this.onLoginAttemptSuccess = this.onLoginAttemptSuccess.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
     this.toggleSavedPage = this.toggleSavedPage.bind(this);
     this.funFact1 = this.funFact1.bind(this);
     this.funFact2 = this.funFact2.bind(this);
@@ -226,6 +227,13 @@ export default class Dashboard extends React.Component {
     this.getSavedMediaFromUsername(username);
   }
 
+  handleLogout() {
+    Cookies.remove('username');
+    this.setState({
+      loggedInUser: null,
+    })
+  }
+
   onExit() {
     this.setState({
       isDetailedView: false,
@@ -317,15 +325,7 @@ export default class Dashboard extends React.Component {
       fact1,
     } = this.state;
 
-    let loginSection =
-      loggedInUser === null ? (
-        <div>
-          {" "}
-          <LoginModal onLoginAttemptSuccess={this.onLoginAttemptSuccess} />{" "}
-        </div>
-      ) : (
-        <p>Hello {loggedInUser}</p>
-      );
+    let loginSection = (<div> {" "}<LoginModal username={loggedInUser} onLoginAttemptSuccess={this.onLoginAttemptSuccess} handleLogout={this.handleLogout} />{" "} </div>);
 
     let savedPageButton =
       loggedInUser === null ? (

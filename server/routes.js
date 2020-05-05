@@ -211,7 +211,9 @@ function getRecs(req, res) {
   var query =
   `WITH input AS (
       SELECT keywords, TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999') - MOD((TO_NUMBER(EXTRACT(YEAR FROM release_date), '9999')), 10) AS decade, authors
-      FROM (SELECT media_id, keywords FROM Media WHERE media_id = ` + searchId + `) M 
+      FROM (SELECT media_id, keywords FROM Media WHERE media_id = ` +
+    searchId +
+    `) M 
               LEFT OUTER JOIN Movies Mo ON M.media_id = Mo.media_id 
               LEFT OUTER JOIN Books B ON M.media_id = B.media_id                            
   ),
@@ -233,7 +235,9 @@ function getRecs(req, res) {
   
   input_genre_similarity_id AS (
     SELECT DISTINCT Ge.similarity_id 
-    FROM (SELECT * FROM Genres_to_media WHERE media_id = ` + searchId + `) G INNER JOIN Genres Ge ON G.genre_name = Ge.genre_name
+    FROM (SELECT * FROM Genres_to_media WHERE media_id = ` +
+    searchId +
+    `) G INNER JOIN Genres Ge ON G.genre_name = Ge.genre_name
   ),
   
   genre_match AS (
@@ -274,7 +278,11 @@ function getRecs(req, res) {
                                           UNION ALL (SELECT * FROM authors_match))
            GROUP BY media_id
           ) S INNER JOIN (SELECT media_id, media_type FROM Media) M ON S.media_id = M.media_id
-      WHERE media_type = '` + searchType + `' AND S.media_id <> ` + searchId + `
+      WHERE media_type = '` +
+    searchType +
+    `' AND S.media_id <> ` +
+    searchId +
+    `
       ORDER BY match_score DESC, media_id
       )
       WHERE ROWNUM <= 10
@@ -493,4 +501,5 @@ module.exports = {
   getMultipleMediaInfo: getMultipleMediaInfo,
   getMediaFromUser: getMediaFromUser,
   addToSavedMedia: addToSavedMedia,
+  deleteFromSavedMedia: deleteFromSavedMedia,
 };

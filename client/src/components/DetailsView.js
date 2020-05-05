@@ -25,6 +25,8 @@ export default class DetailsView extends React.Component {
     this.setState({ isSaved: isSavedAlready });
   }
 
+  componentWillUpdate(prevPros, prevState) {}
+
   onExit(e) {
     this.props.onExit();
   }
@@ -40,6 +42,7 @@ export default class DetailsView extends React.Component {
     } else {
       b1.style.background = "#343a41";
       b1.style.color = "white";
+      b1.innerText = "Save";
       this.setState({ isSaved: false });
     }
 
@@ -61,8 +64,168 @@ export default class DetailsView extends React.Component {
 
   render() {
     const data = this.props.data;
-    // BOOK
-    if (data[2] === "B") {
+    //MOVIE
+    let num = data[5];
+
+    if (num !== undefined) num = data[5].toFixed(2);
+
+    if (this.state.isSaved) {
+      //if saved already
+      // BOOK
+      if (data[2] === "B") {
+        return (
+          <section className="jumbotron">
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              onClick={this.onExit.bind(this)}
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <img
+              src={data[6]}
+              className="float-left align-middle"
+              alt="Book Cover Image"
+              height="250"
+              style={{ marginRight: "40px", marginBottom: "30px" }}
+            ></img>
+            <div className="container">
+              <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
+              <button
+                id="saveButton"
+                type="button"
+                class="btn-sm save"
+                onClick={this.onSaveMedia}
+              >
+                <span></span> Saved!
+              </button>
+              <p className="text-muted">
+                <strong>Author(s):</strong> {data[12]}
+              </p>
+              <p className="text-muted">
+                <strong>Avg. Rating:</strong> {data[5]}/10 ({data[8]})
+              </p>
+              <p className="text-muted">
+                <strong>Review Count:</strong> {data[14]}
+              </p>
+              <p className="text-muted">
+                <strong>Description:</strong> {data[4]}
+              </p>
+              <p className="text-muted">
+                <strong>Length:</strong> {data[13]} pages
+              </p>
+            </div>
+          </section>
+        );
+      }
+
+      // MOVIE
+      if (data[2] === "M") {
+        let date = data[7];
+        if (date !== undefined && data[2] === "M") date = date.substring(0, 10);
+        return (
+          <section className="jumbotron">
+            <button
+              type="button"
+              className="close"
+              aria-label="Close"
+              onClick={this.onExit.bind(this)}
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <img
+              src={data[6]}
+              className="float-left align-middle"
+              alt="Movie Cover Image"
+              height="250"
+              style={{ marginRight: "40px", marginBottom: "30px" }}
+            ></img>
+            <div className="container">
+              <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
+              <button
+                id="saveButton"
+                type="button"
+                class="save btn-sm"
+                onClick={this.onSaveMedia}
+              >
+                <span></span> Saved!
+              </button>
+              <p className="text-muted">
+                <strong>Released:</strong> {data[7]}
+              </p>
+              <p className="text-muted">
+                <strong>Runtime:</strong> {data[10]} minutes
+              </p>
+              <p className="text-muted">
+                <strong>Avg. Rating:</strong> {num}/10 ({data[8]})
+              </p>
+              <p className="text-muted">
+                <strong>Keywords:</strong> {data[3]}
+              </p>
+              <p className="text-muted">
+                <strong>Revenue:</strong> ${data[9]}
+              </p>
+              <p className="text-muted">
+                <strong>Description:</strong> {data[4]}
+              </p>
+            </div>
+          </section>
+        );
+      }
+    } else {
+      //not saved before
+      // BOOK
+      if (data[2] === "B") {
+        return (
+          <section className="jumbotron">
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              onClick={this.onExit.bind(this)}
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <img
+              src={data[6]}
+              className="float-left align-middle"
+              alt="Book Cover Image"
+              height="250"
+              style={{ marginRight: "40px", marginBottom: "30px" }}
+            ></img>
+            <div className="container">
+              <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
+              <button
+                id="saveButton"
+                type="button"
+                class="btn btn-dark btn-sm"
+                onClick={this.onSaveMedia}
+              >
+                <span></span> Save
+              </button>
+              <p className="text-muted">
+                <strong>Author(s):</strong> {data[12]}
+              </p>
+              <p className="text-muted">
+                <strong>Avg. Rating:</strong> {data[5]}/10 ({data[8]})
+              </p>
+              <p className="text-muted">
+                <strong>Review Count:</strong> {data[14]}
+              </p>
+              <p className="text-muted">
+                <strong>Description:</strong> {data[4]}
+              </p>
+              <p className="text-muted">
+                <strong>Length:</strong> {data[13]} pages
+              </p>
+            </div>
+          </section>
+        );
+      }
+      //MOVIE
+      let date = data[7];
+      if (date !== undefined && data[2] === "M") date = date.substring(0, 10);
       return (
         <section className="jumbotron">
           <button
@@ -76,7 +239,7 @@ export default class DetailsView extends React.Component {
           <img
             src={data[6]}
             className="float-left align-middle"
-            alt="Book Cover Image"
+            alt="Movie Cover Image"
             height="250"
             style={{ marginRight: "40px", marginBottom: "30px" }}
           ></img>
@@ -88,75 +251,29 @@ export default class DetailsView extends React.Component {
               class="btn btn-dark btn-sm"
               onClick={this.onSaveMedia}
             >
-              <span></span> Save!
+              <span></span> Save
             </button>
             <p className="text-muted">
-              <strong>Author(s):</strong> {data[12]}
+              <strong>Released:</strong> {date}
             </p>
             <p className="text-muted">
-              <strong>Avg. Rating:</strong> {data[5]}/10 ({data[8]})
+              <strong>Runtime:</strong> {data[10]} minutes
             </p>
             <p className="text-muted">
-              <strong>Review Count:</strong> {data[14]}
+              <strong>Avg. Rating:</strong> {num}/10 ({data[8]})
+            </p>
+            <p className="text-muted">
+              <strong>Keywords:</strong> {data[3]}
+            </p>
+            <p className="text-muted">
+              <strong>Revenue:</strong> ${data[9]}
             </p>
             <p className="text-muted">
               <strong>Description:</strong> {data[4]}
-            </p>
-            <p className="text-muted">
-              <strong>Length:</strong> {data[13]} pages
             </p>
           </div>
         </section>
       );
     }
-    //MOVIE
-    return (
-      <section className="jumbotron">
-        <button
-          type="button"
-          class="close"
-          aria-label="Close"
-          onClick={this.onExit.bind(this)}
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <img
-          src={data[6]}
-          className="float-left align-middle"
-          alt="Movie Cover Image"
-          height="250"
-          style={{ marginRight: "40px", marginBottom: "30px" }}
-        ></img>
-        <div className="container">
-          <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
-          <button
-            id="saveButton"
-            type="button"
-            class="btn btn-dark btn-sm"
-            onClick={this.onSaveMedia}
-          >
-            <span></span> Save!
-          </button>
-          <p className="text-muted">
-            <strong>Released:</strong> {data[7]}
-          </p>
-          <p className="text-muted">
-            <strong>Runtime:</strong> {data[10]} minutes
-          </p>
-          <p className="text-muted">
-            <strong>Avg. Rating:</strong> {data[5]}/10 ({data[8]})
-          </p>
-          <p className="text-muted">
-            <strong>Keywords:</strong> {data[3]}
-          </p>
-          <p className="text-muted">
-            <strong>Revenue:</strong> ${data[9]}
-          </p>
-          <p className="text-muted">
-            <strong>Description:</strong> {data[4]}
-          </p>
-        </div>
-      </section>
-    );
   }
 }
