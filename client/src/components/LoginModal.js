@@ -154,6 +154,9 @@ export default class LoginModal extends React.Component {
   }
 
   render() {
+    if (this.props.username !== null) {
+      return (<div><p>Hello {this.props.username}</p> <button className="btn-1" onClick={this.props.handleLogout}> Logout </button></div>)
+    }
     return (
       <div>
         <button className="btn-1" onClick={() => this.openModal()}>

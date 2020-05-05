@@ -64,6 +64,10 @@ export default class DetailsView extends React.Component {
 
   render() {
     const data = this.props.data;
+    //MOVIE
+    let num = data[5];
+
+    if (num !== undefined) num = data[5].toFixed(2);
 
     if (this.state.isSaved) {
       //if saved already
@@ -115,55 +119,60 @@ export default class DetailsView extends React.Component {
           </section>
         );
       }
-      //MOVIE
-      return (
-        <section className="jumbotron">
-          <button
-            type="button"
-            class="close"
-            aria-label="Close"
-            onClick={this.onExit.bind(this)}
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <img
-            src={data[6]}
-            className="float-left align-middle"
-            alt="Movie Cover Image"
-            height="250"
-            style={{ marginRight: "40px", marginBottom: "30px" }}
-          ></img>
-          <div className="container">
-            <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
+
+      // MOVIE
+      if (data[2] === "M") {
+        let date = data[7];
+        if (date !== undefined && data[2] === "M") date = date.substring(0, 10);
+        return (
+          <section className="jumbotron">
             <button
-              id="saveButton"
               type="button"
-              class="save btn-sm"
-              onClick={this.onSaveMedia}
+              className="close"
+              aria-label="Close"
+              onClick={this.onExit.bind(this)}
             >
-              <span></span> Saved!
+              <span aria-hidden="true">&times;</span>
             </button>
-            <p className="text-muted">
-              <strong>Released:</strong> {data[7]}
-            </p>
-            <p className="text-muted">
-              <strong>Runtime:</strong> {data[10]} minutes
-            </p>
-            <p className="text-muted">
-              <strong>Avg. Rating:</strong> {data[5]}/10 ({data[8]})
-            </p>
-            <p className="text-muted">
-              <strong>Keywords:</strong> {data[3]}
-            </p>
-            <p className="text-muted">
-              <strong>Revenue:</strong> ${data[9]}
-            </p>
-            <p className="text-muted">
-              <strong>Description:</strong> {data[4]}
-            </p>
-          </div>
-        </section>
-      );
+            <img
+              src={data[6]}
+              className="float-left align-middle"
+              alt="Movie Cover Image"
+              height="250"
+              style={{ marginRight: "40px", marginBottom: "30px" }}
+            ></img>
+            <div className="container">
+              <h1 className="jumbotron-heading">{data[1]}</h1>{" "}
+              <button
+                id="saveButton"
+                type="button"
+                class="save btn-sm"
+                onClick={this.onSaveMedia}
+              >
+                <span></span> Saved!
+              </button>
+              <p className="text-muted">
+                <strong>Released:</strong> {data[7]}
+              </p>
+              <p className="text-muted">
+                <strong>Runtime:</strong> {data[10]} minutes
+              </p>
+              <p className="text-muted">
+                <strong>Avg. Rating:</strong> {num}/10 ({data[8]})
+              </p>
+              <p className="text-muted">
+                <strong>Keywords:</strong> {data[3]}
+              </p>
+              <p className="text-muted">
+                <strong>Revenue:</strong> ${data[9]}
+              </p>
+              <p className="text-muted">
+                <strong>Description:</strong> {data[4]}
+              </p>
+            </div>
+          </section>
+        );
+      }
     } else {
       //not saved before
       // BOOK
@@ -215,6 +224,8 @@ export default class DetailsView extends React.Component {
         );
       }
       //MOVIE
+      let date = data[7];
+      if (date !== undefined && data[2] === "M") date = date.substring(0, 10);
       return (
         <section className="jumbotron">
           <button
@@ -243,13 +254,13 @@ export default class DetailsView extends React.Component {
               <span></span> Save
             </button>
             <p className="text-muted">
-              <strong>Released:</strong> {data[7]}
+              <strong>Released:</strong> {date}
             </p>
             <p className="text-muted">
               <strong>Runtime:</strong> {data[10]} minutes
             </p>
             <p className="text-muted">
-              <strong>Avg. Rating:</strong> {data[5]}/10 ({data[8]})
+              <strong>Avg. Rating:</strong> {num}/10 ({data[8]})
             </p>
             <p className="text-muted">
               <strong>Keywords:</strong> {data[3]}
