@@ -47,7 +47,6 @@ export default class FactsLanding extends React.Component {
       );
     }
 
-    console.log(this.props);
     return (
       <div>
         <h4>What is the longest movie ever?</h4>
