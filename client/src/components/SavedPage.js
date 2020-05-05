@@ -102,6 +102,7 @@ export default class SavedPage extends React.Component {
         title={rec[1]}
         avg_rating={rec[5]}
         desc={rec[4]}
+        goToDetailedView={this.props.goToDetailedView}
       />
     ));
 

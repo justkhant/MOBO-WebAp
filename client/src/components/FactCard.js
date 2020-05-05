@@ -5,6 +5,14 @@ import "../style/Dashboard.css";
 export default class FactCard extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const data = [this.props.id, this.props.title, this.props.genre];
+    this.props.goToDetailedView(data);
+    return false;
   }
 
   render() {
@@ -16,7 +24,7 @@ export default class FactCard extends React.Component {
               {this.props.genre}
             </strong>
             <h3 class="mb-0">
-              <a class="text-dark" href="#">
+              <a class="text-dark" href="#" onClick={this.handleClick}>
                 {this.props.title}
               </a>
             </h3>
@@ -24,7 +32,7 @@ export default class FactCard extends React.Component {
             <p class="card-text mb-auto overflow">
               Description: {this.props.desc}
             </p>
-            <a href="#">More Info</a>
+            <a href="#" onClick={this.handleClick}>More Info</a>
           </div>
         </div>
       </div>

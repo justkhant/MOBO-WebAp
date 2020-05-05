@@ -21,9 +21,8 @@ export default class Dashboard extends React.Component {
     this.state = {
       currentSearchTerm: null,
       searchResultsData: [],
-      detailedViewData: null,
       isDetailedView: false,
-      selectedRow: 0,
+      selectedData: null,
       showModal: false,
       loading: false,
       error: null,
@@ -41,6 +40,8 @@ export default class Dashboard extends React.Component {
     this.funFact1 = this.funFact1.bind(this);
     this.getSavedMediaFromUsername = this.getSavedMediaFromUsername.bind(this);
     this.getMediaDataFromMediaIDs = this.getMediaDataFromMediaIDs.bind(this);
+    this.onExit = this.onExit.bind(this);
+    this.goToDetailedView = this.goToDetailedView.bind(this);
   }
 
   // React function that is called when the page load.
@@ -103,6 +104,7 @@ export default class Dashboard extends React.Component {
 
           this.setState({
             searchResultsData: searchResult.rows,
+            isDetailedView: false,
           });
         },
         (err) => {
@@ -112,10 +114,10 @@ export default class Dashboard extends React.Component {
   }
 
   showDetailedView(rowIndex) {
+    const { searchResultsData } = this.state;
     this.setState({
-      detailedViewData: testData,
       isDetailedView: true,
-      selectedRow: rowIndex,
+      selectedData: searchResultsData[rowIndex],
     });
   }
 
@@ -134,8 +136,6 @@ export default class Dashboard extends React.Component {
   onExit() {
     this.setState({
       isDetailedView: false,
-      currentSearchTerm: null,
-      searchResultsData: [],
     });
   }
 
@@ -144,6 +144,8 @@ export default class Dashboard extends React.Component {
 
     this.setState({
       showSavePage: newState,
+      currentSearchTerm: null,
+      searchResultsData: [],
     });
   }
 
@@ -198,13 +200,22 @@ export default class Dashboard extends React.Component {
       );
   }
 
+  goToDetailedView(data) {
+    console.log('is in goToDetailedView, id is', data);
+
+    this.setState({
+      showSavePage: false,
+      isDetailedView: true,
+      selectedData: data,
+    });
+  }
+
 
   render() {
     const {
       searchResultsData,
-      detailedViewData,
       isDetailedView,
-      selectedRow,
+      selectedData,
       loggedInUser,
       showSavePage,
       savedPageMedia,
@@ -240,12 +251,12 @@ export default class Dashboard extends React.Component {
     if (showSavePage) {
       return (
         <div className="Dashboard">
-          <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light">
-              <a class="navbar-brand" href="#">
+          <div className="container">
+            <nav className="navbar navbar-expand-lg navbar-light">
+              <a className="navbar-brand" href="#">
                 <img src="mobo_logo.png" height="70"></img>
               </a>
-              <div class="navbar-collapse collapse justify-content-between"></div>
+              <div className="navbar-collapse collapse justify-content-between"></div>
               <form className="navbar-nav mr-auto">{loginSection}</form>
               <form
                 className="navbar-nav mr-auto"
@@ -259,7 +270,7 @@ export default class Dashboard extends React.Component {
               </form>
             </nav>
             <br></br>
-            <SavedPage username={loggedInUser} savedPageMedia={savedPageMedia}/>
+            <SavedPage username={loggedInUser} savedPageMedia={savedPageMedia} goToDetailedView={this.goToDetailedView}/>
           </div>
         </div>
       );
@@ -268,12 +279,12 @@ export default class Dashboard extends React.Component {
     if (isDetailedView) {
       return (
         <div className="Dashboard">
-          <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light">
-              <a class="navbar-brand" href="#">
+          <div className="container">
+            <nav className="navbar navbar-expand-lg navbar-light">
+              <a className="navbar-brand" href="#">
                 <img src="mobo_logo.png" height="70"></img>
               </a>
-              <div class="navbar-collapse collapse justify-content-between"></div>
+              <div className="navbar-collapse collapse justify-content-between"></div>
               <form
                 className="navbar-nav mr-auto"
                 onSubmit={(event) => {
@@ -287,10 +298,11 @@ export default class Dashboard extends React.Component {
             <br></br>
             <SearchBar search={this.search} />
             <DetailedView
-              data={searchResultsData[selectedRow]}
+              data={selectedData}
               username={loggedInUser}
               savedPageMedia={savedPageMedia}
-              onExit={this.onExit.bind(this)}
+              onExit={this.onExit}
+              goToDetailedView={this.goToDetailedView}
             />
           </div>
         </div>
@@ -300,12 +312,12 @@ export default class Dashboard extends React.Component {
     if (searchResultsData.length === 0) {
       return (
         <div className="Dashboard">
-          <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light">
-              <a class="navbar-brand" href="#">
+          <div className="container">
+            <nav className="navbar navbar-expand-lg navbar-light">
+              <a className="navbar-brand" href="#">
                 <img src="mobo_logo.png" height="70"></img>
               </a>
-              <div class="navbar-collapse collapse justify-content-between"></div>
+              <div className="navbar-collapse collapse justify-content-between"></div>
               <form
                 className="navbar-nav mr-auto"
                 onSubmit={(event) => {
@@ -327,12 +339,12 @@ export default class Dashboard extends React.Component {
 
     return (
       <div className="Dashboard">
-        <div class="container">
-          <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href="#">
+        <div className="container">
+          <nav className="navbar navbar-expand-lg navbar-light">
+            <a className="navbar-brand" href="#">
               <img src="mobo_logo.png" height="70"></img>
             </a>
-            <div class="navbar-collapse collapse justify-content-between"></div>
+            <div className="navbar-collapse collapse justify-content-between"></div>
             <form
               className="navbar-nav mr-auto"
               onSubmit={(event) => {
